@@ -9,18 +9,101 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = trim($_POST['title']);
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
+    $name_for_certificate = trim($_POST['name_for_certificate']);
+    $preferred_name = trim($_POST['preferred_name']);
+
+    $date_of_birth = trim($_POST['date_of_birth']);
+    $nationality = trim($_POST['nationality']);
+    $permanent_address = trim($_POST['permanent_address']);
+    $current_address = trim($_POST['current_address']);
+    $mobile = trim($_POST['mobile']);
+
+
+
+    $telephone = trim($_POST['telephone']);
+    $emergency_contact_name = trim($_POST['emergency_contact_name']);
+    $photo = trim($_POST['photo']);
+    $nic = trim($_POST['nic']);
+    $passport = trim($_POST['passport']);
+    $personal_email = trim($_POST['personal_email']);
+    $bms_email = trim($_POST['bms_email']);
+    $occupation = trim($_POST['occupation']);
+    $organization = trim($_POST['organization']);
+    $previous_organization = trim($_POST['previous_organization']);
+
+
+    // Handle qualifications
+    $qualifications = isset($_POST['qualifications']) ? implode(',', $_POST['qualifications']) : '';
+
+    // Handle active checkbox
+    $active = isset($_POST['active']) ? 1 : 0;
+
+
+
 
     if (empty($student_code) || empty($title) || empty($first_name)) {
         echo "<div class='alert alert-danger'>All fields are required.</div>";
     } else {
         if ($id) {
             // Update existing student
-            $stmt = $conn->prepare("UPDATE students SET student_code =?, title=?, firstname=?, lastname=? WHERE id=?");
-            $stmt->bind_param("ssssi", $student_code, $title, $first_name, $last_name, $id);
+            $stmt = $conn->prepare("UPDATE students SET student_code =?, title=?, firstname=?, lastname=?,name_for_certificate,preferred_name, date_of_birth, nationality, permanent_address, current_address, mobile,
+            telephone, emergency_contact_name, photo, nic, passport, personal_email, bms_email, occupation, organization, previous_organization,qualifications, active WHERE id=?");
+            $stmt->bind_param(
+                "sssssssssssssssssssssssi",
+                $student_code,
+                $title,
+                $first_name,
+                $last_name,
+                $name_for_certificate,
+                $preferred_name,
+                $date_of_birth,
+                $nationality,
+                $permanent_address,
+                $current_address,
+                $mobile,
+                $telephone,
+                $emergency_contact_name,
+                $photo,
+                $nic,
+                $passport,
+                $personal_email,
+                $bms_email,
+                $occupation,
+                $organization,
+                $previous_organization,
+                $qualifications,
+                $active,
+                $id
+            );
         } else {
             // Insert new student
-            $stmt = $conn->prepare("INSERT INTO students (student_code, title, firstname, lastname) VALUES (?, ?, ?,?)");
-            $stmt->bind_param("ssss", $student_code, $title, $first_name,$last_name);
+            $stmt = $conn->prepare("INSERT INTO students (student_code, title, firstname, lastname,name_for_certificate,preferred_name, date_of_birth, nationality, permanent_address, current_address, mobile, telephone, emergency_contact_name, photo, nic, passport, personal_email, bms_email, occupation, organization, previous_organization,qualifications, active) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt->bind_param(
+                "sssssssssssssssssssssss",
+                $student_code,
+                $title,
+                $first_name,
+                $last_name,
+                $name_for_certificate,
+                $preferred_name,
+                $date_of_birth,
+                $nationality,
+                $permanent_address,
+                $current_address,
+                $mobile,
+                $telephone,
+                $emergency_contact_name,
+                $photo,
+                $nic,
+                $passport,
+                $personal_email,
+                $bms_email,
+                $occupation,
+                $organization,
+                $previous_organization,
+                $qualifications,
+                $active
+            );
         }
 
         // Execute and check statement
@@ -99,7 +182,7 @@ $result = $conn->query("SELECT * FROM reg");
                 <label for="student_code">Student Code:</label>
                 <input type="text" class="form-control" id="student_code" name="student_code" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="title">Title:</label>
                 <select class="form-control" id="title" name="title" required>
@@ -119,7 +202,7 @@ $result = $conn->query("SELECT * FROM reg");
                 <input type="text" class="form-control" id="last_name" name="last_name" required>
             </div>
 
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="name_for_certificate">Name for Certificate:</label>
                 <input type="text" class="form-control" id="name_for_certificate" name="name_for_certificate">
             </div>
@@ -127,9 +210,9 @@ $result = $conn->query("SELECT * FROM reg");
             <div class="form-group">
                 <label for="preferred_name">Preferred Name:</label>
                 <input type="text" class="form-control" id="preferred_name" name="preferred_name">
-            </div> -->
+            </div>
 
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="date_of_birth">Date Of Birth:</label>
                 <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
             </div>
@@ -152,9 +235,10 @@ $result = $conn->query("SELECT * FROM reg");
             <div class="form-group">
                 <label for="mobile">Mobile:</label>
                 <input type="text" class="form-control" id="mobile" name="mobile">
-            </div> -->
+            </div>
+            <!-- ------------------------------------  -->
 
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="telephone">Telephone:</label>
                 <input type="text" class="form-control" id="telephone" name="telephone">
             </div>
@@ -251,7 +335,7 @@ $result = $conn->query("SELECT * FROM reg");
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="active" name="active">
                 <label class="form-check-label" for="active">Active</label>
-            </div> -->
+            </div>
             <button type="submit" id="submit-button" class="btn btn-primary">Register</button>
         </form>
 

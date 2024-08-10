@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 10, 2024 at 12:46 PM
+-- Generation Time: Aug 10, 2024 at 01:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -82,8 +82,8 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`id`, `student_code`, `title`, `firstname`, `lastname`, `name_for_certificate`, `preferred_name`, `date_of_birth`, `nationality`, `permanent_address`, `current_address`, `mobile`, `telephone`, `emergency_contact_name`, `photo`, `nic`, `passport`, `personal_email`, `bms_email`, `occupation`, `organization`, `previous_organization`, `qualifications`, `active`) VALUES
 (1, 's001', 'Mr', 'Mirshath', 'Guthrie', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(2, 'Id et et ipsum omn', 'Mrs', 'Sean', 'Hatfield', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
-(3, 'Quia accusantium con', 'Miss', 'Nicole', 'Chambers', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+(8, 'Nihil omnis voluptas', 'Mrs', 'Nero', 'Roberts', 'Caleb Sherman', NULL, '1974-04-21', 'Mollitia nostrum nem', 'Asperiores ipsum ea', 'Facilis voluptatem d', 'Doloremque distincti', '+1 (563) 326-5912', 'Rama Ruiz', '', 'Dolorem aut necessit', 'Et repudiandae ea ex', 'gujikiwa@mailinator.com', 'rovel@mailinator.com', 'Iure similique verit', 'Erickson Juarez Inc', 'Harrison and Pearson LLC', 'Masters,Diploma,Work Experience,GDip,O/L', 0),
+(9, 'Delectus vel conseq', 'Mrs', 'Sawyer', 'Butler', 'Gabriel Baird', 'Clare Phelps', '1990-01-06', 'Maxime praesentium c', 'Praesentium consecte', 'Temporibus elit ani', 'Tenetur non in alias', '+1 (617) 362-3256', 'Guy Mcfadden', '', 'Hic adipisci quo pro', 'Et sapiente qui aliq', 'dameh@mailinator.com', 'barivijeny@mailinator.com', 'Qui suscipit culpa', 'Gray Buckley Trading', 'Perry Valencia Associates', 'Bachelors,Masters,Diploma,A/L,IFD,O/L', 1);
 
 --
 -- Indexes for dumped tables
@@ -115,7 +115,7 @@ ALTER TABLE `reg`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
