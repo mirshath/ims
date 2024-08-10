@@ -95,7 +95,7 @@ $result = $conn->query("SELECT * FROM reg");
         <form action="" method="POST">
             <input type="hidden" id="student-id" name="student-id">
             <div class="form-group">
-                <label for="name">Name:</label>
+                <label for="name">Names:</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="form-group">
