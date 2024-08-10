@@ -5,21 +5,22 @@ include("./database/database.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve and validate form data
     $id = isset($_POST['student-id']) ? intval($_POST['student-id']) : null;
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $phone = trim($_POST['phone']);
+    $student_code = trim($_POST['student_code']);
+    $title = trim($_POST['title']);
+    $first_name = trim($_POST['first_name']);
+    $last_name = trim($_POST['last_name']);
 
-    if (empty($name) || empty($email) || empty($phone)) {
+    if (empty($student_code) || empty($title) || empty($first_name)) {
         echo "<div class='alert alert-danger'>All fields are required.</div>";
     } else {
         if ($id) {
             // Update existing student
-            $stmt = $conn->prepare("UPDATE reg SET name=?, email=?, phone=? WHERE id=?");
-            $stmt->bind_param("sssi", $name, $email, $phone, $id);
+            $stmt = $conn->prepare("UPDATE students SET student_code =?, title=?, firstname=?, lastname=? WHERE id=?");
+            $stmt->bind_param("ssssi", $student_code, $title, $first_name, $last_name, $id);
         } else {
             // Insert new student
-            $stmt = $conn->prepare("INSERT INTO reg (name, email, phone) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $name, $email, $phone);
+            $stmt = $conn->prepare("INSERT INTO students (student_code, title, firstname, lastname) VALUES (?, ?, ?,?)");
+            $stmt->bind_param("ssss", $student_code, $title, $first_name,$last_name);
         }
 
         // Execute and check statement
@@ -95,17 +96,162 @@ $result = $conn->query("SELECT * FROM reg");
         <form action="" method="POST">
             <input type="hidden" id="student-id" name="student-id">
             <div class="form-group">
-                <label for="name">Names:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <label for="student_code">Student Code:</label>
+                <input type="text" class="form-control" id="student_code" name="student_code" required>
             </div>
+            
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <label for="title">Title:</label>
+                <select class="form-control" id="title" name="title" required>
+                    <option value="Mr">Mr</option>
+                    <option value="Mrs">Mrs</option>
+                    <option value="Miss">Miss</option>
+                </select>
             </div>
+
             <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="tel" class="form-control" id="phone" name="phone" required>
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
             </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="name_for_certificate">Name for Certificate:</label>
+                <input type="text" class="form-control" id="name_for_certificate" name="name_for_certificate">
+            </div>
+
+            <div class="form-group">
+                <label for="preferred_name">Preferred Name:</label>
+                <input type="text" class="form-control" id="preferred_name" name="preferred_name">
+            </div> -->
+
+            <!-- <div class="form-group">
+                <label for="date_of_birth">Date Of Birth:</label>
+                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
+            </div>
+
+            <div class="form-group">
+                <label for="nationality">Nationality:</label>
+                <input type="text" class="form-control" id="nationality" name="nationality">
+            </div>
+
+            <div class="form-group">
+                <label for="permanent_address">Permanent Address:</label>
+                <textarea class="form-control" id="permanent_address" name="permanent_address"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="current_address">Current Address:</label>
+                <textarea class="form-control" id="current_address" name="current_address"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="mobile">Mobile:</label>
+                <input type="text" class="form-control" id="mobile" name="mobile">
+            </div> -->
+
+            <!-- <div class="form-group">
+                <label for="telephone">Telephone:</label>
+                <input type="text" class="form-control" id="telephone" name="telephone">
+            </div>
+
+            <div class="form-group">
+                <label for="emergency_contact_name">Emergency Contact Name:</label>
+                <input type="text" class="form-control" id="emergency_contact_name" name="emergency_contact_name">
+            </div>
+
+            <div class="form-group">
+                <label for="photo">Photo:</label>
+                <input type="file" class="form-control-file" id="photo" name="photo">
+            </div>
+
+            <div class="form-group">
+                <label for="nic">NIC:</label>
+                <input type="text" class="form-control" id="nic" name="nic">
+            </div>
+
+            <div class="form-group">
+                <label for="passport">Passport:</label>
+                <input type="text" class="form-control" id="passport" name="passport">
+            </div>
+
+            <div class="form-group">
+                <label for="personal_email">Personal Email:</label>
+                <input type="email" class="form-control" id="personal_email" name="personal_email">
+            </div>
+
+            <div class="form-group">
+                <label for="bms_email">BMS Email:</label>
+                <input type="email" class="form-control" id="bms_email" name="bms_email">
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Occupation:</label>
+                <input type="text" class="form-control" id="occupation" name="occupation">
+            </div>
+
+            <div class="form-group">
+                <label for="organization">Organization:</label>
+                <input type="text" class="form-control" id="organization" name="organization">
+            </div>
+
+            <div class="form-group">
+                <label for="previous_organization">Previous Organization:</label>
+                <input type="text" class="form-control" id="previous_organization" name="previous_organization">
+            </div>
+
+            <fieldset class="form-group">
+                <legend>Qualifications:</legend>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="bachelors" name="qualifications[]" value="Bachelors">
+                    <label class="form-check-label" for="bachelors">Bachelors</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="masters" name="qualifications[]" value="Masters">
+                    <label class="form-check-label" for="masters">Masters</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="diploma" name="qualifications[]" value="Diploma">
+                    <label class="form-check-label" for="diploma">Diploma</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="cbm" name="qualifications[]" value="CBM">
+                    <label class="form-check-label" for="cbm">CBM</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="al" name="qualifications[]" value="A/L">
+                    <label class="form-check-label" for="al">A/L</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="work_experience" name="qualifications[]" value="Work Experience">
+                    <label class="form-check-label" for="work_experience">Work Experience</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gdip" name="qualifications[]" value="GDip">
+                    <label class="form-check-label" for="gdip">GDip</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="ifd" name="qualifications[]" value="IFD">
+                    <label class="form-check-label" for="ifd">IFD</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="ol" name="qualifications[]" value="O/L">
+                    <label class="form-check-label" for="ol">O/L</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="professional_qualification" name="qualifications[]" value="Professional Qualification">
+                    <label class="form-check-label" for="professional_qualification">Professional Qualification</label>
+                </div>
+            </fieldset>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="active" name="active">
+                <label class="form-check-label" for="active">Active</label>
+            </div> -->
             <button type="submit" id="submit-button" class="btn btn-primary">Register</button>
         </form>
 
@@ -123,14 +269,14 @@ $result = $conn->query("SELECT * FROM reg");
             <tbody>
                 <?php
                 // Fetch and display registered students
-                $result = $conn->query("SELECT * FROM reg");
+                $result = $conn->query("SELECT * FROM students");
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["name"] . "</td>";
-                        echo "<td>" . $row["email"] . "</td>";
-                        echo "<td>" . $row["phone"] . "</td>";
+                        echo "<td>" . $row["student_code"] . "</td>";
+                        echo "<td>" . $row["title"] . "</td>";
+                        echo "<td>" . $row["firstname"] . "</td>";
+                        echo "<td>" . $row["lastname"] . "</td>";
                         echo "</tr>";
                     }
                 } else {
