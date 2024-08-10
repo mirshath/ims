@@ -348,6 +348,20 @@ $result = $conn->query("SELECT * FROM reg");
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
+                    <th>Phone</th>
                 </tr>
             </thead>
             <tbody>
@@ -361,6 +375,20 @@ $result = $conn->query("SELECT * FROM reg");
                         echo "<td>" . $row["title"] . "</td>";
                         echo "<td>" . $row["firstname"] . "</td>";
                         echo "<td>" . $row["lastname"] . "</td>";
+                        echo "<td>" . $row["name_for_certificate"] . "</td>";
+                        echo "<td>" . $row["preferred_name"] . "</td>";
+                        echo "<td>" . $row["date_of_birth"] . "</td>";
+                        echo "<td>" . $row["nationality"] . "</td>";
+                        echo "<td>" . $row["permanent_address"] . "</td>";
+                        echo "<td>" . $row["current_address"] . "</td>";
+                        echo "<td>" . $row["mobile"] . "</td>";
+                        echo "<td>" . $row["telephone"] . "</td>";
+                        echo "<td>" . $row["emergency_contact_name"] . "</td>";
+                        echo "<td>" . $row["nic"] . "</td>";
+                        echo "<td>" . $row["passport"] . "</td>";
+                        echo "<td>" . $row["personal_email"] . "</td>";
+                        echo "<td>" . $row["bms_email"] . "</td>";
+                        echo "<td>" . $row["active"] . "</td>";
                         echo "</tr>";
                     }
                 } else {
