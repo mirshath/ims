@@ -1,0 +1,151 @@
+<?php
+include("../../database/database.php"); // Update the path to your database connection
+
+// Pagination settings
+$results_per_page = 5; // Number of results per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
+$start = ($page - 1) * $results_per_page;
+
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add_semester'])) {
+        // Add new semester
+        $semester_name = $_POST['semester_name'];
+        $sql = "INSERT INTO semester_table (semester_name) VALUES ('$semester_name')";
+        $conn->query($sql);
+    } elseif (isset($_POST['update_semester'])) {
+        // Update semester
+        $id = $_POST['id'];
+        $semester_name = $_POST['semester_name'];
+        $sql = "UPDATE semester_table SET semester_name='$semester_name' WHERE id=$id";
+        $conn->query($sql);
+    } elseif (isset($_POST['delete_semester'])) {
+        // Delete semester
+        $id = $_POST['id'];
+        $sql = "DELETE FROM semester_table WHERE id=$id";
+        $conn->query($sql);
+    }
+}
+
+// Fetch semesters for the current page
+$sql = "SELECT * FROM semester_table LIMIT $start, $results_per_page";
+$result = $conn->query($sql);
+
+// Fetch total number of semesters for pagination controls
+$sql_total = "SELECT COUNT(*) as total FROM semester_table";
+$result_total = $conn->query($sql_total);
+$total_rows = $result_total->fetch_assoc()['total'];
+$total_pages = ceil($total_rows / $results_per_page);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester Management</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Semester Management</h2>
+
+    <!-- Add Semester Form -->
+    <form action="" method="post" class="mb-3">
+        <div class="form-group">
+            <label for="semester_name">Semester Name</label>
+            <input type="text" class="form-control" id="semester_name" name="semester_name" required>
+        </div>
+        <button type="submit" name="add_semester" class="btn btn-primary">Add Semester</button>
+    </form>
+
+    <!-- Semesters Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Semester Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo htmlspecialchars($row['semester_name']); ?></td>
+                    <td>
+                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" data-id="<?php echo $row['id']; ?>" data-semester_name="<?php echo htmlspecialchars($row['semester_name']); ?>">Edit</button>
+                        <form action="" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                            <button type="submit" name="delete_semester" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-end">
+            <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+            <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Semester</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <input type="hidden" id="edit_id" name="id">
+                    <div class="form-group">
+                        <label for="edit_semester_name">Semester Name</label>
+                        <input type="text" class="form-control" id="edit_semester_name" name="semester_name" required>
+                    </div>
+                    <button type="submit" name="update_semester" class="btn btn-primary">Update Semester</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $('#editModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var id = button.data('id'); // Extract info from data-* attributes
+        var semester_name = button.data('semester_name');
+
+        var modal = $(this);
+        modal.find('#edit_id').val(id);
+        modal.find('#edit_semester_name').val(semester_name);
+    });
+</script>
+</body>
+</html>
+
+<?php $conn->close(); ?>

@@ -26,3 +26,57 @@ INSERT INTO year_table (year_name) VALUES
 ('3rd year'),
 ('N/A');
 -------------------------------------------------------------------------   
+CREATE TABLE semester_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    semester_name VARCHAR(255) NOT NULL,
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+--------------------------------------------------------
+
+CREATE TABLE criterias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    criteria_code VARCHAR(100) NOT NULL,
+    criteria_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO criterias (criteria_code, criteria_name) VALUES ('CR01', 'Attendance');
+INSERT INTO criterias (criteria_code, criteria_name) VALUES ('CR02', 'Participation');
+INSERT INTO criterias (criteria_code, criteria_name) VALUES ('CR03', 'Homework');
+INSERT INTO criterias (criteria_code, criteria_name) VALUES ('CR04', 'Exams');
+
+
+
+
+----------------------------------------------------------------
+CREATE TABLE universities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    university_code VARCHAR(100) NOT NULL,
+    university_name VARCHAR(255) NOT NULL,
+    address TEXT,
+    uni_code VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO universities (university_code, university_name, address, uni_code) VALUES ('UN01', 'University of Example', '123 Example St, City, Country', 'UEX01');
+INSERT INTO universities (university_code, university_name, address, uni_code) VALUES ('UN02', 'Example University', '456 Another Rd, Town, Country', 'UEX02');
+INSERT INTO universities (university_code, university_name, address, uni_code) VALUES ('UN03', 'Sample University', '789 Sample Ave, Metropolis, Country', 'USE03');
+INSERT INTO universities (university_code, university_name, address, uni_code) VALUES ('UN04', 'Test University', '101 Test Blvd, Capital City, Country', 'UT04');
+
+-------------------------------------------------------------------------------
+
+
+
+CREATE TABLE coordinator_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    coordinator_code VARCHAR(50) NOT NULL,
+    title ENUM('Mr', 'Mrs', 'Ms', 'Dr', 'Prof') NOT NULL,
+    coordinator_name VARCHAR(100) NOT NULL,
+    bms_email VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL
+);
+
+
+----------------------------------------------------------------------------------
+
+
