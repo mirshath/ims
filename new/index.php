@@ -48,7 +48,7 @@ include("../database/database.php");
         <form id="studentForm" action="process_form.php" method="post">
             <div class="mb-3">
                 <!-- <label for="student_code" class="form-label">Student Code:</label> -->
-                <input type="text" id="student_code" name="student_code" class="form-control" required>
+                <input type="hidden" id="student_code" name="student_code" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label for="title" class="form-label">Title:</label>
@@ -186,7 +186,7 @@ include("../database/database.php");
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         <h2 class="mt-5">Registered Students</h2>
-        <table class="table table-striped mt-3">
+        <table class="table table-striped mt-3 border">
             <thead>
                 <tr>
                     <th scope="col">Student ID</th>
@@ -196,9 +196,9 @@ include("../database/database.php");
                     <!-- Add more columns if needed -->
                 </tr>
             </thead>
-            <tbody>
+            <!-- <tbody>
                 <?php
-                // Fetch registered students from the database and display in the table
+                
 
 
                 $sql = "SELECT * FROM students";
@@ -219,11 +219,68 @@ include("../database/database.php");
 
                 $conn->close();
                 ?>
+            </tbody> -->
+            <tbody id="studentTableBody">
+                <!-- Data will be loaded here -->
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination" id="pagination">
+                <!-- Pagination links will be loaded here -->
+            </ul>
+        </nav>
+
+
     </div>
 
+    <script>
+        $(document).ready(function() {
+            const limit = 10;
 
+            function loadStudents(page) {
+                $.ajax({
+                    url: 'fetch_students.php',
+                    type: 'POST',
+                    data: {
+                        limit: limit,
+                        page: page
+                    },
+                    success: function(response) {
+                        const data = JSON.parse(response);
+                        let tableBody = '';
+                        data.data.forEach(student => {
+                            tableBody += `<tr>
+                                <td>${student.student_code}</td>
+                                <td>${student.first_name}</td>
+                                <td>${student.last_name}</td>
+                                <td>${student.certificate_name}</td>
+                            </tr>`;
+                        });
+                        $('#studentTableBody').html(tableBody);
+
+                        let pagination = '';
+                        for (let i = 1; i <= data.pages; i++) {
+                            pagination += `<li class="page-item ${i === page ? 'active' : ''}">
+                                <a class="page-link" href="#" data-page="${i}">${i}</a>
+                            </li>`;
+                        }
+                        $('#pagination').html(pagination);
+                    }
+                });
+            }
+
+            // Load initial data
+            loadStudents(1);
+
+            // Handle page click
+            $(document).on('click', '.page-link', function(e) {
+                e.preventDefault();
+                const page = $(this).data('page');
+                loadStudents(page);
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -262,6 +319,7 @@ include("../database/database.php");
                     success: function(data) {
                         let student = JSON.parse(data);
                         $('#student_code').val(student.student_code);
+                        $('#title').val(student.title);
                         $('#first_name').val(student.first_name);
                         $('#last_name').val(student.last_name);
                         $('#certificate_name').val(student.certificate_name);
