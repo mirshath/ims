@@ -47,7 +47,7 @@ include("../database/database.php");
 
         <form id="studentForm" action="process_form.php" method="post">
             <div class="mb-3">
-                <label for="student_code" class="form-label">Student Code:</label>
+                <!-- <label for="student_code" class="form-label">Student Code:</label> -->
                 <input type="hidden" id="student_code" name="student_code" class="form-control" required>
             </div>
             <div class="mb-3">

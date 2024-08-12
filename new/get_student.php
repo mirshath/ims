@@ -2,10 +2,19 @@
 // get_student.php
 include '../database/database.php';
 
-$id = $_POST['id'];
-$sql = "SELECT * FROM stu WHERE id = '$id'";
+// Retrieve the student code from the AJAX request and sanitize it
+$student_code = mysqli_real_escape_string($conn, $_POST['id']);
+
+$sql = "SELECT * FROM students WHERE student_code = '$student_code'";
 $result = mysqli_query($conn, $sql);
 
-$student = mysqli_fetch_assoc($result);
+$student = array();
+
+if (mysqli_num_rows($result) > 0) {
+    $student = mysqli_fetch_assoc($result);
+}
+
 echo json_encode($student);
+
+mysqli_close($conn);
 ?>
