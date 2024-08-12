@@ -264,7 +264,7 @@ include("../database/database.php");
                         $('#student_code').val(student.student_code);
                         $('#first_name').val(student.first_name);
                         $('#last_name').val(student.last_name);
-                        $('#certificate_name').val(student.name_for_certificate);
+                        $('#certificate_name').val(student.certificate_name);
                         $('#preferred_name').val(student.preferred_name);
                         $('#dob').val(student.date_of_birth);
                         $('#nationality').val(student.nationality);
