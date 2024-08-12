@@ -50,140 +50,201 @@ include("../database/database.php");
                 <!-- <label for="student_code" class="form-label">Student Code:</label> -->
                 <input type="hidden" id="student_code" name="student_code" class="form-control" required>
             </div>
-            <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
-                <select id="title" name="title" class="form-select" required>
-                    <option value="Mr">Mr</option>
-                    <option value="Mrs">Mrs</option>
-                    <option value="Ms">Ms</option>
-                    <option value="Dr">Dr</option>
-                    <option value="Prof">Prof</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="first_name" class="form-label">First Name:</label>
-                <input type="text" id="first_name" name="first_name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="last_name" class="form-label">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="certificate_name" class="form-label">Name for the Certificate:</label>
-                <input type="text" id="certificate_name" name="certificate_name" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="preferred_name" class="form-label">Preferred Name:</label>
-                <input type="text" id="preferred_name" name="preferred_name" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="dob" class="form-label">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="nationality" class="form-label">Nationality:</label>
-                <input type="text" id="nationality" name="nationality" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="permanent_address" class="form-label">Permanent Address:</label>
-                <textarea id="permanent_address" name="permanent_address" class="form-control"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="current_address" class="form-label">Current Address:</label>
-                <textarea id="current_address" name="current_address" class="form-control"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="mobile" class="form-label">Mobile:</label>
-                <input type="text" id="mobile" name="mobile" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="telephone" class="form-label">Telephone:</label>
-                <input type="text" id="telephone" name="telephone" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="emergency_contact_name" class="form-label">Emergency Contact Name:</label>
-                <input type="text" id="emergency_contact_name" name="emergency_contact_name" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="emergency_contact_number" class="form-label">Emergency Contact Number:</label>
-                <input type="text" id="emergency_contact_number" name="emergency_contact_number" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="english_ability" class="form-label">English Ability:</label>
-                <input type="checkbox" id="english_ability" name="english_ability" value="1">
-            </div>
-            <div class="mb-3">
-                <label for="minimum_entry_qualification" class="form-label">Minimum Entry Qualification:</label>
-                <input type="checkbox" id="minimum_entry_qualification" name="minimum_entry_qualification" value="1">
-            </div>
-            <div class="mb-3">
-                <label for="nic" class="form-label">NIC:</label>
-                <input type="text" id="nic" name="nic" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="passport" class="form-label">Passport:</label>
-                <input type="text" id="passport" name="passport" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="personal_email" class="form-label">Personal Email:</label>
-                <input type="email" id="personal_email" name="personal_email" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="bms_email" class="form-label">BMS Email:</label>
-                <input type="email" id="bms_email" name="bms_email" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="occupation" class="form-label">Occupation:</label>
-                <input type="text" id="occupation" name="occupation" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="organization" class="form-label">Organization:</label>
-                <input type="text" id="organization" name="organization" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="previous_organization" class="form-label">Previous Organization:</label>
-                <input type="text" id="previous_organization" name="previous_organization" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="qualifications" class="form-label">Qualifications:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="Bachelors" id="bachelors">
-                    <label class="form-check-label" for="bachelors">Bachelors</label>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title:</label>
+                        <select id="title" name="title" class="form-select" required>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Dr">Dr</option>
+                            <option value="Prof">Prof</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="Masters" id="masters">
-                    <label class="form-check-label" for="masters">Masters</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" required>
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="Diploma" id="diploma">
-                    <label class="form-check-label" for="diploma">Diploma</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" required>
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="CBM" id="cbm">
-                    <label class="form-check-label" for="cbm">CBM</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="certificate_name" class="form-label">Name for the Certificate:</label>
+                        <input type="text" id="certificate_name" name="certificate_name" class="form-control">
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="AL" id="al">
-                    <label class="form-check-label" for="al">A/L</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="preferred_name" class="form-label">Preferred Name:</label>
+                        <input type="text" id="preferred_name" name="preferred_name" class="form-control">
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="PGDip" id="pgdip">
-                    <label class="form-check-label" for="pgdip">PGDip</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth:</label>
+                        <input type="date" id="dob" name="dob" class="form-control">
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="IFD" id="ifd">
-                    <label class="form-check-label" for="ifd">IFD</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="nationality" class="form-label">Nationality:</label>
+                        <input type="text" id="nationality" name="nationality" class="form-control">
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="qualifications[]" value="OL" id="ol">
-                    <label class="form-check-label" for="ol">O/L</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="permanent_address" class="form-label">Permanent Address:</label>
+                        <textarea id="permanent_address" name="permanent_address" class="form-control"></textarea>
+                    </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="current_address" class="form-label">Current Address:</label>
+                        <textarea id="current_address" name="current_address" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Mobile:</label>
+                        <input type="text" id="mobile" name="mobile" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="telephone" class="form-label">Telephone:</label>
+                        <input type="text" id="telephone" name="telephone" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="emergency_contact_name" class="form-label">Emergency Contact Name:</label>
+                        <input type="text" id="emergency_contact_name" name="emergency_contact_name" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="emergency_contact_number" class="form-label">Emergency Contact Number:</label>
+                        <input type="text" id="emergency_contact_number" name="emergency_contact_number" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="english_ability" class="form-label">English Ability:</label>
+                        <input type="checkbox" id="english_ability" name="english_ability" value="1">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="minimum_entry_qualification" class="form-label">Minimum Entry Qualification:</label>
+                        <input type="checkbox" id="minimum_entry_qualification" name="minimum_entry_qualification" value="1">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="nic" class="form-label">NIC:</label>
+                        <input type="text" id="nic" name="nic" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="passport" class="form-label">Passport:</label>
+                        <input type="text" id="passport" name="passport" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="personal_email" class="form-label">Personal Email:</label>
+                        <input type="email" id="personal_email" name="personal_email" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="bms_email" class="form-label">BMS Email:</label>
+                        <input type="email" id="bms_email" name="bms_email" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="occupation" class="form-label">Occupation:</label>
+                        <input type="text" id="occupation" name="occupation" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="organization" class="form-label">Organization:</label>
+                        <input type="text" id="organization" name="organization" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="previous_organization" class="form-label">Previous Organization:</label>
+                        <input type="text" id="previous_organization" name="previous_organization" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="qualifications" class="form-label">Qualifications:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="Bachelors" id="bachelors">
+                            <label class="form-check-label" for="bachelors">Bachelors</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="Masters" id="masters">
+                            <label class="form-check-label" for="masters">Masters</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="Diploma" id="diploma">
+                            <label class="form-check-label" for="diploma">Diploma</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="CBM" id="cbm">
+                            <label class="form-check-label" for="cbm">CBM</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="AL" id="al">
+                            <label class="form-check-label" for="al">A/L</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="PGDip" id="pgdip">
+                            <label class="form-check-label" for="pgdip">PGDip</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="IFD" id="ifd">
+                            <label class="form-check-label" for="ifd">IFD</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="qualifications[]" value="OL" id="ol">
+                            <label class="form-check-label" for="ol">O/L</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="active" name="active" value="1">
+                        <label class="form-check-label" for="active">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group ">
+                        <button type="submit" class="btn btn-primary  float-right">Submit</button>
+                    </div>
+                </div>
+
+
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="active" name="active" value="1">
-                <label class="form-check-label" for="active">Active</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+
         </form>
         <h2 class="mt-5">Registered Students</h2>
         <table class="table table-striped mt-3 border">
@@ -198,7 +259,7 @@ include("../database/database.php");
             </thead>
             <!-- <tbody>
                 <?php
-                
+
 
 
                 $sql = "SELECT * FROM students";
