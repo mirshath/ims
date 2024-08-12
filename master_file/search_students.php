@@ -1,6 +1,6 @@
 <?php
 // search_students.php
-include("../../database/database.php");
+include("../database/database.php");
 
 // Retrieve the search query from the AJAX request and sanitize it
 $query = mysqli_real_escape_string($conn, $_POST['query']);

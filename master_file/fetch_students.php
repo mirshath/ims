@@ -1,5 +1,5 @@
 <?php
-include("../../database/database.php"); // Update the path to your database connection
+include("../database/database.php"); // Update the path to your database connection
 
 $limit = isset($_POST['limit']) ? (int)$_POST['limit'] : 10;
 $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
