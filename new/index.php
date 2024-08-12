@@ -48,7 +48,7 @@ include("../database/database.php");
         <form id="studentForm" action="process_form.php" method="post">
             <div class="mb-3">
                 <!-- <label for="student_code" class="form-label">Student Code:</label> -->
-                <input type="hidden" id="student_code" name="student_code" class="form-control" required>
+                <input type="text" id="student_code" name="student_code" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label for="title" class="form-label">Title:</label>
@@ -223,6 +223,8 @@ include("../database/database.php");
         </table>
     </div>
 
+
+
     <script>
         $(document).ready(function() {
             // Handle search input and display results
@@ -246,7 +248,7 @@ include("../database/database.php");
 
             // Handle selection of a search result
             $(document).on('click', '.dropdown-item', function() {
-                let studentID = $(this).data('id');
+                let studentCode = $(this).data('id');
                 $('#search').val($(this).text());
                 $('#search-results').hide();
 
@@ -255,13 +257,53 @@ include("../database/database.php");
                     url: 'get_student.php',
                     type: 'POST',
                     data: {
-                        id: studentID
+                        id: studentCode
                     },
                     success: function(data) {
                         let student = JSON.parse(data);
-                        $('#studentID').val(student.id);
-                        $('#name').val(student.name);
-                        $('#email').val(student.email);
+                        $('#student_code').val(student.student_code);
+                        $('#first_name').val(student.first_name);
+                        $('#last_name').val(student.last_name);
+                        $('#certificate_name').val(student.name_for_certificate);
+                        $('#preferred_name').val(student.preferred_name);
+                        $('#dob').val(student.date_of_birth);
+                        $('#nationality').val(student.nationality);
+                        $('#permanent_address').val(student.permanent_address);
+                        $('#current_address').val(student.current_address);
+                        $('#mobile').val(student.mobile);
+                        $('#telephone').val(student.telephone);
+                        $('#emergency_contact_name').val(student.emergency_contact_name);
+                        $('#emergency_contact_number').val(student.emergency_contact_number);
+
+                        // $('#english_ability').prop('checked', student.english_ability);
+                        // $('#minimum_entry_qualification').prop('checked', student.minimum_entry_qualification);
+
+
+                        // Handle checkboxes
+                        $('#english_ability').prop('checked', student.english_ability == 1);
+                        $('#minimum_entry_qualification').prop('checked', student.minimum_entry_qualification == 1);
+
+
+                        $('#nic').val(student.nic);
+                        $('#passport').val(student.passport);
+                        $('#personal_email').val(student.personal_email);
+                        $('#bms_email').val(student.bms_email);
+                        $('#occupation').val(student.occupation);
+                        $('#organization').val(student.organization);
+                        $('#previous_organization').val(student.previous_organization);
+
+                        // Set checkboxes
+                        $('#bachelors').prop('checked', student.qualifications.includes('Bachelors'));
+                        $('#masters').prop('checked', student.qualifications.includes('Masters'));
+                        $('#diploma').prop('checked', student.qualifications.includes('Diploma'));
+                        $('#cbm').prop('checked', student.qualifications.includes('CBM'));
+                        $('#al').prop('checked', student.qualifications.includes('A/L'));
+                        $('#pgdip').prop('checked', student.qualifications.includes('PGDip'));
+                        $('#ifd').prop('checked', student.qualifications.includes('IFD'));
+                        $('#ol').prop('checked', student.qualifications.includes('O/L'));
+
+                        // Set active checkbox
+                        $('#active').prop('checked', student.active == 1);
                     }
                 });
             });
@@ -274,6 +316,7 @@ include("../database/database.php");
             });
         });
     </script>
+
 </body>
 
 </html>
