@@ -3,7 +3,7 @@
 include '../database/database.php';
 
 $query = $_POST['query'];
-$sql = "SELECT id, name FROM stu WHERE name LIKE '%$query%'";
+$sql = "SELECT * FROM stu WHERE name LIKE '%$query%'";
 $result = mysqli_query($conn, $sql);
 
 $results = '';
