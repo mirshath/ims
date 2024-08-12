@@ -28,22 +28,9 @@ include("../database/database.php");
             </div>
         </div>
 
+        <hr>
         <h2 class="mt-4">Student Registration</h2>
-        <!-- <form id="studentForm" action="process_form.php" method="post">
-            <div class="mb-3">
-            
-                <input type="hidden" id="studentID" name="studentID" class="form-control" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" id="name" name="name" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" id="email" name="email" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form> -->
+        <hr>
 
         <form id="studentForm" action="process_form.php" method="post">
             <div class="mb-3">
@@ -52,7 +39,7 @@ include("../database/database.php");
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title:</label>
                         <select id="title" name="title" class="form-select" required>
@@ -64,133 +51,133 @@ include("../database/database.php");
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="first_name" class="form-label">First Name:</label>
                         <input type="text" id="first_name" name="first_name" class="form-control" required>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="last_name" class="form-label">Last Name:</label>
                         <input type="text" id="last_name" name="last_name" class="form-control" required>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="certificate_name" class="form-label">Name for the Certificate:</label>
                         <input type="text" id="certificate_name" name="certificate_name" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="preferred_name" class="form-label">Preferred Name:</label>
                         <input type="text" id="preferred_name" name="preferred_name" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="dob" class="form-label">Date of Birth:</label>
                         <input type="date" id="dob" name="dob" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="nationality" class="form-label">Nationality:</label>
                         <input type="text" id="nationality" name="nationality" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="permanent_address" class="form-label">Permanent Address:</label>
                         <textarea id="permanent_address" name="permanent_address" class="form-control"></textarea>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="current_address" class="form-label">Current Address:</label>
                         <textarea id="current_address" name="current_address" class="form-control"></textarea>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="mobile" class="form-label">Mobile:</label>
                         <input type="text" id="mobile" name="mobile" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="telephone" class="form-label">Telephone:</label>
                         <input type="text" id="telephone" name="telephone" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="emergency_contact_name" class="form-label">Emergency Contact Name:</label>
                         <input type="text" id="emergency_contact_name" name="emergency_contact_name" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="emergency_contact_number" class="form-label">Emergency Contact Number:</label>
                         <input type="text" id="emergency_contact_number" name="emergency_contact_number" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="english_ability" class="form-label">English Ability:</label>
                         <input type="checkbox" id="english_ability" name="english_ability" value="1">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="minimum_entry_qualification" class="form-label">Minimum Entry Qualification:</label>
                         <input type="checkbox" id="minimum_entry_qualification" name="minimum_entry_qualification" value="1">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="nic" class="form-label">NIC:</label>
                         <input type="text" id="nic" name="nic" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="passport" class="form-label">Passport:</label>
                         <input type="text" id="passport" name="passport" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="personal_email" class="form-label">Personal Email:</label>
                         <input type="email" id="personal_email" name="personal_email" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="bms_email" class="form-label">BMS Email:</label>
                         <input type="email" id="bms_email" name="bms_email" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="occupation" class="form-label">Occupation:</label>
                         <input type="text" id="occupation" name="occupation" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="organization" class="form-label">Organization:</label>
                         <input type="text" id="organization" name="organization" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="previous_organization" class="form-label">Previous Organization:</label>
                         <input type="text" id="previous_organization" name="previous_organization" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="qualifications" class="form-label">Qualifications:</label>
                         <div class="form-check">
@@ -227,7 +214,7 @@ include("../database/database.php");
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="active" name="active" value="1">
                         <label class="form-check-label" for="active">Active</label>
@@ -246,7 +233,7 @@ include("../database/database.php");
 
 
         </form>
-        <h2 class="mt-5">Registered Students</h2>
+        <h5 class="mt-5 mb-4 text-muted">Registered Students</h5>
         <table class="table table-striped mt-3 border">
             <thead>
                 <tr>
