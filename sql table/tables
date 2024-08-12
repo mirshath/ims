@@ -1,0 +1,28 @@
+CREATE TABLE leads_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    lead_type VARCHAR(100) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+INSERT INTO leads_table (lead_type) VALUES
+('Website'),
+('Social Media'),
+('Referral');
+
+----------------------------------------------------------------
+
+
+CREATE TABLE year_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    year_name VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert sample data
+INSERT INTO year_table (year_name) VALUES
+('1st year'),
+('2nd year'),
+('3rd year'),
+('N/A');
+-------------------------------------------------------------------------   
