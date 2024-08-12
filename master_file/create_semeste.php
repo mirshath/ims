@@ -1,5 +1,5 @@
 <?php
-include("../database/database.php"); // Update the path to your database connection
+include("../database/connection.php"); // Update the path to your database connection
 
 // Pagination settings
 $results_per_page = 5; // Number of results per page
