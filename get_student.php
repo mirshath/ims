@@ -1,6 +1,6 @@
 <?php
 // get_student.php
-include("../database/connection.php");
+include("database/connection.php");
 
 // Retrieve the student code from the AJAX request and sanitize it
 $student_code = mysqli_real_escape_string($conn, $_POST['id']);
