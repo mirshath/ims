@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2024 at 12:53 PM
+-- Generation Time: Aug 13, 2024 at 01:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,8 +64,8 @@ CREATE TABLE `coordinator_table` (
 
 INSERT INTO `coordinator_table` (`id`, `coordinator_code`, `title`, `coordinator_name`, `bms_email`, `password_hash`) VALUES
 (1, 'asa', 'Ms', 'asari', 'asari@bms.ac.lk', '$2y$10$LnTuLDS0Cz8wWV8Er8IjiOILvj753szQ9RcqvhLKe3MegzxY.NVtK'),
-(2, 'Commodi architecto c', 'Mrs', 'Candace Mcdowell', 'latuhywu@mailinator.com', '$2y$10$HOK49FsnIAr/ZfiXTaQZ3.UOz3lUL23mTVvSdaOKFUIN5PmGi1J3u'),
-(3, 'Repudiandae voluptat', 'Prof', 'Neil Hampton', 'gulytax@mailinator.com', '$2y$10$0EQTFHGnAh7lcVf7wstFcO66JrBRPgI8IBuSq3q1rSaVInj4zADwO');
+(2, 'Commodi architecto c', 'Prof', 'Candace Mcdowell', 'latuhywu@mailinator.com', '$2y$10$HOK49FsnIAr/ZfiXTaQZ3.UOz3lUL23mTVvSdaOKFUIN5PmGi1J3u'),
+(3, 'Repudiandae voluptat', 'Dr', 'Neil Hampton', 'gulytax@mailinator.com', '$2y$10$0EQTFHGnAh7lcVf7wstFcO66JrBRPgI8IBuSq3q1rSaVInj4zADwO');
 
 -- --------------------------------------------------------
 
@@ -109,9 +109,37 @@ CREATE TABLE `leads_table` (
 INSERT INTO `leads_table` (`id`, `lead_type`, `created_at`) VALUES
 (1, 'Website', '2024-08-12 06:41:04'),
 (2, 'Social Media', '2024-08-12 06:41:04'),
-(3, 'Referral', '2024-08-12 06:41:04'),
-(9, 'Over the phone', '2024-08-12 06:50:27'),
-(10, 'whatsapp', '2024-08-12 06:50:38');
+(3, 'Referral', '2024-08-12 06:41:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `program_table`
+--
+
+CREATE TABLE `program_table` (
+  `program_code` int(11) NOT NULL,
+  `university` varchar(255) NOT NULL,
+  `program_name` varchar(255) NOT NULL,
+  `prog_code` varchar(50) DEFAULT NULL,
+  `coordinator` varchar(255) DEFAULT NULL,
+  `medium` enum('English','Tamil') NOT NULL,
+  `duration` varchar(100) DEFAULT NULL,
+  `course_fee_lkr` decimal(10,2) DEFAULT NULL,
+  `course_fee_gbp` decimal(10,2) DEFAULT NULL,
+  `course_fee_usd` decimal(10,2) DEFAULT NULL,
+  `course_fee_euro` decimal(10,2) DEFAULT NULL,
+  `entry_requirement` set('Bachelors','Masters','Diploma','CBM','A/L','Work Experience','PGDip','IFD','Other','O/L','Professional Qualification','ECM') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `program_table`
+--
+
+INSERT INTO `program_table` (`program_code`, `university`, `program_name`, `prog_code`, `coordinator`, `medium`, `duration`, `course_fee_lkr`, `course_fee_gbp`, `course_fee_usd`, `course_fee_euro`, `entry_requirement`) VALUES
+(7, 'CCC', 'Fitzgerald Miles', 'Sit est in quia vol', 'asari', 'Tamil', 'Quis ea iusto nostru', 13.00, 72.00, 15.00, 90.00, 'Bachelors,Masters,CBM,A/L,IFD,Professional Qualification'),
+(13, 'Sample University', 'Wilma Sandoval', 'Dolorem sint cum la', 'Candace Mcdowell', 'English', 'Exercitation dolorib', 88.00, 97.00, 99.00, 86.00, 'Masters,A/L,Work Experience,PGDip,IFD,O/L,ECM'),
+(14, 'Test University', 'Ori Walls', 'Dignissimos cupidita', 'asari', 'English', 'Animi est aliquid c', 71.00, 71.00, 45.00, 79.00, 'Bachelors,A/L,Work Experience,IFD');
 
 -- --------------------------------------------------------
 
@@ -197,11 +225,10 @@ CREATE TABLE `universities` (
 --
 
 INSERT INTO `universities` (`id`, `university_code`, `university_name`, `address`, `uni_code`, `created_at`) VALUES
-(1, 'UN01', 'MirUni', '123 MirUni', 'UEX01', '2024-08-12 08:27:18'),
+(1, 'UN01', 'CCC', '123 MirUni', 'UEX01', '2024-08-12 08:27:18'),
 (2, 'UN02', 'Example University', '456 Another Rd, Town, Country', 'UEX02', '2024-08-12 08:27:18'),
 (3, 'UN03', 'Sample University', '789 Sample Ave, Metropolis, Country', 'USE03', '2024-08-12 08:27:18'),
-(4, 'UN04', 'Test University', '101 Test Blvd, Capital City, Country', 'UT04', '2024-08-12 08:27:18'),
-(5, 'UN01', 'Mirshath', 'Mohamed , Anuradhapura', 'UT05', '2024-08-12 08:27:44');
+(4, 'UN04', 'Test University', '101 Test Blvd, Capital City, Country', 'UT04', '2024-08-12 08:27:18');
 
 -- --------------------------------------------------------
 
@@ -222,8 +249,8 @@ CREATE TABLE `year_table` (
 INSERT INTO `year_table` (`id`, `year_name`, `created_at`) VALUES
 (17, '1st years', '2024-08-12 07:47:35'),
 (18, '2nd years', '2024-08-12 07:47:37'),
-(19, 'N/As', '2024-08-12 07:47:39'),
-(20, '3rd year', '2024-08-12 07:47:45');
+(19, '3rd year', '2024-08-12 07:47:39'),
+(20, 'N/A', '2024-08-12 07:47:45');
 
 --
 -- Indexes for dumped tables
@@ -252,6 +279,12 @@ ALTER TABLE `criterias`
 --
 ALTER TABLE `leads_table`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `program_table`
+--
+ALTER TABLE `program_table`
+  ADD PRIMARY KEY (`program_code`);
 
 --
 -- Indexes for table `semester_table`
@@ -297,19 +330,25 @@ ALTER TABLE `coordinator_table`
 -- AUTO_INCREMENT for table `criterias`
 --
 ALTER TABLE `criterias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `leads_table`
 --
 ALTER TABLE `leads_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+
+--
+-- AUTO_INCREMENT for table `program_table`
+--
+ALTER TABLE `program_table`
+  MODIFY `program_code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `semester_table`
 --
 ALTER TABLE `semester_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `students`
@@ -321,13 +360,13 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `universities`
 --
 ALTER TABLE `universities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `year_table`
 --
 ALTER TABLE `year_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

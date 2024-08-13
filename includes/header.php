@@ -21,6 +21,12 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
+    <style>
+        .form-control:focus {
+            box-shadow: 0 0 5px #c110104f;
+            border-color: #c110104f;
+        }
+    </style>
 </head>
 
 <body id="page-top">

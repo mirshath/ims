@@ -80,3 +80,17 @@ CREATE TABLE coordinator_table (
 ----------------------------------------------------------------------------------
 
 
+CREATE TABLE program_table (
+    program_code INT AUTO_INCREMENT PRIMARY KEY,
+    university VARCHAR(255) NOT NULL,
+    program_name VARCHAR(255) NOT NULL,
+    prog_code VARCHAR(50),
+    coordinator VARCHAR(255),
+    medium ENUM('English', 'Tamil') NOT NULL,
+    duration VARCHAR(100),
+    course_fee_lkr DECIMAL(10, 2),
+    course_fee_gbp DECIMAL(10, 2),
+    course_fee_usd DECIMAL(10, 2),
+    course_fee_euro DECIMAL(10, 2),
+    entry_requirement SET('Bachelors', 'Masters', 'Diploma', 'CBM', 'A/L', 'Work Experience', 'PGDip', 'IFD', 'Other', 'O/L', 'Professional Qualification', 'ECM')
+);

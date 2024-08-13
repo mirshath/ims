@@ -39,18 +39,18 @@
                  <h6 class="collapse-header">MAster file > Components</h6>
                  <a class="collapse-item" href="create_lead">Lead Types</a>
                  <a class="collapse-item" href="./create_year">Year</a>
-                 <a class="collapse-item" href="./create_semester.php">Semester</a>
-                 <a class="collapse-item" href="./create_criteria.php">Criteria</a>
-                 <a class="collapse-item" href="./create_universities.php">University</a>
-                 <a class="collapse-item" href="./create_coordinators.php">Cooordinator</a>
-                 <a class="collapse-item" href="">Program</a>
-                 <a class="collapse-item" href="">Lecture</a>
-                 <a class="collapse-item" href="">Module</a>
-                 <a class="collapse-item" href="">Batch</a>
-                 <a class="collapse-item" href="">Grade</a>
-                 <a class="collapse-item" href="">Currency</a>
-                 <a class="collapse-item" href="">Status</a>
-                 <a class="collapse-item" href="">Decision</a>
+                 <a class="collapse-item" href="./create_semester">Semester</a>
+                 <a class="collapse-item" href="./create_criteria">Criteria</a>
+                 <a class="collapse-item" href="./create_universities">University</a>
+                 <a class="collapse-item" href="./create_coordinators">Cooordinator</a>
+                 <a class="collapse-item" href="./create_program">Program</a>
+                 <a class="collapse-item" href="./create_">Lecture</a>
+                 <a class="collapse-item" href="./create_">Module</a>
+                 <a class="collapse-item" href="./create_">Batch</a>
+                 <a class="collapse-item" href="./create_">Grade</a>
+                 <a class="collapse-item" href="./create_">Currency</a>
+                 <a class="collapse-item" href="./create_">Status</a>
+                 <a class="collapse-item" href="./create_">Decision</a>
              </div>
          </div>
      </li>
@@ -68,17 +68,12 @@
 
      <!-- Nav Item - Tables -->
      <li class="nav-item">
-         <a class="nav-link" href="tables.php">
+         <a class="nav-link" href="tables">
              <i class="fas fa-fw fa-table"></i>
              <span>Tables</span></a>
      </li>
 
-     <!-- Divider -->
-     <!-- <hr class="sidebar-divider d-none d-md-block"> -->
+    
 
-     <!-- Sidebar Toggler (Sidebar) -->
-     <div class="text-center d-none d-md-inline">
-         <button class="rounded-circle border-0" id="sidebarToggle"></button>
-     </div>
  </ul>
  <!-- End of Sidebar -->

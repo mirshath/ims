@@ -57,13 +57,14 @@ $total_pages = ceil($total_rows / $results_per_page);
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                               <!-- Page Heading -->
-                               <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Leads Management </h4>
                 </div>
 
-  <!-- Add Lead Form -->
-  <form action="" method="post" class="mb-3">
+                
+                <!-- Add Lead Form -->
+                <form action="" method="post" class="mb-3">
                     <div class="form-group">
                         <label for="lead_type">Lead Type</label>
                         <input type="text" class="form-control" id="lead_type" name="lead_type" required>
@@ -134,42 +135,42 @@ $total_pages = ceil($total_rows / $results_per_page);
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit Lead</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="post">
-                                <input type="hidden" id="edit_id" name="id">
-                                <div class="form-group">
-                                    <label for="edit_lead_type">Lead Type</label>
-                                    <input type="text" class="form-control" id="edit_lead_type" name="lead_type" required>
-                                </div>
-                                <button type="submit" name="update_lead" class="btn btn-primary">Update Lead</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Lead</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <input type="hidden" id="edit_id" name="id">
+                    <div class="form-group">
+                        <label for="edit_lead_type">Lead Type</label>
+                        <input type="text" class="form-control" id="edit_lead_type" name="lead_type" required>
+                    </div>
+                    <button type="submit" name="update_lead" class="btn btn-primary">Update Lead</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <script>
-                $('#editModal').on('show.bs.modal', function(event) {
-                    var button = $(event.relatedTarget); // Button that triggered the modal
-                    var id = button.data('id'); // Extract info from data-* attributes
-                    var lead_type = button.data('lead_type');
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $('#editModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var id = button.data('id'); // Extract info from data-* attributes
+        var lead_type = button.data('lead_type');
 
-                    var modal = $(this);
-                    modal.find('#edit_id').val(id);
-                    modal.find('#edit_lead_type').val(lead_type);
-                });
-            </script>
+        var modal = $(this);
+        modal.find('#edit_id').val(id);
+        modal.find('#edit_lead_type').val(lead_type);
+    });
+</script>
 
 
 

@@ -1,6 +1,6 @@
 <?php
-include("../database/connection.php");
-
+include("database/connection.php");
+include("includes/header.php");
 ?>
 
 <!DOCTYPE html>
@@ -243,7 +243,7 @@ include("../database/connection.php");
                     <th scope="col">Cerificate Name</th>
                     <!-- Add more columns if needed -->
                 </tr>
-            </thead>
+            </thead>    
             <!-- <tbody>
                 <?php
 
