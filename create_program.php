@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,8 +54,76 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 </head>
+
 <body>
     <div class="container mt-5">
+
+
+        <!-- ----------------------------------------------------------------------------  -->
+
+        <div class="form-group">
+            <label for="program_select">Select Program:</label>
+            <select class="form-control select2" id="program_select" name="program_select" required>
+                <option value="">Select a program</option>
+                <?php
+                // Fetch programs from the database
+                $program_query = "SELECT * FROM program_table";
+                $program_result = mysqli_query($conn, $program_query);
+                while ($row = mysqli_fetch_assoc($program_result)): ?>
+                    <option value="<?php echo $row['prog_code']; ?>"><?php echo $row['program_name']; ?></option>
+                <?php endwhile; ?>
+            </select>
+        </div>
+
+        <script>
+$(document).ready(function() {
+    $('.select2').select2();
+
+    $('#program_select').on('change', function() {
+        var progCode = $(this).val();
+        if (progCode) {
+            $.ajax({
+                url: 'fetch_program_data.php',
+                type: 'POST',
+                data: { prog_code: progCode },
+                dataType: 'json',
+                success: function(data) {
+                    $('#program_name').val(data.program_name);
+                    $('#prog_code').val(data.prog_code);
+                    $('#medium').val(data.medium);
+                    $('#duration').val(data.duration);
+                    $('#course_fee_lkr').val(data.course_fee_lkr);
+                    $('#course_fee_gbp').val(data.course_fee_gbp);
+                    $('#course_fee_usd').val(data.course_fee_usd);
+                    $('#course_fee_euro').val(data.course_fee_euro);
+
+                    // Handle entry requirements
+                    $('input[name="entry_requirement[]"]').each(function() {
+                        $(this).prop('checked', data.entry_requirements.includes($(this).val()));
+                    });
+                },
+                error: function() {
+                    alert('Error fetching program details.');
+                }
+            });
+        } else {
+            // Clear form fields if no program is selected
+            $('#program_name').val('');
+            $('#prog_code').val('');
+            $('#medium').val('');
+            $('#duration').val('');
+            $('#course_fee_lkr').val('');
+            $('#course_fee_gbp').val('');
+            $('#course_fee_usd').val('');
+            $('#course_fee_euro').val('');
+            $('input[name="entry_requirement[]"]').prop('checked', false);
+        }
+    });
+});
+</script>
+
+
+        <!-- ----------------------------------------------------------------------------  -->
         <h2 class="mb-4">Program Registration Form</h2>
 
         <form action="" method="POST">
@@ -178,4 +247,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </body>
+
 </html>
