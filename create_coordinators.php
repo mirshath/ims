@@ -1,6 +1,6 @@
 <?php
-
-include("../database/connection.php"); // Update the path to your database connection
+include("database/connection.php");
+include("includes/header.php");
 
 // Pagination settings
 $results_per_page = 5; // Number of results per page
@@ -48,22 +48,31 @@ $total_rows = $result_total->fetch_assoc()['total'];
 $total_pages = ceil($total_rows / $results_per_page);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordinator Management</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <?php include("nav.php"); ?>
 
-<body>
-    <div class="container mt-5">
-        <h2>Coordinator Management</h2>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Add Coordinator Form -->
-        <form action="" method="post" class="mb-3">
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <?php include("includes/topnav.php"); ?>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="h4 mb-0 text-gray-800">Coordinator managment</h4>
+                </div>
+
+
+                <form action="" method="post" class="mb-3">
             <div class="form-group">
                 <label for="coordinator_code">Coordinator Code</label>
                 <input type="text" class="form-control" id="coordinator_code" name="coordinator_code" required>
@@ -145,10 +154,21 @@ $total_pages = ceil($total_rows / $results_per_page);
                 </li>
             </ul>
         </nav>
-    </div>
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -211,13 +231,17 @@ $total_pages = ceil($total_rows / $results_per_page);
             modal.find('#edit_bms_email').val(bms_email);
         });
     </script>
+
+
+
+
+
+
+</div>
+
+
 </body>
 
-<style>
-    .form-control:focus {
-        border-color: red;
-        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
-    }
-
-</style>
 </html>
+
+<?php $conn->close(); ?>

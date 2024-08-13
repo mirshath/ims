@@ -37,12 +37,12 @@
          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
              <div class="bg-white py-2 collapse-inner rounded">
                  <h6 class="collapse-header">MAster file > Components</h6>
-                 <a class="collapse-item" href="m.php">Lead Types</a>
-                 <a class="collapse-item" href="">Year</a>
-                 <a class="collapse-item" href="">Semester</a>
-                 <a class="collapse-item" href="">Criteria</a>
-                 <a class="collapse-item" href="">University</a>
-                 <a class="collapse-item" href="">Cooordinator</a>
+                 <a class="collapse-item" href="create_lead">Lead Types</a>
+                 <a class="collapse-item" href="./create_year">Year</a>
+                 <a class="collapse-item" href="./create_semester.php">Semester</a>
+                 <a class="collapse-item" href="./create_criteria.php">Criteria</a>
+                 <a class="collapse-item" href="./create_universities.php">University</a>
+                 <a class="collapse-item" href="./create_coordinators.php">Cooordinator</a>
                  <a class="collapse-item" href="">Program</a>
                  <a class="collapse-item" href="">Lecture</a>
                  <a class="collapse-item" href="">Module</a>
@@ -60,32 +60,7 @@
 
 
 
-     <li class="nav-item">
-         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-             aria-expanded="true" aria-controls="collapseTwo">
-             <i class="fas fa-fw fa-cog"></i>
-             <span>Transections</span>
-         </a>
-         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-             <div class="bg-white py-2 collapse-inner rounded">
-                 <h6 class="collapse-header">Master file > Components</h6>
-                 <a class="collapse-item" href="#">Lead Types</a>
-                 <a class="collapse-item" href="#">Year</a>
-                 <a class="collapse-item" href="#">Semester</a>
-                 <a class="collapse-item" href="#">Criteria</a>
-                 <a class="collapse-item" href="#">University</a>
-                 <a class="collapse-item" href="#">Cooordinator</a>
-                 <a class="collapse-item" href="#">Program</a>
-                 <a class="collapse-item" href="#">Lecture</a>
-                 <a class="collapse-item" href="#">Module</a>
-                 <a class="collapse-item" href="#">Batch</a>
-                 <a class="collapse-item" href="#">Grade</a>
-                 <a class="collapse-item" href="#">Currency</a>
-                 <a class="collapse-item" href="#">Status</a>
-                 <a class="collapse-item" href="#">Decision</a>
-             </div>
-         </div>
-     </li>
+     
 
 
 
