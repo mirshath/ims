@@ -56,136 +56,172 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container">
         <h2 class="mt-4">Add New Program</h2>
         <form action="" method="post">
-            <div class="form-group">
-                <label for="university">University:</label>
-                <select class="form-control" id="university" name="university" required>
-                    <?php foreach ($universities as $uni): ?>
-                        <option value="<?php echo htmlspecialchars($uni['university_name']); ?>">
-                            <?php echo htmlspecialchars($uni['university_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="university">University:</label>
+                        <select class="form-control" id="university" name="university" required>
+                            <?php foreach ($universities as $uni): ?>
+                                <option value="<?php echo htmlspecialchars($uni['university_name']); ?>">
+                                    <?php echo htmlspecialchars($uni['university_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="program_name">Program Name:</label>
+                        <input type="text" class="form-control" id="program_name" name="program_name" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="prog_code">Program Code:</label>
+                        <input type="text" class="form-control" id="prog_code" name="prog_code">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="coordinator_name">Coordinator Name:</label>
+                        <select class="form-control" id="coordinator_name" name="coordinator_name">
+                            <?php foreach ($coordinators as $coord): ?>
+                                <option value="<?php echo htmlspecialchars($coord['coordinator_name']); ?>">
+                                    <?php echo htmlspecialchars($coord['coordinator_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="medium">Medium:</label>
+                        <select class="form-control" id="medium" name="medium" required>
+                            <option value="English">English</option>
+                            <option value="Tamil">Tamil</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="duration">Duration:</label>
+                        <input type="text" class="form-control" id="duration" name="duration">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="course_fee_lkr">Course Fee (LKR):</label>
+                        <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="course_fee_gbp">Course Fee (GBP):</label>
+                        <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="course_fee_usd">Course Fee (USD):</label>
+                        <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="course_fee_euro">Course Fee (EURO):</label>
+                        <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="entry_requirement">Entry Requirements:</label><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_bachelors" name="entry_requirement[]" value="Bachelors">
+                                    <label class="form-check-label" for="entry_requirement_bachelors">
+                                        Bachelors
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_masters" name="entry_requirement[]" value="Masters">
+                                    <label class="form-check-label" for="entry_requirement_masters">
+                                        Masters
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_diploma" name="entry_requirement[]" value="Diploma">
+                                    <label class="form-check-label" for="entry_requirement_diploma">
+                                        Diploma
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_cbm" name="entry_requirement[]" value="CBM">
+                                    <label class="form-check-label" for="entry_requirement_cbm">
+                                        CBM
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_al" name="entry_requirement[]" value="A/L">
+                                    <label class="form-check-label" for="entry_requirement_al">
+                                        A/L
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_work_experience" name="entry_requirement[]" value="Work Experience">
+                                    <label class="form-check-label" for="entry_requirement_work_experience">
+                                        Work Experience
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_pgdip" name="entry_requirement[]" value="PGDip">
+                                    <label class="form-check-label" for="entry_requirement_pgdip">
+                                        PGDip
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_ifd" name="entry_requirement[]" value="IFD">
+                                    <label class="form-check-label" for="entry_requirement_ifd">
+                                        IFD
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_other" name="entry_requirement[]" value="Other">
+                                    <label class="form-check-label" for="entry_requirement_other">
+                                        Other
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_ol" name="entry_requirement[]" value="O/L">
+                                    <label class="form-check-label" for="entry_requirement_ol">
+                                        O/L
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_professional_qualification" name="entry_requirement[]" value="Professional Qualification">
+                                    <label class="form-check-label" for="entry_requirement_professional_qualification">
+                                        Professional Qualification
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="entry_requirement_ecm" name="entry_requirement[]" value="ECM">
+                                    <label class="form-check-label" for="entry_requirement_ecm">
+                                        ECM
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label for="program_name">Program Name:</label>
-                <input type="text" class="form-control" id="program_name" name="program_name" required>
-            </div>
-            <div class="form-group">
-                <label for="prog_code">Program Code:</label>
-                <input type="text" class="form-control" id="prog_code" name="prog_code">
-            </div>
-            <div class="form-group">
-                <label for="coordinator_name">Coordinator Name:</label>
-                <select class="form-control" id="coordinator_name" name="coordinator_name">
-                    <?php foreach ($coordinators as $coord): ?>
-                        <option value="<?php echo htmlspecialchars($coord['coordinator_name']); ?>">
-                            <?php echo htmlspecialchars($coord['coordinator_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="medium">Medium:</label>
-                <select class="form-control" id="medium" name="medium" required>
-                    <option value="English">English</option>
-                    <option value="Tamil">Tamil</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="duration">Duration:</label>
-                <input type="text" class="form-control" id="duration" name="duration">
-            </div>
-            <div class="form-group">
-                <label for="course_fee_lkr">Course Fee (LKR):</label>
-                <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr">
-            </div>
-            <div class="form-group">
-                <label for="course_fee_gbp">Course Fee (GBP):</label>
-                <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp">
-            </div>
-            <div class="form-group">
-                <label for="course_fee_usd">Course Fee (USD):</label>
-                <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd">
-            </div>
-            <div class="form-group">
-                <label for="course_fee_euro">Course Fee (EURO):</label>
-                <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro">
-            </div>
-            <div class="form-group">
-                <label for="entry_requirement">Entry Requirements:</label><br>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_bachelors" name="entry_requirement[]" value="Bachelors">
-                    <label class="form-check-label" for="entry_requirement_bachelors">
-                        Bachelors
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_masters" name="entry_requirement[]" value="Masters">
-                    <label class="form-check-label" for="entry_requirement_masters">
-                        Masters
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_diploma" name="entry_requirement[]" value="Diploma">
-                    <label class="form-check-label" for="entry_requirement_diploma">
-                        Diploma
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_cbm" name="entry_requirement[]" value="CBM">
-                    <label class="form-check-label" for="entry_requirement_cbm">
-                        CBM
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_al" name="entry_requirement[]" value="A/L">
-                    <label class="form-check-label" for="entry_requirement_al">
-                        A/L
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_work_experience" name="entry_requirement[]" value="Work Experience">
-                    <label class="form-check-label" for="entry_requirement_work_experience">
-                        Work Experience
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_pgdip" name="entry_requirement[]" value="PGDip">
-                    <label class="form-check-label" for="entry_requirement_pgdip">
-                        PGDip
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_ifd" name="entry_requirement[]" value="IFD">
-                    <label class="form-check-label" for="entry_requirement_ifd">
-                        IFD
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_other" name="entry_requirement[]" value="Other">
-                    <label class="form-check-label" for="entry_requirement_other">
-                        Other
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_ol" name="entry_requirement[]" value="O/L">
-                    <label class="form-check-label" for="entry_requirement_ol">
-                        O/L
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_professional_qualification" name="entry_requirement[]" value="Professional Qualification">
-                    <label class="form-check-label" for="entry_requirement_professional_qualification">
-                        Professional Qualification
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="entry_requirement_ecm" name="entry_requirement[]" value="ECM">
-                    <label class="form-check-label" for="entry_requirement_ecm">
-                        ECM
-                    </label>
-                </div>
-            </div>
+
+
+
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
