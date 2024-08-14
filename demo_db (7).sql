@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2024 at 01:07 PM
+-- Generation Time: Aug 14, 2024 at 01:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -63,9 +63,12 @@ CREATE TABLE `coordinator_table` (
 --
 
 INSERT INTO `coordinator_table` (`id`, `coordinator_code`, `title`, `coordinator_name`, `bms_email`, `password_hash`) VALUES
-(1, 'asa', 'Ms', 'asari', 'asari@bms.ac.lk', '$2y$10$LnTuLDS0Cz8wWV8Er8IjiOILvj753szQ9RcqvhLKe3MegzxY.NVtK'),
-(2, 'Commodi architecto c', 'Prof', 'Candace Mcdowell', 'latuhywu@mailinator.com', '$2y$10$HOK49FsnIAr/ZfiXTaQZ3.UOz3lUL23mTVvSdaOKFUIN5PmGi1J3u'),
-(3, 'Repudiandae voluptat', 'Dr', 'Neil Hampton', 'gulytax@mailinator.com', '$2y$10$0EQTFHGnAh7lcVf7wstFcO66JrBRPgI8IBuSq3q1rSaVInj4zADwO');
+(1, 'asa', 'Ms', 'Asma Raahman', 'asari@bms.ac.lk', '$2y$10$LnTuLDS0Cz8wWV8Er8IjiOILvj753szQ9RcqvhLKe3MegzxY.NVtK'),
+(2, 'Commodi architecto c', 'Prof', 'Geethika Liyanage', 'latuhywu@mailinator.com', '$2y$10$HOK49FsnIAr/ZfiXTaQZ3.UOz3lUL23mTVvSdaOKFUIN5PmGi1J3u'),
+(3, 'Repudiandae voluptat', 'Dr', 'Hasni Nihar', 'gulytax@mailinator.com', '$2y$10$0EQTFHGnAh7lcVf7wstFcO66JrBRPgI8IBuSq3q1rSaVInj4zADwO'),
+(6, 'aa', 'Mr', 'Heshani Mudalige', 'admin@gmail.com', '$2y$10$3weokQJomtLcnSkNXprhN.yasRCQxzI9TK1v/5jZ2rXyUUG3R1Jdq'),
+(7, 'ssd', 'Mr', 'Imashi Abeysiriwardana', 'admin@gmail.com', '$2y$10$M0gI8lQYGzj2GqZ5UCnvQ.o9VoU7iaJ3OoadsNma5j8EkD79H7cmC'),
+(8, 'ssd', 'Mr', 'Imashi Abeysiriwardana', 'admin@gmail.com', '$2y$10$2OxSQoOXrlVaRRcGoBFqSOxq44zpcn52rNvMQ5WboiaBSrdAN/oFG');
 
 -- --------------------------------------------------------
 
@@ -85,10 +88,14 @@ CREATE TABLE `criterias` (
 --
 
 INSERT INTO `criterias` (`id`, `criteria_code`, `criteria_name`, `created_at`) VALUES
-(1, 'CR01', 'Attendance', '2024-08-12 08:22:32'),
-(2, 'CR02', 'Participation', '2024-08-12 08:22:32'),
-(3, 'CR03', 'Homework', '2024-08-12 08:22:32'),
-(4, 'CR04', 'Exams', '2024-08-12 08:22:32');
+(1, 'CR01', 'Bachelors', '2024-08-12 08:22:32'),
+(2, 'CR02', 'Masters', '2024-08-12 08:22:32'),
+(3, 'CR03', 'Diploma', '2024-08-12 08:22:32'),
+(4, 'CR04', 'CBM', '2024-08-12 08:22:32'),
+(7, 'CR006', 'A/L', '2024-08-14 05:37:09'),
+(8, 'CR007', 'Work Experience', '2024-08-14 05:37:09'),
+(9, 'CR008', 'PGDip', '2024-08-14 05:38:05'),
+(10, 'CR009', 'IFD', '2024-08-14 05:38:05');
 
 -- --------------------------------------------------------
 
@@ -118,28 +125,26 @@ INSERT INTO `leads_table` (`id`, `lead_type`, `created_at`) VALUES
 --
 
 CREATE TABLE `program_table` (
-  `program_code` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `university` varchar(255) NOT NULL,
   `program_name` varchar(255) NOT NULL,
   `prog_code` varchar(50) DEFAULT NULL,
-  `coordinator` varchar(255) DEFAULT NULL,
+  `coordinator_name` varchar(255) DEFAULT NULL,
   `medium` enum('English','Tamil') NOT NULL,
   `duration` varchar(100) DEFAULT NULL,
   `course_fee_lkr` decimal(10,2) DEFAULT NULL,
   `course_fee_gbp` decimal(10,2) DEFAULT NULL,
   `course_fee_usd` decimal(10,2) DEFAULT NULL,
   `course_fee_euro` decimal(10,2) DEFAULT NULL,
-  `entry_requirement` set('Bachelors','Masters','Diploma','CBM','A/L','Work Experience','PGDip','IFD','Other','O/L','Professional Qualification','ECM') DEFAULT NULL
+  `entry_requirement` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `program_table`
 --
 
-INSERT INTO `program_table` (`program_code`, `university`, `program_name`, `prog_code`, `coordinator`, `medium`, `duration`, `course_fee_lkr`, `course_fee_gbp`, `course_fee_usd`, `course_fee_euro`, `entry_requirement`) VALUES
-(7, 'CCC', 'Fitzgerald Miles', 'Sit est in quia vol', 'asari', 'Tamil', 'Quis ea iusto nostru', 13.00, 72.00, 15.00, 90.00, 'Bachelors,Masters,CBM,A/L,IFD,Professional Qualification'),
-(13, 'Sample University', 'Wilma Sandoval', 'Dolorem sint cum la', 'Candace Mcdowell', 'English', 'Exercitation dolorib', 88.00, 97.00, 99.00, 86.00, 'Masters,A/L,Work Experience,PGDip,IFD,O/L,ECM'),
-(14, 'Test University', 'Ori Walls', 'Dignissimos cupidita', 'asari', 'English', 'Animi est aliquid c', 71.00, 71.00, 45.00, 79.00, 'Bachelors,A/L,Work Experience,IFD');
+INSERT INTO `program_table` (`id`, `university`, `program_name`, `prog_code`, `coordinator_name`, `medium`, `duration`, `course_fee_lkr`, `course_fee_gbp`, `course_fee_usd`, `course_fee_euro`, `entry_requirement`) VALUES
+(86, 'BMS', 'International Foundation Diploma (Business) – ATHE Level 3', '003215', 'Hasni Nihar', 'English', '18 months', 222.00, 22.00, 22.00, 22.00, 'Bachelors,Diploma,CBM,A/L');
 
 -- --------------------------------------------------------
 
@@ -225,10 +230,7 @@ CREATE TABLE `universities` (
 --
 
 INSERT INTO `universities` (`id`, `university_code`, `university_name`, `address`, `uni_code`, `created_at`) VALUES
-(1, 'UN01', 'CCC', '123 MirUni', 'UEX01', '2024-08-12 08:27:18'),
-(2, 'UN02', 'Example University', '456 Another Rd, Town, Country', 'UEX02', '2024-08-12 08:27:18'),
-(3, 'UN03', 'Sample University', '789 Sample Ave, Metropolis, Country', 'USE03', '2024-08-12 08:27:18'),
-(4, 'UN04', 'Test University', '101 Test Blvd, Capital City, Country', 'UT04', '2024-08-12 08:27:18');
+(1, 'UN01', 'BMS', '123 MirUni', 'UEX01', '2024-08-12 08:27:18');
 
 -- --------------------------------------------------------
 
@@ -284,7 +286,7 @@ ALTER TABLE `leads_table`
 -- Indexes for table `program_table`
 --
 ALTER TABLE `program_table`
-  ADD PRIMARY KEY (`program_code`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `semester_table`
@@ -324,13 +326,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `coordinator_table`
 --
 ALTER TABLE `coordinator_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `criterias`
 --
 ALTER TABLE `criterias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `leads_table`
@@ -342,7 +344,7 @@ ALTER TABLE `leads_table`
 -- AUTO_INCREMENT for table `program_table`
 --
 ALTER TABLE `program_table`
-  MODIFY `program_code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `semester_table`
