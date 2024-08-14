@@ -61,7 +61,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Program Form</title>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program Form</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
+</head>
 </head>
 
 <body>
@@ -69,10 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2 class="mt-4">Add New Program</h2>
         <form action="" method="post">
             <div class="row">
-                <div class="col-md-6">
+            <div class="col-md-6">
                     <div class="form-group">
                         <label for="university">University:</label>
-                        <select class="form-control" id="university" name="university" required>
+                        <select class="form-control select2" id="university" name="university" required>
                             <?php foreach ($universities as $uni): ?>
                                 <option value="<?php echo htmlspecialchars($uni['university_name']); ?>">
                                     <?php echo htmlspecialchars($uni['university_name']); ?>
@@ -96,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="coordinator_name">Coordinator Name:</label>
-                        <select class="form-control" id="coordinator_name" name="coordinator_name">
+                        <select class="form-control select2" id="coordinator_name" name="coordinator_name">
                             <?php foreach ($coordinators as $coord): ?>
                                 <option value="<?php echo htmlspecialchars($coord['coordinator_name']); ?>">
                                     <?php echo htmlspecialchars($coord['coordinator_name']); ?>
@@ -278,10 +293,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tbody>
         </table>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
