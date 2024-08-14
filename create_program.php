@@ -122,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (progCode) {
                 $.ajax({
                     url: 'fetch_program_data.php',
+                    
                     type: 'POST',
                     data: { prog_code: progCode },
                     success: function(response) {
