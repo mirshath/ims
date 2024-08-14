@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
         <div class="form-group">
-            <label for="program_select">Select Program:</label>
+            <label for="program_select">Select Program to edit:</label>
             <select class="form-control select2" id="program_select" name="program_select" required>
                 <option value="">-- Select a Program --</option>
                 <?php
@@ -113,59 +113,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
 
         <script>
-    $(document).ready(function() {
-        $('.select2').select2();
+            $(document).ready(function() {
+                $('.select2').select2();
 
-        // Handle program selection change
-        $('#program_select').on('change', function() {
-            var progCode = $(this).val();
-            if (progCode) {
-                $.ajax({
-                    url: 'fetch_program_data.php',
-                    
-                    type: 'POST',
-                    data: { prog_code: progCode },
-                    success: function(response) {
-                        var data = JSON.parse(response);
+                // Handle program selection change
+                $('#program_select').on('change', function() {
+                    var progCode = $(this).val();
+                    if (progCode) {
+                        $.ajax({
+                            url: 'fetch_program_data.php',
+                            type: 'POST',
+                            data: {
+                                prog_code: progCode
+                            },
+                            success: function(response) {
+                                var data = JSON.parse(response);
 
-                        // Populate the form fields with the fetched data
-                        $('#university').val(data.university).trigger('change');
-                        $('#program_name').val(data.program_name);
-                        $('#prog_code').val(data.prog_code);
-                        $('#coordinator_name').val(data.coordinator_name).trigger('change');
-                        $('#medium').val(data.medium);
-                        $('#duration').val(data.duration);
-                        $('#course_fee_lkr').val(data.course_fee_lkr);
-                        $('#course_fee_gbp').val(data.course_fee_gbp);
-                        $('#course_fee_usd').val(data.course_fee_usd);
-                        $('#course_fee_euro').val(data.course_fee_euro);
+                                // Populate the form fields with the fetched data
+                                $('#university').val(data.university).trigger('change');
+                                $('#program_name').val(data.program_name);
+                                $('#prog_code').val(data.prog_code);
+                                $('#coordinator_name').val(data.coordinator_name).trigger('change');
+                                $('#medium').val(data.medium);
+                                $('#duration').val(data.duration);
+                                $('#course_fee_lkr').val(data.course_fee_lkr);
+                                $('#course_fee_gbp').val(data.course_fee_gbp);
+                                $('#course_fee_usd').val(data.course_fee_usd);
+                                $('#course_fee_euro').val(data.course_fee_euro);
 
-                        // Populate entry requirements
-                        $('input[name="entry_requirement[]"]').each(function() {
-                            $(this).prop('checked', data.entry_requirements.includes($(this).val()));
+                                // Populate entry requirements
+                                $('input[name="entry_requirement[]"]').each(function() {
+                                    $(this).prop('checked', data.entry_requirements.includes($(this).val()));
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("AJAX Error: ", status, error);
+                            }
                         });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error: ", status, error);
+                    } else {
+                        // Clear form fields if no program is selected
+                        $('#university').val('').trigger('change');
+                        $('#program_name').val('');
+                        $('#prog_code').val('');
+                        $('#coordinator_name').val('').trigger('change');
+                        $('#medium').val('');
+                        $('#duration').val('');
+                        $('#course_fee_lkr').val('');
+                        $('#course_fee_gbp').val('');
+                        $('#course_fee_usd').val('');
+                        $('#course_fee_euro').val('');
+                        $('input[name="entry_requirement[]"]').prop('checked', false);
                     }
                 });
-            } else {
-                // Clear form fields if no program is selected
-                $('#university').val('').trigger('change');
-                $('#program_name').val('');
-                $('#prog_code').val('');
-                $('#coordinator_name').val('').trigger('change');
-                $('#medium').val('');
-                $('#duration').val('');
-                $('#course_fee_lkr').val('');
-                $('#course_fee_gbp').val('');
-                $('#course_fee_usd').val('');
-                $('#course_fee_euro').val('');
-                $('input[name="entry_requirement[]"]').prop('checked', false);
-            }
-        });
-    });
-</script>
+            });
+        </script>
 
 
 
