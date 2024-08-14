@@ -15,6 +15,8 @@ while ($row = mysqli_fetch_assoc($coordinators_result)) {
     $coordinators[] = $row;
 }
 
+
+
 // Fetch criteria for checkboxes
 $sql = "SELECT * FROM criterias";
 $result = mysqli_query($conn, $sql);
@@ -53,17 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['edit_program'])) {
             // Update existing program
             $update_sql = "UPDATE program_table SET 
-                university='$university',
-                program_name='$program_name',
-                coordinator_name='$coordinator_name',
-                medium='$medium',
-                duration='$duration',
-                course_fee_lkr='$course_fee_lkr',
-                course_fee_gbp='$course_fee_gbp',
-                course_fee_usd='$course_fee_usd',
-                course_fee_euro='$course_fee_euro',
-                entry_requirement='$entry_requirements'
-                WHERE prog_code='$prog_code'";
+            university='$university',
+            program_name='$program_name',
+            coordinator_name='$coordinator_name',
+            medium='$medium',
+            duration='$duration',
+            course_fee_lkr='$course_fee_lkr',
+            course_fee_gbp='$course_fee_gbp',
+            course_fee_usd='$course_fee_usd',
+            course_fee_euro='$course_fee_euro',
+            entry_requirement='$entry_requirements'
+            WHERE prog_code='$prog_code'";
 
             if (mysqli_query($conn, $update_sql)) {
                 // echo "<div class='alert alert-success'>Program updated successfully.</div>";
@@ -278,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- ----------  -->
 
 
-        <h2 class="mt-5">current courses</h2>
+        <h5 class="mt-5">current courses</h5>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -288,12 +290,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <th>Coordinator Name</th>
                     <th>Medium</th>
                     <th>Duration</th>
-                    <!-- <th>Course Fee (LKR)</th> -->
-                    <!-- <th>Course Fee (GBP)</th> -->
-                    <!-- <th>Course Fee (USD)</th> -->
-                    <!-- <th>Course Fee (EURO)</th> -->
-                    <!-- <th>Entry Requirements</th> -->
-                    <th>Actions</th>
+
+                    <!-- <th>Actions</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -308,11 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo '<td>' . htmlspecialchars($row['coordinator_name']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['medium']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['duration']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_lkr']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_gbp']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_usd']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_euro']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['entry_requirement']) . '</td>';
+
                     echo '<td>';
                     echo '<button class="btn btn-info edit-button" data-prog-code="' . htmlspecialchars($row['prog_code']) . '">Edit</button>';
                     echo '<form action="" method="post" style="display:inline;">
