@@ -25,14 +25,17 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['delete_program'])) {
-        // Handle delete
-        $program_id = mysqli_real_escape_string($conn, $_POST['program_id']);
-        $delete_sql = "DELETE FROM program_table WHERE id='$program_id'";
+        if (isset($_POST['program_id'])) {
+            $program_id = $_POST['program_id'];
+            $delete_sql = "DELETE FROM program_table WHERE id='$program_id'";
 
-        if (mysqli_query($conn, $delete_sql)) {
-            echo "<div class='alert alert-success'>Program deleted successfully.</div>";
+            if (mysqli_query($conn, $delete_sql)) {
+                echo "<div class='alert alert-success'>Program deleted successfully.</div>";
+            } else {
+                echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
+            }
         } else {
-            echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
+            echo "<div class='alert alert-danger'>Error: Program ID is missing.</div>";
         }
     } else {
         // Handle insert or update
@@ -189,7 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="prog_code">ID:</label>
-                        <input type="text" class="form-control" id="program_id" name="program_id" required>
+                        <input type="hidden" id="program_id" name="program_id">
+
                     </div>
                     <div class="form-group">
                         <label for="university">University:</label>
@@ -319,10 +323,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo '<td>';
                     echo '<button class="btn btn-info edit-button" data-prog-code="' . htmlspecialchars($row['id']) . '">Edit</button>';
                     echo '<form action="" method="post" style="display:inline;">
-                <input type="hidden" name="prog-code" value="' . htmlspecialchars($row['id']) . '">
-                <button type="submit" name="delete_program" class="btn btn-danger">Delete</button>
-              </form>';
+                            <input type="hidden" name="program_id" value="' . htmlspecialchars($row['id']) . '">
+                            <button type="submit" name="delete_program" class="btn btn-danger">Delete</button>
+                          </form>';
                     echo '</td>';
+
                     echo '</tr>';
                 }
                 ?>
