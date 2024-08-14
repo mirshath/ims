@@ -16,28 +16,40 @@ while ($row = mysqli_fetch_assoc($coordinators_result)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Sanitize and escape form inputs
-    $university = mysqli_real_escape_string($conn, $_POST['university']);
-    $program_name = mysqli_real_escape_string($conn, $_POST['program_name']);
-    $prog_code = mysqli_real_escape_string($conn, $_POST['prog_code']);
-    $coordinator_name = mysqli_real_escape_string($conn, $_POST['coordinator_name']);
-    $medium = mysqli_real_escape_string($conn, $_POST['medium']);
-    $duration = mysqli_real_escape_string($conn, $_POST['duration']);
-    $course_fee_lkr = mysqli_real_escape_string($conn, $_POST['course_fee_lkr']);
-    $course_fee_gbp = mysqli_real_escape_string($conn, $_POST['course_fee_gbp']);
-    $course_fee_usd = mysqli_real_escape_string($conn, $_POST['course_fee_usd']);
-    $course_fee_euro = mysqli_real_escape_string($conn, $_POST['course_fee_euro']);
-    $entry_requirement = implode(',', $_POST['entry_requirement']); // Convert array to comma-separated string
-
-    // Insert data into the program_table
-    $sql = "INSERT INTO program_table (university, program_name, prog_code, coordinator_name, medium, duration, course_fee_lkr, course_fee_gbp, course_fee_usd, course_fee_euro, entry_requirement) 
-            VALUES ('$university', '$program_name', '$prog_code', '$coordinator_name', '$medium', '$duration', '$course_fee_lkr', '$course_fee_gbp', '$course_fee_usd', '$course_fee_euro', '$entry_requirement')";
-
-    if (mysqli_query($conn, $sql)) {
-        header("Location: create_program.php"); // Redirect back to the form page after successful insertion
-        exit(); // Ensure no further code is executed after the redirect
+    if (isset($_POST['delete_program'])) {
+        // Handle delete
+        $prog_code = mysqli_real_escape_string($conn, $_POST['prog_code']);
+        
+        $delete_sql = "DELETE FROM program_table WHERE prog_code='$prog_code'";
+        
+        if (mysqli_query($conn, $delete_sql)) {
+            echo "<div class='alert alert-success'>Program deleted successfully.</div>";
+        } else {
+            echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        // Handle insert
+        $university = mysqli_real_escape_string($conn, $_POST['university']);
+        $program_name = mysqli_real_escape_string($conn, $_POST['program_name']);
+        $prog_code = mysqli_real_escape_string($conn, $_POST['prog_code']);
+        $coordinator_name = mysqli_real_escape_string($conn, $_POST['coordinator_name']);
+        $medium = mysqli_real_escape_string($conn, $_POST['medium']);
+        $duration = mysqli_real_escape_string($conn, $_POST['duration']);
+        $course_fee_lkr = mysqli_real_escape_string($conn, $_POST['course_fee_lkr']);
+        $course_fee_gbp = mysqli_real_escape_string($conn, $_POST['course_fee_gbp']);
+        $course_fee_usd = mysqli_real_escape_string($conn, $_POST['course_fee_usd']);
+        $course_fee_euro = mysqli_real_escape_string($conn, $_POST['course_fee_euro']);
+        $entry_requirement = implode(',', $_POST['entry_requirement']); // Convert array to comma-separated string
+
+        $sql = "INSERT INTO program_table (university, program_name, prog_code, coordinator_name, medium, duration, course_fee_lkr, course_fee_gbp, course_fee_usd, course_fee_euro, entry_requirement) 
+                VALUES ('$university', '$program_name', '$prog_code', '$coordinator_name', '$medium', '$duration', '$course_fee_lkr', '$course_fee_gbp', '$course_fee_usd', '$course_fee_euro', '$entry_requirement')";
+
+        if (mysqli_query($conn, $sql)) {
+            header("Location: create_program.php"); // Redirect back to the form page after successful insertion
+            exit(); // Ensure no further code is executed after the redirect
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
     }
 }
 ?>
@@ -243,7 +255,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </thead>
             <tbody>
                 <?php
-                // Fetch and display all programs from the program_table
                 $result = mysqli_query($conn, "SELECT * FROM program_table");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
@@ -255,7 +266,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo "<td>" . htmlspecialchars($row['duration']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['course_fee_lkr']) . " / " . htmlspecialchars($row['course_fee_gbp']) . " / " . htmlspecialchars($row['course_fee_usd']) . " / " . htmlspecialchars($row['course_fee_euro']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['entry_requirement']) . "</td>";
-                    echo "<td><a href='delete_program.php?id=" . urlencode($row['prog_code']) . "' class='btn btn-danger'>Delete</a></td>";
+                    echo "<td>
+                            <form action='' method='post' style='display:inline;'>
+                                <input type='hidden' name='prog_code' value='" . htmlspecialchars($row['prog_code']) . "'>
+                                <button type='submit' name='delete_program' class='btn btn-danger'>Delete</button>
+                            </form>
+                          </td>";
                     echo "</tr>";
                 }
                 ?>
