@@ -92,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="container">
+        
         <h2 class="mt-4">Add New Program</h2>
         <form action="" method="post">
             <div class="row">
