@@ -85,7 +85,7 @@ CREATE TABLE program_table (
     university VARCHAR(255) NOT NULL,
     program_name VARCHAR(255) NOT NULL,
     prog_code VARCHAR(50),
-    coordinator VARCHAR(255),
+    coordinator_name VARCHAR(255),
     medium ENUM('English', 'Tamil') NOT NULL,
     duration VARCHAR(100),
     course_fee_lkr DECIMAL(10, 2),

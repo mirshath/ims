@@ -1,44 +1,44 @@
 <?php
-include("database/connection.php");
-include("includes/header.php");
+include './database/connection.php';
 
-$coordinator_query = "SELECT * FROM coordinator_table";
-$coordinator_result = mysqli_query($conn, $coordinator_query);
+// Fetch universities for the dropdown
+$universities_result = mysqli_query($conn, "SELECT * FROM universities");
+$universities = [];
+while ($row = mysqli_fetch_assoc($universities_result)) {
+    $universities[] = $row;
+}
 
-// Fetch universities
-$university_query = "SELECT * FROM universities";
-$university_result = mysqli_query($conn, $university_query);
+// Fetch coordinators for the dropdown
+$coordinators_result = mysqli_query($conn, "SELECT * FROM coordinator_table");
+$coordinators = [];
+while ($row = mysqli_fetch_assoc($coordinators_result)) {
+    $coordinators[] = $row;
+}
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Database connection
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Sanitize and escape form inputs
+    $university = mysqli_real_escape_string($conn, $_POST['university']);
+    $program_name = mysqli_real_escape_string($conn, $_POST['program_name']);
+    $prog_code = mysqli_real_escape_string($conn, $_POST['prog_code']);
+    $coordinator_name = mysqli_real_escape_string($conn, $_POST['coordinator_name']);
+    $medium = mysqli_real_escape_string($conn, $_POST['medium']);
+    $duration = mysqli_real_escape_string($conn, $_POST['duration']);
+    $course_fee_lkr = mysqli_real_escape_string($conn, $_POST['course_fee_lkr']);
+    $course_fee_gbp = mysqli_real_escape_string($conn, $_POST['course_fee_gbp']);
+    $course_fee_usd = mysqli_real_escape_string($conn, $_POST['course_fee_usd']);
+    $course_fee_euro = mysqli_real_escape_string($conn, $_POST['course_fee_euro']);
+    $entry_requirement = implode(',', $_POST['entry_requirement']); // Convert array to comma-separated string
 
-    // Prepare and bind
-    $stmt = $conn->prepare("INSERT INTO program_table (university, program_name, prog_code, coordinator, medium, duration, course_fee_lkr, course_fee_gbp, course_fee_usd, course_fee_euro, entry_requirement) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssssss", $university, $program_name, $prog_code, $coordinator, $medium, $duration, $course_fee_lkr, $course_fee_gbp, $course_fee_usd, $course_fee_euro, $entry_requirement);
+    // Insert data into the program_table
+    $sql = "INSERT INTO program_table (university, program_name, prog_code, coordinator_name, medium, duration, course_fee_lkr, course_fee_gbp, course_fee_usd, course_fee_euro, entry_requirement) 
+            VALUES ('$university', '$program_name', '$prog_code', '$coordinator_name', '$medium', '$duration', '$course_fee_lkr', '$course_fee_gbp', '$course_fee_usd', '$course_fee_euro', '$entry_requirement')";
 
-    // Set parameters and execute
-    $university = $_POST['university'];
-    $program_name = $_POST['program_name'];
-    $prog_code = $_POST['prog_code'];
-    $coordinator = $_POST['coordinator'];
-    $medium = $_POST['medium'];
-    $duration = $_POST['duration'];
-    $course_fee_lkr = $_POST['course_fee_lkr'];
-    $course_fee_gbp = $_POST['course_fee_gbp'];
-    $course_fee_usd = $_POST['course_fee_usd'];
-    $course_fee_euro = $_POST['course_fee_euro'];
-
-    // Convert array to a comma-separated string for SET data type
-    $entry_requirement = isset($_POST['entry_requirement']) ? implode(',', $_POST['entry_requirement']) : '';
-
-    if ($stmt->execute()) {
-        echo '<div class="alert alert-success" role="alert">New record created successfully</div>';
+    if (mysqli_query($conn, $sql)) {
+        header("Location: create_program.php"); // Redirect back to the form page after successful insertion
+        exit(); // Ensure no further code is executed after the redirect
     } else {
-        echo '<div class="alert alert-danger" role="alert">Error: ' . $stmt->error . '</div>';
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
     }
-
-    $stmt->close();
-    $conn->close();
 }
 ?>
 
@@ -48,93 +48,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Program Registration Form</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <title>Program Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container mt-5">
-
-
-        <!-- ----------------------------------------------------------------------------  -->
-
-        <div class="form-group">
-            <label for="program_select">Select Program:</label>
-            <select class="form-control select2" id="program_select" name="program_select" required>
-                <option value="">Select a program</option>
-                <?php
-                // Fetch programs from the database
-                $program_query = "SELECT * FROM program_table";
-                $program_result = mysqli_query($conn, $program_query);
-                while ($row = mysqli_fetch_assoc($program_result)): ?>
-                    <option value="<?php echo $row['prog_code']; ?>"><?php echo $row['program_name']; ?></option>
-                <?php endwhile; ?>
-            </select>
-        </div>
-
-        <script>
-            $(document).ready(function() {
-                $('.select2').select2();
-
-                $('#program_select').on('change', function() {
-                    var progCode = $(this).val();
-                    if (progCode) {
-                        $.ajax({
-                            url: 'fetch_program_data.php',
-                            type: 'POST',
-                            data: {
-                                prog_code: progCode
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                                $('#program_name').val(data.program_name);
-                                $('#prog_code').val(data.prog_code);
-                                $('#medium').val(data.medium);
-                                $('#duration').val(data.duration);
-                                $('#course_fee_lkr').val(data.course_fee_lkr);
-                                $('#course_fee_gbp').val(data.course_fee_gbp);
-                                $('#course_fee_usd').val(data.course_fee_usd);
-                                $('#course_fee_euro').val(data.course_fee_euro);
-
-                                // Handle entry requirements
-                                $('input[name="entry_requirement[]"]').each(function() {
-                                    $(this).prop('checked', data.entry_requirements.includes($(this).val()));
-                                });
-                            },
-                            error: function() {
-                                alert('Error fetching program details.');
-                            }
-                        });
-                    } else {
-                        // Clear form fields if no program is selected
-                        $('#program_name').val('');
-                        $('#prog_code').val('');
-                        $('#medium').val('');
-                        $('#duration').val('');
-                        $('#course_fee_lkr').val('');
-                        $('#course_fee_gbp').val('');
-                        $('#course_fee_usd').val('');
-                        $('#course_fee_euro').val('');
-                        $('input[name="entry_requirement[]"]').prop('checked', false);
-                    }
-                });
-            });
-        </script>
-
-
-        <!-- ----------------------------------------------------------------------------  -->
-        <h2 class="mb-4">Program Registration Form</h2>
-
-        <form action="" method="POST">
+    <div class="container">
+        <h2 class="mt-4">Add New Program</h2>
+        <form action="" method="post">
             <div class="form-group">
                 <label for="university">University:</label>
-                <select class="form-control select2" id="university" name="university" required>
-                    <?php while ($row = mysqli_fetch_assoc($university_result)): ?>
-                        <option value="<?php echo $row['university_name']; ?>"><?php echo $row['university_name']; ?></option>
-                    <?php endwhile; ?>
+                <select class="form-control" id="university" name="university" required>
+                    <?php foreach ($universities as $uni): ?>
+                        <option value="<?php echo htmlspecialchars($uni['university_name']); ?>">
+                            <?php echo htmlspecialchars($uni['university_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">
@@ -146,11 +75,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" class="form-control" id="prog_code" name="prog_code">
             </div>
             <div class="form-group">
-                <label for="coordinator">Coordinator:</label>
-                <select class="form-control select2" id="coordinator" name="coordinator">
-                    <?php while ($row = mysqli_fetch_assoc($coordinator_result)): ?>
-                        <option value="<?php echo $row['coordinator_name']; ?>"><?php echo $row['coordinator_name']; ?></option>
-                    <?php endwhile; ?>
+                <label for="coordinator_name">Coordinator Name:</label>
+                <select class="form-control" id="coordinator_name" name="coordinator_name">
+                    <?php foreach ($coordinators as $coord): ?>
+                        <option value="<?php echo htmlspecialchars($coord['coordinator_name']); ?>">
+                            <?php echo htmlspecialchars($coord['coordinator_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">
@@ -166,88 +97,139 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="course_fee_lkr">Course Fee (LKR):</label>
-                <input type="number" class="form-control" id="course_fee_lkr" name="course_fee_lkr" step="0.01">
+                <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr">
             </div>
             <div class="form-group">
                 <label for="course_fee_gbp">Course Fee (GBP):</label>
-                <input type="number" class="form-control" id="course_fee_gbp" name="course_fee_gbp" step="0.01">
+                <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp">
             </div>
             <div class="form-group">
                 <label for="course_fee_usd">Course Fee (USD):</label>
-                <input type="number" class="form-control" id="course_fee_usd" name="course_fee_usd" step="0.01">
+                <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd">
             </div>
             <div class="form-group">
-                <label for="course_fee_euro">Course Fee (Euro):</label>
-                <input type="number" class="form-control" id="course_fee_euro" name="course_fee_euro" step="0.01">
+                <label for="course_fee_euro">Course Fee (EURO):</label>
+                <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro">
             </div>
             <div class="form-group">
-                <label>Entry Requirement:</label><br>
+                <label for="entry_requirement">Entry Requirements:</label><br>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="bachelors" name="entry_requirement[]" value="Bachelors">
-                    <label class="form-check-label" for="bachelors">Bachelors</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_bachelors" name="entry_requirement[]" value="Bachelors">
+                    <label class="form-check-label" for="entry_requirement_bachelors">
+                        Bachelors
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="masters" name="entry_requirement[]" value="Masters">
-                    <label class="form-check-label" for="masters">Masters</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_masters" name="entry_requirement[]" value="Masters">
+                    <label class="form-check-label" for="entry_requirement_masters">
+                        Masters
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="diploma" name="entry_requirement[]" value="Diploma">
-                    <label class="form-check-label" for="diploma">Diploma</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_diploma" name="entry_requirement[]" value="Diploma">
+                    <label class="form-check-label" for="entry_requirement_diploma">
+                        Diploma
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="cbm" name="entry_requirement[]" value="CBM">
-                    <label class="form-check-label" for="cbm">CBM</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_cbm" name="entry_requirement[]" value="CBM">
+                    <label class="form-check-label" for="entry_requirement_cbm">
+                        CBM
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="al" name="entry_requirement[]" value="A/L">
-                    <label class="form-check-label" for="al">A/L</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_al" name="entry_requirement[]" value="A/L">
+                    <label class="form-check-label" for="entry_requirement_al">
+                        A/L
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="work_experience" name="entry_requirement[]" value="Work Experience">
-                    <label class="form-check-label" for="work_experience">Work Experience</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_work_experience" name="entry_requirement[]" value="Work Experience">
+                    <label class="form-check-label" for="entry_requirement_work_experience">
+                        Work Experience
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="pgdip" name="entry_requirement[]" value="PGDip">
-                    <label class="form-check-label" for="pgdip">PGDip</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_pgdip" name="entry_requirement[]" value="PGDip">
+                    <label class="form-check-label" for="entry_requirement_pgdip">
+                        PGDip
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="ifd" name="entry_requirement[]" value="IFD">
-                    <label class="form-check-label" for="ifd">IFD</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_ifd" name="entry_requirement[]" value="IFD">
+                    <label class="form-check-label" for="entry_requirement_ifd">
+                        IFD
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="other" name="entry_requirement[]" value="Other">
-                    <label class="form-check-label" for="other">Other</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_other" name="entry_requirement[]" value="Other">
+                    <label class="form-check-label" for="entry_requirement_other">
+                        Other
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="ol" name="entry_requirement[]" value="O/L">
-                    <label class="form-check-label" for="ol">O/L</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_ol" name="entry_requirement[]" value="O/L">
+                    <label class="form-check-label" for="entry_requirement_ol">
+                        O/L
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="professional_qualification" name="entry_requirement[]" value="Professional Qualification">
-                    <label class="form-check-label" for="professional_qualification">Professional Qualification</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_professional_qualification" name="entry_requirement[]" value="Professional Qualification">
+                    <label class="form-check-label" for="entry_requirement_professional_qualification">
+                        Professional Qualification
+                    </label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="ecm" name="entry_requirement[]" value="ECM">
-                    <label class="form-check-label" for="ecm">ECM</label>
+                    <input class="form-check-input" type="checkbox" id="entry_requirement_ecm" name="entry_requirement[]" value="ECM">
+                    <label class="form-check-label" for="entry_requirement_ecm">
+                        ECM
+                    </label>
                 </div>
             </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
+        <h2 class="mt-5">Program List</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>University</th>
+                    <th>Program Name</th>
+                    <th>Program Code</th>
+                    <th>Coordinator Name</th>
+                    <th>Medium</th>
+                    <th>Duration</th>
+                    <th>Fees (LKR/GBP/USD/EURO)</th>
+                    <th>Entry Requirements</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Fetch and display all programs from the program_table
+                $result = mysqli_query($conn, "SELECT * FROM program_table");
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['university']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['program_name']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['prog_code']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['coordinator_name']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['medium']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['duration']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['course_fee_lkr']) . " / " . htmlspecialchars($row['course_fee_gbp']) . " / " . htmlspecialchars($row['course_fee_usd']) . " / " . htmlspecialchars($row['course_fee_euro']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['entry_requirement']) . "</td>";
+                    echo "<td><a href='delete_program.php?id=" . urlencode($row['prog_code']) . "' class='btn btn-danger'>Delete</a></td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
 </body>
 
 </html>
