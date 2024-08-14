@@ -26,8 +26,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['delete_program'])) {
         // Handle delete
-        $prog_code = mysqli_real_escape_string($conn, $_POST['prog_code']);
-        $delete_sql = "DELETE FROM program_table WHERE prog_code='$prog_code'";
+        $program_id = mysqli_real_escape_string($conn, $_POST['program_id']);
+        $delete_sql = "DELETE FROM program_table WHERE id='$program_id'";
 
         if (mysqli_query($conn, $delete_sql)) {
             echo "<div class='alert alert-success'>Program deleted successfully.</div>";
@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         // Handle insert or update
+        $program_id = $_POST['program_id'];
         $university = mysqli_real_escape_string($conn, $_POST['university']);
         $program_name = mysqli_real_escape_string($conn, $_POST['program_name']);
         $prog_code = mysqli_real_escape_string($conn, $_POST['prog_code']);
@@ -55,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_sql = "UPDATE program_table SET 
                 university='$university',
                 program_name='$program_name',
+                prog_code='$prog_code',
                 coordinator_name='$coordinator_name',
                 medium='$medium',
                 duration='$duration',
@@ -63,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 course_fee_usd='$course_fee_usd',
                 course_fee_euro='$course_fee_euro',
                 entry_requirement='$entry_requirements'
-                WHERE prog_code='$prog_code'";
+                WHERE id='$program_id'";
 
             if (mysqli_query($conn, $update_sql)) {
                 // echo "<div class='alert alert-success'>Program updated successfully.</div>";
@@ -105,18 +107,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $('.select2').select2();
 
             $('#program_select').on('change', function() {
-                var progCode = $(this).val();
-                if (progCode) {
+                var id = $(this).val();
+                if (id) {
                     $.ajax({
                         url: 'fetch_program_data.php',
                         type: 'POST',
                         data: {
-                            prog_code: progCode
+                            id: id
                         },
                         success: function(response) {
                             var data = JSON.parse(response);
 
                             // Populate the form fields with the fetched data
+                            $('#program_id').val(data.id);
                             $('#university').val(data.university).trigger('change');
                             $('#program_name').val(data.program_name);
                             $('#prog_code').val(data.prog_code);
@@ -174,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Fetch program names for the dropdown
                 $programs_result = mysqli_query($conn, "SELECT * FROM program_table");
                 while ($row = mysqli_fetch_assoc($programs_result)) {
-                    echo '<option value="' . htmlspecialchars($row['prog_code']) . '">' . htmlspecialchars($row['program_name']) . '</option>';
+                    echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['program_name']) . '</option>';
                 }
                 ?>
             </select>
@@ -184,6 +187,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form action="" method="post">
             <div class="row">
                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="prog_code">ID:</label>
+                        <input type="text" class="form-control" id="program_id" name="program_id" required>
+                    </div>
                     <div class="form-group">
                         <label for="university">University:</label>
                         <select class="form-control select2" id="university" name="university" required>
@@ -195,9 +202,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </select>
                     </div>
 
+
+
                     <div class="form-group">
                         <label for="prog_code">Program Code:</label>
-                        <input type="text" class="form-control" id="prog_code" name="prog_code" required>
+                        <input type="text" class="form-control" id="prog_code" name="prog_code" value="" required>
                     </div>
 
                     <div class="form-group">
@@ -282,18 +291,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Program Name</th>
                     <th>University</th>
                     <th>Program Code</th>
                     <th>Coordinator Name</th>
                     <th>Medium</th>
                     <th>Duration</th>
-                    <!-- <th>Course Fee (LKR)</th> -->
-                    <!-- <th>Course Fee (GBP)</th> -->
-                    <!-- <th>Course Fee (USD)</th> -->
-                    <!-- <th>Course Fee (EURO)</th> -->
-                    <!-- <th>Entry Requirements</th> -->
-                    <th>Actions</th>
+
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -302,21 +308,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $programs_result = mysqli_query($conn, "SELECT * FROM program_table");
                 while ($row = mysqli_fetch_assoc($programs_result)) {
                     echo '<tr>';
+                    echo '<td>' . htmlspecialchars($row['id']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['program_name']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['university']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['prog_code']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['coordinator_name']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['medium']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['duration']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_lkr']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_gbp']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_usd']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['course_fee_euro']) . '</td>';
-                    // echo '<td>' . htmlspecialchars($row['entry_requirement']) . '</td>';
+
                     echo '<td>';
-                    echo '<button class="btn btn-info edit-button" data-prog-code="' . htmlspecialchars($row['prog_code']) . '">Edit</button>';
+                    echo '<button class="btn btn-info edit-button" data-prog-code="' . htmlspecialchars($row['id']) . '">Edit</button>';
                     echo '<form action="" method="post" style="display:inline;">
-                <input type="hidden" name="prog_code" value="' . htmlspecialchars($row['prog_code']) . '">
+                <input type="hidden" name="prog-code" value="' . htmlspecialchars($row['id']) . '">
                 <button type="submit" name="delete_program" class="btn btn-danger">Delete</button>
               </form>';
                     echo '</td>';
