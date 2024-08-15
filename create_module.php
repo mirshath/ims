@@ -177,7 +177,7 @@ $result = $conn->query("SELECT * FROM module_table");
             </div> -->
 
             <div class="form-group">
-                <label for="institution">  <input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label>
+                <label for="institution"> <input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label>
                 <input type="text" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
             </div>
 
