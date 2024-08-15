@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2024 at 01:07 PM
+-- Generation Time: Aug 15, 2024 at 01:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -121,12 +121,63 @@ INSERT INTO `leads_table` (`id`, `lead_type`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lecturer_table`
+--
+
+CREATE TABLE `lecturer_table` (
+  `id` int(11) NOT NULL,
+  `title` enum('Mr','Mrs','Ms','Dr','Prof') NOT NULL,
+  `lecturer_name` varchar(255) NOT NULL,
+  `hourly_rate` decimal(10,2) NOT NULL,
+  `qualification` text NOT NULL,
+  `programs` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lecturer_table`
+--
+
+INSERT INTO `lecturer_table` (`id`, `title`, `lecturer_name`, `hourly_rate`, `qualification`, `programs`, `created_at`) VALUES
+(45, 'Mr', 'noname 3', 0.00, 'MBA, UK', 'BTECH', '2024-08-15 06:39:58'),
+(46, 'Ms', 'Noname 2', 0.00, 'BSc (Hons) Business with Human Resource Management, UK', 'GDM', '2024-08-15 06:41:11'),
+(48, 'Prof', 'Kadeem Lester', 34.00, 'Laboris similique cu', 'BTECH,GDM', '2024-08-15 10:42:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `module_table`
+--
+
+CREATE TABLE `module_table` (
+  `id` int(11) NOT NULL,
+  `module_code` varchar(50) NOT NULL,
+  `module_name` varchar(255) NOT NULL,
+  `university` varchar(255) NOT NULL,
+  `programme` varchar(255) NOT NULL,
+  `assessment_components` text NOT NULL,
+  `pass_mark` int(11) NOT NULL,
+  `type` enum('Compulsory','Elective') NOT NULL,
+  `lecturers` text DEFAULT NULL,
+  `institution` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `module_table`
+--
+
+INSERT INTO `module_table` (`id`, `module_code`, `module_name`, `university`, `programme`, `assessment_components`, `pass_mark`, `type`, `lecturers`, `institution`) VALUES
+(2, 'BIMT 410', 'Academic Writing and Study Skills', 'BMS', 'Higher Diploma in Biomedical Science', 'Assignment - 60% Group Presentation - 40%', 57, 'Elective', 'Dolore illum qui au', 'Voluptatem ex quia ');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `program_table`
 --
 
 CREATE TABLE `program_table` (
-  `id` int(11) NOT NULL,
-  `university` varchar(255) NOT NULL,
+  `program_code` int(11) NOT NULL,
+  `university_id` int(11) NOT NULL,
   `program_name` varchar(255) NOT NULL,
   `prog_code` varchar(50) DEFAULT NULL,
   `coordinator_name` varchar(255) DEFAULT NULL,
@@ -136,15 +187,16 @@ CREATE TABLE `program_table` (
   `course_fee_gbp` decimal(10,2) DEFAULT NULL,
   `course_fee_usd` decimal(10,2) DEFAULT NULL,
   `course_fee_euro` decimal(10,2) DEFAULT NULL,
-  `entry_requirement` varchar(255) DEFAULT NULL
+  `entry_requirement` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `program_table`
 --
 
-INSERT INTO `program_table` (`id`, `university`, `program_name`, `prog_code`, `coordinator_name`, `medium`, `duration`, `course_fee_lkr`, `course_fee_gbp`, `course_fee_usd`, `course_fee_euro`, `entry_requirement`) VALUES
-(86, 'BMS', 'International Foundation Diploma (Business) – ATHE Level 3', '003215', 'Hasni Nihar', 'English', '18 months', 222.00, 22.00, 22.00, 22.00, 'Bachelors,Diploma,CBM,A/L');
+INSERT INTO `program_table` (`program_code`, `university_id`, `program_name`, `prog_code`, `coordinator_name`, `medium`, `duration`, `course_fee_lkr`, `course_fee_gbp`, `course_fee_usd`, `course_fee_euro`, `entry_requirement`) VALUES
+(20, 1, 'BTECH', 'Aut voluptatem labo', 'Hasni Nihar', 'English', 'In ut aut et sunt ei', 95.00, 38.00, 53.00, 52.00, 'Bachelors,Diploma,CBM,Work Experience,IFD'),
+(23, 14, 'GDM', 'Quos sapiente alias ', 'Imashi Abeysiriwardana', 'English', '18 months', 56.00, 37.00, 22.00, 51.00, 'Diploma,A/L,PGDip,IFD');
 
 -- --------------------------------------------------------
 
@@ -230,7 +282,8 @@ CREATE TABLE `universities` (
 --
 
 INSERT INTO `universities` (`id`, `university_code`, `university_name`, `address`, `uni_code`, `created_at`) VALUES
-(1, 'UN01', 'BMS', '123 MirUni', 'UEX01', '2024-08-12 08:27:18');
+(1, 'UN01', 'BMS', '123 MirUni', 'UEX01', '2024-08-12 08:27:18'),
+(14, 'UN02', 'ESOFT', 'bamba', 'UEX02', '2024-08-15 10:30:06');
 
 -- --------------------------------------------------------
 
@@ -283,10 +336,23 @@ ALTER TABLE `leads_table`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `lecturer_table`
+--
+ALTER TABLE `lecturer_table`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `module_table`
+--
+ALTER TABLE `module_table`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `program_table`
 --
 ALTER TABLE `program_table`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`program_code`),
+  ADD KEY `university_id` (`university_id`);
 
 --
 -- Indexes for table `semester_table`
@@ -341,10 +407,22 @@ ALTER TABLE `leads_table`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
+-- AUTO_INCREMENT for table `lecturer_table`
+--
+ALTER TABLE `lecturer_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT for table `module_table`
+--
+ALTER TABLE `module_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `program_table`
 --
 ALTER TABLE `program_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `program_code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `semester_table`
@@ -362,13 +440,23 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `universities`
 --
 ALTER TABLE `universities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `year_table`
 --
 ALTER TABLE `year_table`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `program_table`
+--
+ALTER TABLE `program_table`
+  ADD CONSTRAINT `program_table_ibfk_1` FOREIGN KEY (`university_id`) REFERENCES `universities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -150,14 +150,37 @@ $result = $conn->query("SELECT * FROM module_table");
                 <input type="radio" id="elective" name="type" value="Elective" <?php echo $type == 'Elective' ? 'checked' : ''; ?>>
                 <label for="elective">Elective</label>
             </div>
-            <div class="form-group">
+
+
+            <!-- <div class="form-group">
                 <label for="lecturers">Lecturer/s:</label>
                 <textarea class="form-control" id="lecturers" name="lecturers" rows="3"><?php echo htmlspecialchars($lecturers); ?></textarea>
             </div>
             <div class="form-group">
                 <label for="institution">Institution:</label>
                 <input type="text" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>">
+            </div> -->
+
+            <!-- <div class="form-group">
+                <label for="enable_lecturers">Enable Lecturer/s Input:</label>
+                <input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>>
+            </div> -->
+
+            <div class="form-group">
+                <label for="lecturers"> <input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>> Lecturer/s:</label>
+                <textarea class="form-control" id="lecturers" name="lecturers" rows="3" <?php echo empty($lecturers) ? 'disabled' : ''; ?>><?php echo htmlspecialchars($lecturers); ?></textarea>
             </div>
+
+            <!-- <div class="form-group">
+                <label for="enable_institution">Enable Institution Input:</label>
+                <input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>>
+            </div> -->
+
+            <div class="form-group">
+                <label for="institution">  <input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label>
+                <input type="text" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
+            </div>
+
 
             <?php if ($update): ?>
                 <button type="submit" class="btn btn-primary" name="update">Update</button>
@@ -170,7 +193,7 @@ $result = $conn->query("SELECT * FROM module_table");
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <th>Module Code</th>
                     <th>Module Name</th>
                     <th>University</th>
@@ -186,7 +209,7 @@ $result = $conn->query("SELECT * FROM module_table");
             <tbody>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <td><?php echo $row['id']; ?></td>
+                        <!-- <td><?php echo $row['id']; ?></td> -->
                         <td><?php echo htmlspecialchars($row['module_code']); ?></td>
                         <td><?php echo htmlspecialchars($row['module_name']); ?></td>
                         <td><?php echo htmlspecialchars($row['university']); ?></td>
@@ -205,6 +228,20 @@ $result = $conn->query("SELECT * FROM module_table");
             </tbody>
         </table>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#enable_lecturers').change(function() {
+                $('#lecturers').prop('disabled', !this.checked);
+            });
+
+            $('#enable_institution').change(function() {
+                $('#institution').prop('disabled', !this.checked);
+            });
+        });
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
