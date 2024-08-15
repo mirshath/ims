@@ -122,3 +122,19 @@ CREATE TABLE lecturer_table (
     programs VARCHAR(255) NOT NULL, -- Will store the selected programs as a comma-separated string
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+---------------------------------------------------------------------------
+
+CREATE TABLE module_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    module_code VARCHAR(50) NOT NULL,
+    module_name VARCHAR(255) NOT NULL,
+    university VARCHAR(255) NOT NULL,
+    programme VARCHAR(255) NOT NULL,
+    assessment_components TEXT NOT NULL,
+    pass_mark INT NOT NULL,
+    type ENUM('Compulsory', 'Elective') NOT NULL,
+    lecturers TEXT NULL,
+    institution VARCHAR(255) NULL
+);
