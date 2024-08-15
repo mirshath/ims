@@ -15,6 +15,14 @@ while ($row = mysqli_fetch_assoc($universities_result)) {
     $universities[] = $row;
 }
 
+// Fetch programs for dropdown
+$sql = "SELECT * FROM program_table";
+$result = mysqli_query($conn, $sql);
+$programsOptions = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $programsOptions[] = $row;
+}
+
 // Handle form submission
 if (isset($_POST['save'])) {
     $module_code = $_POST['module_code'];
@@ -131,10 +139,22 @@ $result = $conn->query("SELECT * FROM module_table");
                 </select>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="programme">Programme:</label>
                 <input type="text" class="form-control" id="programme" name="programme" value="<?php echo htmlspecialchars($programme); ?>" required>
+            </div> -->
+
+            <div class="form-group">
+                <label for="programme">Programme:</label>
+                <select class="form-control" id="programme" name="programme" required>
+                    <?php foreach ($programsOptions as $program): ?>
+                        <option value="<?php echo htmlspecialchars($program['program_name']); ?>" <?php echo $program['program_name'] == $programme ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($program['program_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
+
             <div class="form-group">
                 <label for="assessment_components">Assessment Components:</label>
                 <textarea class="form-control" id="assessment_components" name="assessment_components" rows="3" required><?php echo htmlspecialchars($assessment_components); ?></textarea>

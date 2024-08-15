@@ -7,13 +7,14 @@ $programs = []; // Initialize programs as an array
 $id = 0;
 $update = false;
 
-// Fetch programs for checkboxes
+// Fetch programs for the dropdown
 $sql = "SELECT * FROM program_table";
 $result = mysqli_query($conn, $sql);
 $programsOptions = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $programsOptions[] = $row;
 }
+
 
 // Handle form submission
 if (isset($_POST['save'])) {
