@@ -12,7 +12,7 @@ if (isset($_POST['id'])) {
             'university' => $row['university'],
             'program_name' => $row['program_name'],
             'prog_code' => $row['prog_code'],
-            'coordinator_name' => $row['coordinator_name'], 
+            'coordinator_name' => $row['coordinator_name'],
             'medium' => $row['medium'],
             'duration' => $row['duration'],
             'course_fee_lkr' => $row['course_fee_lkr'],
