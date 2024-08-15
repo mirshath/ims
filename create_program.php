@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Fetch program names for the dropdown
                 $programs_result = mysqli_query($conn, "SELECT * FROM program_table");
                 while ($row = mysqli_fetch_assoc($programs_result)) {
-                    echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['program_name']) . '</option>';
+                    echo '<option value="' . htmlspecialchars($row['id']) . '" >' . htmlspecialchars($row['program_name']) . '</option>';
                 }
                 ?>
             </select>

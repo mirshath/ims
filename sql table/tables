@@ -110,3 +110,15 @@ CREATE TABLE program_table (
     course_fee_euro DECIMAL(10, 2),
     entry_requirement  VARCHAR(255) NOT NULL
 );
+
+
+----------------------------------------------------------------------
+CREATE TABLE lecturer_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title ENUM('Mr', 'Mrs', 'Ms', 'Dr', 'Prof') NOT NULL,
+    lecturer_name VARCHAR(255) NOT NULL,
+    hourly_rate DECIMAL(10, 2) NOT NULL,
+    qualification TEXT NOT NULL,
+    programs VARCHAR(255) NOT NULL, -- Will store the selected programs as a comma-separated string
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
