@@ -7,7 +7,6 @@ $pass_mark = $type = $lecturers = $institution = "";
 $id = 0;
 $update = false;
 
-
 // Fetch universities for the dropdown
 $universities_result = mysqli_query($conn, "SELECT * FROM universities");
 $universities = [];
@@ -122,38 +121,97 @@ $result = $conn->query("SELECT * FROM module_table");
                 <input type="text" class="form-control" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
             </div>
 
-
-            <!-- <div class="form-group">
-                <label for="university">University:</label>
-                <input type="text" class="form-control" id="university" name="university" value="<?php echo htmlspecialchars($university); ?>" required>
-            </div> -->
-
             <div class="form-group">
                 <label for="university">University:</label>
                 <select class="form-control select2" id="university" name="university" required>
+                    <option value="">Select University</option>
                     <?php foreach ($universities as $uni): ?>
-                        <option value="<?php echo htmlspecialchars($uni['university_name']); ?>">
+                        <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($uni['university_name']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
 
+            <!-- Programs will be dynamically loaded here -->
             <!-- <div class="form-group">
                 <label for="programme">Programme:</label>
-                <input type="text" class="form-control" id="programme" name="programme" value="<?php echo htmlspecialchars($programme); ?>" required>
+                <select class="form-control" id="programme" name="programme" required>
+                    <option value="">Select Programme</option>
+                </select>
             </div> -->
 
             <div class="form-group">
                 <label for="programme">Programme:</label>
                 <select class="form-control" id="programme" name="programme" required>
-                    <?php foreach ($programsOptions as $program): ?>
-                        <option value="<?php echo htmlspecialchars($program['program_name']); ?>" <?php echo $program['program_name'] == $programme ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($program['program_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
+                    <option value="">Select Programme</option>
+                    <!-- Programs will be dynamically loaded here -->
                 </select>
             </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <!-- <script>
+                $(document).ready(function() {
+                    $('#university').on('change', function() {
+                        var universityID = $(this).val();
+                        if (universityID) {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'get_programs.php',
+                                data: {
+                                    university_id: universityID
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    $('#programme').html('<option value="">Select Programme</option>');
+                                    $.each(data, function(key, value) {
+                                        $('#programme').append('<option value="' + value.program_name + '">' + value.program_name + '</option>');
+                                    });
+                                }
+                            });
+                        } else {
+                            $('#programme').html('<option value="">Select Programme</option>');
+                        }
+                    });
+
+                    // Trigger change event to load programs if university is already selected (for edit mode)
+                    <?php if ($update && !empty($university)): ?>
+                        $('#university').trigger('change');
+                    <?php endif; ?>
+                });
+            </script> -->
+            <script>
+                $(document).ready(function() {
+                    var selectedProgramme = '<?php echo $programme; ?>';
+
+                    $('#university').on('change', function() {
+                        var universityID = $(this).val();
+                        if (universityID) {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'get_programs.php',
+                                data: {
+                                    university_id: universityID
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    $('#programme').html('<option value="">Select Programme</option>');
+                                    $.each(data, function(key, value) {
+                                        var isSelected = value.program_name == selectedProgramme ? 'selected' : '';
+                                        $('#programme').append('<option value="' + value.program_name + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                    });
+                                }
+                            });
+                        } else {
+                            $('#programme').html('<option value="">Select Programme</option>');
+                        }
+                    });
+
+                    // Trigger change event to load programs if university is already selected (for edit mode)
+                    <?php if ($update && !empty($university)): ?>
+                        $('#university').trigger('change');
+                    <?php endif; ?>
+                });
+            </script>
 
             <div class="form-group">
                 <label for="assessment_components">Assessment Components:</label>
@@ -171,49 +229,30 @@ $result = $conn->query("SELECT * FROM module_table");
                 <label for="elective">Elective</label>
             </div>
 
-
-            <!-- <div class="form-group">
-                <label for="lecturers">Lecturer/s:</label>
-                <textarea class="form-control" id="lecturers" name="lecturers" rows="3"><?php echo htmlspecialchars($lecturers); ?></textarea>
-            </div>
             <div class="form-group">
-                <label for="institution">Institution:</label>
-                <input type="text" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>">
-            </div> -->
-
-            <!-- <div class="form-group">
-                <label for="enable_lecturers">Enable Lecturer/s Input:</label>
-                <input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>>
-            </div> -->
-
-            <div class="form-group">
-                <label for="lecturers"> <input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>> Lecturer/s:</label>
+                <label for="lecturers"><input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>> Lecturer/s:</label>
                 <textarea class="form-control" id="lecturers" name="lecturers" rows="3" <?php echo empty($lecturers) ? 'disabled' : ''; ?>><?php echo htmlspecialchars($lecturers); ?></textarea>
             </div>
 
-            <!-- <div class="form-group">
-                <label for="enable_institution">Enable Institution Input:</label>
-                <input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>>
-            </div> -->
-
             <div class="form-group">
-                <label for="institution"> <input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label>
-                <input type="text" class="form-control" id="institution" name="institution" placeholder="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
+                <label for="institution"><input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label>
+                <input type="text" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
             </div>
 
-
             <?php if ($update): ?>
-                <button type="submit" class="btn btn-primary" name="update">Update</button>
+                <button type="submit" class="btn btn-warning" name="update">Update</button>
             <?php else: ?>
                 <button type="submit" class="btn btn-primary" name="save">Save</button>
             <?php endif; ?>
         </form>
 
-        <h3 class="mt-5">Module List</h3>
-        <table class="table table-bordered">
+        <hr>
+
+        <h2>Modules List</h2>
+
+        <table class="table table-bordered mt-4">
             <thead>
                 <tr>
-                    <!-- <th>ID</th> -->
                     <th>Module Code</th>
                     <th>Module Name</th>
                     <th>University</th>
@@ -221,33 +260,40 @@ $result = $conn->query("SELECT * FROM module_table");
                     <th>Assessment Components</th>
                     <th>Pass Mark</th>
                     <th>Type</th>
-                    <!-- <th>Lecturer/s</th> -->
-                    <!-- <th>Institution</th> -->
-                    <!-- <th>Actions</th> -->
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <!-- <td><?php echo $row['id']; ?></td> -->
                         <td><?php echo htmlspecialchars($row['module_code']); ?></td>
                         <td><?php echo htmlspecialchars($row['module_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['university']); ?></td>
+                        <td>
+                            <?php
+                            // $universityID = $row['university'];
+                            // $uniResult = $conn->query("SELECT university_name FROM universities WHERE id=$universityID");
+                            $universityID = $row['university'];
+                            $uniResult = $conn->query("SELECT university_name FROM universities WHERE id='$universityID'");
+                            // Ensure $universityID is quoted if it is a string, otherwise remove quotes if it's an integer
+
+                            $uniRow = $uniResult->fetch_assoc();
+                            echo htmlspecialchars($uniRow['university_name']);
+                            ?>
+                        </td>
                         <td><?php echo htmlspecialchars($row['programme']); ?></td>
                         <td><?php echo htmlspecialchars($row['assessment_components']); ?></td>
                         <td><?php echo htmlspecialchars($row['pass_mark']); ?></td>
                         <td><?php echo htmlspecialchars($row['type']); ?></td>
-                        <!-- <td><?php echo htmlspecialchars($row['lecturers']); ?></td> -->
-                        <!-- <td><?php echo htmlspecialchars($row['institution']); ?></td> -->
                         <td>
-                            <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                            <a href="create_module.php?edit=<?php echo $row['id']; ?>" class="btn btn-info">Edit</a>
+                            <a href="create_module.php?delete=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
     </div>
+
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -262,12 +308,6 @@ $result = $conn->query("SELECT * FROM module_table");
             });
         });
     </script>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
-
-<?php $conn->close(); ?>
