@@ -63,7 +63,7 @@ if (isset($_GET['edit'])) {
 // Handle form update
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
-    $module_code = $_POST['module_code'];
+    // $module_code = $_POST['module_code'];
     $module_name = $_POST['module_name'];
     $university = $_POST['university'];
     $programme = $_POST['programme'];
@@ -73,7 +73,9 @@ if (isset($_POST['update'])) {
     $lecturers = $_POST['lecturers'];
     $institution = $_POST['institution'];
 
-    $sql = "UPDATE module_table SET module_code='$module_code', module_name='$module_name', university='$university', programme='$programme', assessment_components='$assessment_components', pass_mark='$pass_mark', type='$type', lecturers='$lecturers', institution='$institution' WHERE id=$id";
+    // module_code='$module_code',
+
+    $sql = "UPDATE module_table SET  module_name='$module_name', university='$university', programme='$programme', assessment_components='$assessment_components', pass_mark='$pass_mark', type='$type', lecturers='$lecturers', institution='$institution' WHERE id=$id";
     if ($conn->query($sql) === TRUE) {
         echo '<script> window.location.href = "create_module";</script>';
     } else {
@@ -114,7 +116,8 @@ $result = $conn->query("SELECT * FROM module_table");
             <input type="hidden" name="id" value="<?php echo $id; ?>">
             <div class="form-group">
                 <label for="module_code">Module Code:</label>
-                <input type="text" class="form-control" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" required>
+                <!-- <input type="text" class="form-control" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" required> -->
+                <input type="text" class="form-control" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" <?php echo $update ? 'disabled' : ''; ?> required>
             </div>
             <div class="form-group">
                 <label for="module_name">Module Name:</label>
