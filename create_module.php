@@ -117,11 +117,11 @@ $result = $conn->query("SELECT * FROM module_table");
             <div class="form-group">
                 <label for="module_code">Module Code:</label>
                 <!-- <input type="text" class="form-control" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" required> -->
-                <input type="text" class="form-control" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" <?php echo $update ? 'disabled' : ''; ?> required>
+                <input type="text" class="form-control" placeholder="Module Code" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" <?php echo $update ? 'disabled' : ''; ?> required>
             </div>
             <div class="form-group">
                 <label for="module_name">Module Name:</label>
-                <input type="text" class="form-control" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
+                <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
             </div>
 
             <div class="form-group">
@@ -218,11 +218,11 @@ $result = $conn->query("SELECT * FROM module_table");
 
             <div class="form-group">
                 <label for="assessment_components">Assessment Components:</label>
-                <textarea class="form-control" id="assessment_components" name="assessment_components" rows="3" required><?php echo htmlspecialchars($assessment_components); ?></textarea>
+                <textarea class="form-control" placeholder="Assessment Components" id="assessment_components" name="assessment_components" rows="3" required><?php echo htmlspecialchars($assessment_components); ?></textarea>
             </div>
             <div class="form-group">
                 <label for="pass_mark">Pass Mark:</label>
-                <input type="number" class="form-control" id="pass_mark" name="pass_mark" value="<?php echo htmlspecialchars($pass_mark); ?>" required>
+                <input type="number" placeholder="pass mark" class="form-control" id="pass_mark" name="pass_mark" value="<?php echo htmlspecialchars($pass_mark); ?>" required>
             </div>
             <div class="form-group">
                 <label>Type:</label><br>
@@ -234,12 +234,12 @@ $result = $conn->query("SELECT * FROM module_table");
 
             <div class="form-group">
                 <label for="lecturers"><input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>> Lecturer/s:</label>
-                <textarea class="form-control" id="lecturers" name="lecturers" rows="3" <?php echo empty($lecturers) ? 'disabled' : ''; ?>><?php echo htmlspecialchars($lecturers); ?></textarea>
+                <textarea class="form-control" placeholder="lecturers" id="lecturers" name="lecturers" rows="3" <?php echo empty($lecturers) ? 'disabled' : ''; ?>><?php echo htmlspecialchars($lecturers); ?></textarea>
             </div>
 
             <div class="form-group">
                 <label for="institution"><input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label>
-                <input type="text" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
+                <input type="text" placeholder="institution" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
             </div>
 
             <?php if ($update): ?>
