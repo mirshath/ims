@@ -44,8 +44,8 @@
                  <a class="collapse-item" href="./create_universities">University</a>
                  <a class="collapse-item" href="./create_coordinators">Cooordinator</a>
                  <a class="collapse-item" href="./create_program">Program</a>
-                 <a class="collapse-item" href="./create_">Lecture</a>
-                 <a class="collapse-item" href="./create_">Module</a>
+                 <a class="collapse-item" href="./create_lecturer">Lecture</a>
+                 <a class="collapse-item" href="./create_module">Module</a>
                  <a class="collapse-item" href="./create_">Batch</a>
                  <a class="collapse-item" href="./create_">Grade</a>
                  <a class="collapse-item" href="./create_">Currency</a>
