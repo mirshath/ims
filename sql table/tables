@@ -182,3 +182,11 @@ CREATE TABLE status_table (
     status_name VARCHAR(100) NOT NULL
 );
 
+-----------------------------------------------
+
+CREATE TABLE decision_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    decision_code VARCHAR(50) NOT NULL,
+    decision_name VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL
+);
