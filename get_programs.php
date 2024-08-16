@@ -4,7 +4,7 @@ include './database/connection.php';
 if (isset($_POST['university_id'])) {
     $university_id = $_POST['university_id'];
     
-    $query = "SELECT program_name FROM program_table WHERE university_id = ?";
+    $query = "SELECT * FROM program_table WHERE university_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $university_id);
     $stmt->execute();

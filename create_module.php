@@ -123,19 +123,6 @@ $result = $conn->query("SELECT * FROM module_table");
                 <label for="module_name">Module Name:</label>
                 <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
             </div>
-
-            <div class="form-group">
-                <label for="university">University:</label>
-                <select class="form-control select2" id="university" name="university" required>
-                    <option value="">Select University</option>
-                    <?php foreach ($universities as $uni): ?>
-                        <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($uni['university_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
             <!-- Programs will be dynamically loaded here -->
             <!-- <div class="form-group">
                 <label for="programme">Programme:</label>
@@ -144,14 +131,6 @@ $result = $conn->query("SELECT * FROM module_table");
                 </select>
             </div> -->
 
-            <div class="form-group">
-                <label for="programme">Programme:</label>
-                <select class="form-control" id="programme" name="programme" required>
-                    <option value="">Select Programme</option>
-                    <!-- Programs will be dynamically loaded here -->
-                </select>
-            </div>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <!-- <script>
                 $(document).ready(function() {
                     $('#university').on('change', function() {
@@ -182,6 +161,32 @@ $result = $conn->query("SELECT * FROM module_table");
                     <?php endif; ?>
                 });
             </script> -->
+
+            
+
+            <div class="form-group">
+                <label for="university">University:</label>
+                <select class="form-control select2" id="university" name="university" required>
+                    <option value="">Select University</option>
+                    <?php foreach ($universities as $uni): ?>
+                        <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($uni['university_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="programme">Programme:</label>
+                <select class="form-control" id="programme" name="programme" required>
+                    <option value="">Select Programme</option>
+                    <!-- Programs will be dynamically loaded here -->
+                </select>
+            </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
             <script>
                 $(document).ready(function() {
                     var selectedProgramme = '<?php echo $programme; ?>';
@@ -253,7 +258,7 @@ $result = $conn->query("SELECT * FROM module_table");
 
         <h2>Modules List</h2>
 
-        <table class="table table-bordered mt-4">
+        <table class="table table-bordered mt-4 table-striped">
             <thead>
                 <tr>
                     <th>Module Code</th>

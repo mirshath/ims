@@ -103,7 +103,7 @@ $total_pages = ceil($total_rows / $results_per_page);
         </form>
 
         <!-- Coordinators Table -->
-        <table class="table table-striped">
+        <table class="table table-striped table-striped">
             <thead>
                 <tr>
                     <th>ID</th>

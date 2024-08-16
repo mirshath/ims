@@ -138,3 +138,47 @@ CREATE TABLE module_table (
     lecturers TEXT NULL,
     institution VARCHAR(255) NULL
 );
+
+-----------------------------------------------------
+
+CREATE TABLE batch_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    batch_name VARCHAR(255) NOT NULL,
+    university VARCHAR(255) NOT NULL,
+    programme VARCHAR(255) NOT NULL,
+    year_batch_code VARCHAR(50) NOT NULL,
+    intake_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+------------------------------------------------------------ 
+
+CREATE TABLE grade_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    grade_code VARCHAR(50) NOT NULL,
+    grade_name VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+----------------------------------------------------------
+
+CREATE TABLE currency_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    currency_code VARCHAR(50) NOT NULL,
+    currency_name VARCHAR(100) NOT NULL,
+    short_name VARCHAR(50) NOT NULL,
+    symbol VARCHAR(10) NOT NULL
+);
+--------------------------------------------
+
+CREATE TABLE status_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    status_code VARCHAR(50) NOT NULL,
+    status_name VARCHAR(100) NOT NULL
+);
+

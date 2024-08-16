@@ -379,7 +379,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <h2 class="mt-5">current courses</h2>
         <h2 class="mt-5">Current Courses</h2>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -389,12 +389,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <th>Coordinator Name</th>
                     <th>Medium</th>
                     <th>Duration</th>
-                    <th>Course Fee (LKR)</th>
-                    <th>Course Fee (GBP)</th>
-                    <th>Course Fee (USD)</th>
-                    <th>Course Fee (EURO)</th>
-                    <th>Entry Requirements</th>
-                    <th>Actions</th>
+                    <!-- <th>Course Fee (LKR)</th> -->
+                    <!-- <th>Course Fee (GBP)</th> -->
+                    <!-- <th>Course Fee (USD)</th> -->
+                    <!-- <th>Course Fee (EURO)</th> -->
+                    <!-- <th>Entry Requirements</th> -->
+                    <!-- <th>Actions</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -410,11 +410,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo '<td>' . htmlspecialchars($row['coordinator_name']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['medium']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['duration']) . '</td>';
-                    echo '<td>' . htmlspecialchars($row['course_fee_lkr']) . '</td>';
-                    echo '<td>' . htmlspecialchars($row['course_fee_gbp']) . '</td>';
-                    echo '<td>' . htmlspecialchars($row['course_fee_usd']) . '</td>';
-                    echo '<td>' . htmlspecialchars($row['course_fee_euro']) . '</td>';
-                    echo '<td>' . htmlspecialchars($row['entry_requirement']) . '</td>';
+                    // echo '<td>' . htmlspecialchars($row['course_fee_lkr']) . '</td>';
+                    // echo '<td>' . htmlspecialchars($row['course_fee_gbp']) . '</td>';
+                    // echo '<td>' . htmlspecialchars($row['course_fee_usd']) . '</td>';
+                    // echo '<td>' . htmlspecialchars($row['course_fee_euro']) . '</td>';
+                    // echo '<td>' . htmlspecialchars($row['entry_requirement']) . '</td>';
                     echo '<td>';
                     echo '<button class="btn btn-info edit-button" data-prog-code="' . htmlspecialchars($row['program_code']) . '">Edit</button>';
                     echo '<form action="" method="post" style="display:inline;">

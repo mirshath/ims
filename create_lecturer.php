@@ -135,7 +135,7 @@ $result = $conn->query("SELECT * FROM lecturer_table");
         </form>
 
         <h3 class="mt-5">Lecturer List</h3>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID</th>

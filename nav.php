@@ -46,9 +46,9 @@
                  <a class="collapse-item" href="./create_program">Program</a>
                  <a class="collapse-item" href="./create_lecturer">Lecture</a>
                  <a class="collapse-item" href="./create_module">Module</a>
-                 <a class="collapse-item" href="./create_">Batch</a>
-                 <a class="collapse-item" href="./create_">Grade</a>
-                 <a class="collapse-item" href="./create_">Currency</a>
+                 <a class="collapse-item" href="./create_batch">Batch</a>
+                 <a class="collapse-item" href="./create_grade">Grade</a>
+                 <a class="collapse-item" href="./create_currency">Currency</a>
                  <a class="collapse-item" href="./create_">Status</a>
                  <a class="collapse-item" href="./create_">Decision</a>
              </div>
