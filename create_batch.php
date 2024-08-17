@@ -53,7 +53,8 @@ if (isset($_POST['save'])) {
     }
 
     if ($stmt->execute()) {
-        header('Location: create_batch');
+        // header('Location: create_batch');
+        echo '<script>window.location.href = "create_batch";</script>';
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -85,7 +86,9 @@ if (isset($_GET['delete'])) {
     $stmt = $conn->prepare("DELETE FROM batch_table WHERE id=?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
-        header('Location: create_batch');
+        // header('Location: create_batch');
+        echo '<script>window.location.href = "create_batch";</script>';
+
         exit();
     } else {
         echo "Error: " . $stmt->error;

@@ -63,7 +63,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Criteria Management</h4>
                 </div>
-                
+
                 <!-- Add Criteria Form -->
                 <form action="" method="post" class="mb-3">
                     <div class="form-group">

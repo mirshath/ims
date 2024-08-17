@@ -1,41 +1,81 @@
 <?php
-
 include("database/connection.php");
 include("includes/header.php");
 
+
 ?>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-       <?php include("nav.php"); ?>
+    <?php include("nav.php"); ?>
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
-            <div id="content">
+        <!-- Main Content -->
+        <div id="content">
 
-                <!-- Topbar -->
-                <?php include("includes/topnav.php"); ?>
-                <!-- End of Topbar -->
+            <!-- Topbar -->
+            <?php include("includes/topnav.php"); ?>
+            <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div>
-
-                   
-                  
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="h4 mb-0 text-gray-800">Dashboards</h4>
                 </div>
-                <!-- /.container-fluid -->
+
+
+                <!-- Add Criteria Form -->
+
+
+
+
+
+
+
+
+                <!-- Criteria Table -->
+
+
+
+
+
+
+                <!-- Pagination Controls -->
+                
+
 
             </div>
-            <!-- End of Main Content -->
+        </div>
+    </div>
+</div>
 
-           <?php include("./includes/footer.php"); ?>
+
+
+
+
+
+
+<!-- Edit Modal -->
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+</body>
+
+</html>
+
+<?php $conn->close(); ?>

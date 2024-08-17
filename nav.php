@@ -2,12 +2,12 @@
  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
      <!-- Sidebar - Brand -->
-     <a class="sidebar-brand d-flex align-items-center justify-content-center mt-4 mb-4" href="index.php">
+     <a class="sidebar-brand d-flex align-items-center justify-content-center mt-4 mb-4" href="index">
          <div class="sidebar-brand-icon rotate-n-15">
              <!-- <i class="fas fa-laugh-wink"></i> -->
          </div>
          <!-- <div class="sidebar-brand-text mx-3">IMS <sup>2</sup></div> -->
-         <div class="sidebar-brand-text mx-3"><img src="https://www.bms.ac.lk/assets/images/logo/BMS-Logo.png" class="img-fluid"></div>
+         <div class="sidebar-brand-text mx-3"><img src="http://184.174.39.59:216/img/logo4.png" class="img-fluid"></div>
      </a>
 
      <!-- Divider -->
@@ -15,7 +15,7 @@
 
      <!-- Nav Item - Dashboard -->
      <li class="nav-item active">
-         <a class="nav-link" href="index.php">
+         <a class="nav-link" href="index">
              <i class="fas fa-fw fa-tachometer-alt"></i>
              <span>Dashboard</span></a>
      </li>
