@@ -2,7 +2,7 @@
 include("database/connection.php");
 include("includes/header.php");
 
-$results_per_page = 5; // Number of results per page
+$results_per_page = 10; // Number of results per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
 $start = ($page - 1) * $results_per_page;
 
@@ -57,11 +57,9 @@ $total_pages = ceil($total_rows / $results_per_page);
             <div class="container">
 
                 <!-- Page Heading -->
-                <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Leads Management </h4>
+                    <h4 class="h4 mb-0 text-gray-800">Leads Management</h4>
                 </div>
-
 
                 <!-- Add Lead Form -->
                 <form action="" method="post" class="mb-3">
@@ -72,10 +70,8 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <button type="submit" name="add_lead" class="btn btn-primary">Add Lead</button>
                 </form>
 
-
-
                 <!-- Leads Table -->
-                <table class="table table-striped table-striped">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -86,15 +82,17 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo $row['id']; ?></td>
-                                <td><?php echo htmlspecialchars($row['lead_type']); ?></td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" data-id="<?php echo $row['id']; ?>" data-lead_type="<?php echo htmlspecialchars($row['lead_type']); ?>">Edit</button>
-                                    <form action="" method="post" class="d-inline">
+                                <form action="" method="post">
+                                    <td><?php echo $row['id']; ?></td>
+                                    <td>
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                        <input type="text" class="form-control" name="lead_type" value="<?php echo htmlspecialchars($row['lead_type']); ?>" required>
+                                    </td>
+                                    <td>
+                                        <button type="submit" name="update_lead" class="btn btn-info btn-sm">Update</button>
                                         <button type="submit" name="delete_lead" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                </td>
+                                    </td>
+                                </form>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -121,65 +119,13 @@ $total_pages = ceil($total_rows / $results_per_page);
                     </ul>
                 </nav>
 
-
             </div>
         </div>
     </div>
 </div>
 
-
-
-
-
-
-
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Lead</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="post">
-                    <input type="hidden" id="edit_id" name="id">
-                    <div class="form-group">
-                        <label for="edit_lead_type">Lead Type</label>
-                        <input type="text" class="form-control" id="edit_lead_type" name="lead_type" required>
-                    </div>
-                    <button type="submit" name="update_lead" class="btn btn-primary">Update Lead</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    $('#editModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var id = button.data('id');
-        var lead_type = button.data('lead_type');
-
-        var modal = $(this);
-        modal.find('#edit_id').val(id);
-        modal.find('#edit_lead_type').val(lead_type);
-    });
-</script>
-
-
-
-
-</div>
-
+<?php $conn->close(); ?>
 
 </body>
 
 </html>
-
-<?php $conn->close(); ?>

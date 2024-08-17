@@ -2,7 +2,8 @@
 include("database/connection.php");
 include("includes/header.php");
 
-$results_per_page = 10; // Number of results per page
+// Pagination settings
+$results_per_page = 5; // Number of results per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
 $start = ($page - 1) * $results_per_page;
 
@@ -58,7 +59,7 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Semester Management</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Semester managment</h4>
                 </div>
 
                 <!-- Add Semester Form -->
@@ -82,17 +83,15 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <form action="" method="post" class="d-inline">
-                                    <td><?php echo $row['id']; ?></td>
-                                    <td>
+                                <td><?php echo $row['id']; ?></td>
+                                <td><?php echo htmlspecialchars($row['semester_name']); ?></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" data-id="<?php echo $row['id']; ?>" data-semester_name="<?php echo htmlspecialchars($row['semester_name']); ?>">Edit</button>
+                                    <form action="" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <input type="text" class="form-control form-control-sm" name="semester_name" value="<?php echo htmlspecialchars($row['semester_name']); ?>" required>
-                                    </td>
-                                    <td>
-                                        <button type="submit" name="update_semester" class="btn btn-info btn-sm">Update</button>
                                         <button type="submit" name="delete_semester" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
-                                </form>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -119,12 +118,61 @@ $total_pages = ceil($total_rows / $results_per_page);
                     </ul>
                 </nav>
 
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Semester</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <input type="hidden" id="edit_id" name="id">
+                    <div class="form-group">
+                        <label for="edit_semester_name">Semester Name</label>
+                        <input type="text" class="form-control" id="edit_semester_name" name="semester_name" required>
+                    </div>
+                    <button type="submit" name="update_semester" class="btn btn-primary">Update Semester</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-<?php $conn->close(); ?>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $('#editModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var id = button.data('id'); // Extract info from data-* attributes
+        var semester_name = button.data('semester_name');
+
+        var modal = $(this);
+        modal.find('#edit_id').val(id);
+        modal.find('#edit_semester_name').val(semester_name);
+    });
+</script>
+
+
+
+
+
+
+</div>
+
 
 </body>
+
 </html>
+
+<?php $conn->close(); ?>

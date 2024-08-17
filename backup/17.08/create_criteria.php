@@ -3,7 +3,7 @@ include("database/connection.php");
 include("includes/header.php");
 
 // Pagination settings
-$results_per_page = 10; // Number of results per page
+$results_per_page = 5; // Number of results per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
 $start = ($page - 1) * $results_per_page;
 
@@ -61,7 +61,7 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Criteria Management</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Criteria managment</h4>
                 </div>
                 
                 <!-- Add Criteria Form -->
@@ -78,30 +78,28 @@ $total_pages = ceil($total_rows / $results_per_page);
                 </form>
 
                 <!-- Criteria Table -->
-                <table class="table table-striped">
+                <table class="table table-striped table-striped">
                     <thead>
                         <tr>
+                            <!-- <th>ID</th> -->
                             <th>Criteria Code</th>
                             <th>Criteria Name</th>
-                            <th>Actions</th>
+                            <!-- <th>Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <form action="" method="post">
-                                    <td>
-                                        <input type="text" name="criteria_code" value="<?php echo htmlspecialchars($row['criteria_code']); ?>" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="criteria_name" value="<?php echo htmlspecialchars($row['criteria_name']); ?>" class="form-control">
-                                    </td>
-                                    <td>
+                                <!-- <td><?php echo $row['id']; ?></td> -->
+                                <td><?php echo htmlspecialchars($row['criteria_code']); ?></td>
+                                <td><?php echo htmlspecialchars($row['criteria_name']); ?></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" data-id="<?php echo $row['id']; ?>" data-criteria_code="<?php echo htmlspecialchars($row['criteria_code']); ?>" data-criteria_name="<?php echo htmlspecialchars($row['criteria_name']); ?>">Edit</button>
+                                    <form action="" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="update_criteria" class="btn btn-info btn-sm">Update</button>
                                         <button type="submit" name="delete_criteria" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
-                                </form>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -128,13 +126,74 @@ $total_pages = ceil($total_rows / $results_per_page);
                     </ul>
                 </nav>
 
+
+
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+
+
+
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Criteria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <input type="hidden" id="edit_id" name="id">
+                    <div class="form-group">
+                        <label for="edit_criteria_code">Criteria Code</label>
+                        <input type="text" class="form-control" id="edit_criteria_code" name="criteria_code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_criteria_name">Criteria Name</label>
+                        <input type="text" class="form-control" id="edit_criteria_name" name="criteria_name" required>
+                    </div>
+                    <button type="submit" name="update_criteria" class="btn btn-primary">Update Criteria</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $('#editModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var id = button.data('id'); // Extract info from data-* attributes
+        var criteria_code = button.data('criteria_code');
+        var criteria_name = button.data('criteria_name');
+
+        var modal = $(this);
+        modal.find('#edit_id').val(id);
+        modal.find('#edit_criteria_code').val(criteria_code);
+        modal.find('#edit_criteria_name').val(criteria_name);
+    });
+</script>
+
+
+
+
+
+
+</div>
+
+
+</body>
+
+</html>
 
 <?php $conn->close(); ?>

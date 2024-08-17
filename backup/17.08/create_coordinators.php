@@ -3,7 +3,7 @@ include("database/connection.php");
 include("includes/header.php");
 
 // Pagination settings
-$results_per_page = 10; // Number of results per page
+$results_per_page = 5; // Number of results per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
 $start = ($page - 1) * $results_per_page;
 
@@ -68,10 +68,10 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Coordinator Management</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Coordinator managment</h4>
                 </div>
 
-                <!-- Add Coordinator Form -->
+
                 <form action="" method="post" class="mb-3">
                     <div class="form-group">
                         <label for="coordinator_code">Coordinator Code</label>
@@ -103,38 +103,32 @@ $total_pages = ceil($total_rows / $results_per_page);
                 </form>
 
                 <!-- Coordinators Table -->
-                <table class="table table-striped">
+                <table class="table table-striped table-striped">
                     <thead>
                         <tr>
+                            <!-- <th>ID</th> -->
                             <th>Coordinator Code</th>
                             <th>Title</th>
                             <th>Coordinator Name</th>
                             <th>BMS Email</th>
-                            <th>Actions</th>
+                            <!-- <th>Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <form action="" method="post" class="form-inline">
-                                    <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_code" value="<?php echo htmlspecialchars($row['coordinator_code']); ?>" required></td>
-                                    <td>
-                                        <select class="form-control mb-2 mr-sm-2" name="title" required>
-                                            <option value="Mr" <?php echo $row['title'] == 'Mr' ? 'selected' : ''; ?>>Mr</option>
-                                            <option value="Mrs" <?php echo $row['title'] == 'Mrs' ? 'selected' : ''; ?>>Mrs</option>
-                                            <option value="Ms" <?php echo $row['title'] == 'Ms' ? 'selected' : ''; ?>>Ms</option>
-                                            <option value="Dr" <?php echo $row['title'] == 'Dr' ? 'selected' : ''; ?>>Dr</option>
-                                            <option value="Prof" <?php echo $row['title'] == 'Prof' ? 'selected' : ''; ?>>Prof</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_name" value="<?php echo htmlspecialchars($row['coordinator_name']); ?>" required></td>
-                                    <td><input type="email" class="form-control mb-2 mr-sm-2" name="bms_email" value="<?php echo htmlspecialchars($row['bms_email']); ?>" required></td>
-                                    <td>
+                                <!-- <td><?php echo $row['id']; ?></td> -->
+                                <td><?php echo htmlspecialchars($row['coordinator_code']); ?></td>
+                                <td><?php echo htmlspecialchars($row['title']); ?></td>
+                                <td><?php echo htmlspecialchars($row['coordinator_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['bms_email']); ?></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" data-id="<?php echo $row['id']; ?>" data-coordinator_code="<?php echo htmlspecialchars($row['coordinator_code']); ?>" data-title="<?php echo htmlspecialchars($row['title']); ?>" data-coordinator_name="<?php echo htmlspecialchars($row['coordinator_name']); ?>" data-bms_email="<?php echo htmlspecialchars($row['bms_email']); ?>">Edit</button>
+                                    <form action="" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="update_coordinator" class="btn btn-info btn-sm mb-2">Update</button>
-                                        <button type="submit" name="delete_coordinator" class="btn btn-danger btn-sm mb-2">Delete</button>
-                                    </td>
-                                </form>
+                                        <button type="submit" name="delete_coordinator" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -161,6 +155,55 @@ $total_pages = ceil($total_rows / $results_per_page);
                     </ul>
                 </nav>
 
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Coordinator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <input type="hidden" id="edit_id" name="id">
+                    <div class="form-group">
+                        <label for="edit_coordinator_code">Coordinator Code</label>
+                        <input type="text" class="form-control" id="edit_coordinator_code" name="coordinator_code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_title">Title</label>
+                        <select class="form-control" id="edit_title" name="title" required>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Dr">Dr</option>
+                            <option value="Prof">Prof</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_coordinator_name">Coordinator Name</label>
+                        <input type="text" class="form-control" id="edit_coordinator_name" name="coordinator_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_bms_email">BMS Email</label>
+                        <input type="email" class="form-control" id="edit_bms_email" name="bms_email" required>
+                    </div>
+                    <button type="submit" name="update_coordinator" class="btn btn-primary">Save Changes</button>
+                </form>
             </div>
         </div>
     </div>
@@ -168,9 +211,37 @@ $total_pages = ceil($total_rows / $results_per_page);
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Populate the edit modal with the selected coordinator's data
+    $('#editModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var coordinator_code = button.data('coordinator_code');
+        var title = button.data('title');
+        var coordinator_name = button.data('coordinator_name');
+        var bms_email = button.data('bms_email');
+
+        var modal = $(this);
+        modal.find('#edit_id').val(id);
+        modal.find('#edit_coordinator_code').val(coordinator_code);
+        modal.find('#edit_title').val(title);
+        modal.find('#edit_coordinator_name').val(coordinator_name);
+        modal.find('#edit_bms_email').val(bms_email);
+    });
+</script>
+
+
+
+
+
+
+</div>
+
 
 </body>
+
 </html>
 
 <?php $conn->close(); ?>
