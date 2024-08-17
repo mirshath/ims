@@ -123,7 +123,7 @@ $result = $conn->query("SELECT * FROM module_table");
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">lecture managment</h4>
+                    <h4 class="h4 mb-0 text-gray-800">module managment</h4>
                 </div>
 
 
@@ -317,7 +317,7 @@ $result = $conn->query("SELECT * FROM module_table");
                     </tbody>
                 </table>
 
-                <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+               
                 <script>
                     $(document).ready(function() {
                         $('#enable_lecturers').change(function() {
@@ -345,12 +345,3 @@ $result = $conn->query("SELECT * FROM module_table");
 
 </html>
 <?php $conn->close(); ?>
-
-
-
-
-
-<!-- -----------------------------------------------------------------------------------------  -->
-<!-- -----------------------------------------------------------------------------------------  -->
-<!-- -----------------------------------------------------------------------------------------  -->
-<!-- -----------------------------------------------------------------------------------------  -->
