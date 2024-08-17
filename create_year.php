@@ -1,5 +1,4 @@
 <?php
-
 include("database/connection.php");
 include("includes/header.php");
 
@@ -38,10 +37,9 @@ $sql_total = "SELECT COUNT(*) as total FROM year_table";
 $result_total = $conn->query($sql_total);
 $total_rows = $result_total->fetch_assoc()['total'];
 $total_pages = ceil($total_rows / $results_per_page);
+
+
 ?>
-
-
-
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -63,13 +61,14 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Year Management </h4>
+                    <h4 class="h4 mb-0 text-gray-800">Year managment</h4>
                 </div>
 
 
+                <!-- Add Criteria Form -->
 
 
-                <!-- Add Year Form -->
+
                 <form action="" method="post" class="mb-3">
                     <div class="form-group">
                         <label for="year_name">Year Name</label>
@@ -78,7 +77,8 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <button type="submit" name="add_year" class="btn btn-primary">Add Year</button>
                 </form>
 
-                <!-- Years Table -->
+                <!-- Criteria Table -->
+
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -104,6 +104,10 @@ $total_pages = ceil($total_rows / $results_per_page);
                     </tbody>
                 </table>
 
+
+
+
+
                 <!-- Pagination Controls -->
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-end">
@@ -124,60 +128,60 @@ $total_pages = ceil($total_rows / $results_per_page);
                         </li>
                     </ul>
                 </nav>
-            </div>
 
-            <!-- Edit Modal -->
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit Year</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" method="post">
-                            <input type="hidden" id="edit_id" name="id">
-                            <div class="form-group">
-                                <label for="edit_year_name">Year Name</label>
-                                <input type="text" class="form-control" id="edit_year_name" name="year_name" required>
+
+
+
+                <!-- Edit Modal -->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit Year</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                            <button type="submit" name="update_year" class="btn btn-primary">Update Year</button>
-                        </form>
+                            <div class="modal-body">
+                                <form action="" method="post">
+                                    <input type="hidden" id="edit_id" name="id">
+                                    <div class="form-group">
+                                        <label for="edit_year_name">Year Name</label>
+                                        <input type="text" class="form-control" id="edit_year_name" name="year_name" required>
+                                    </div>
+                                    <button type="submit" name="update_year" class="btn btn-primary">Update Year</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <script>
+                    $('#editModal').on('show.bs.modal', function(event) {
+                        var button = $(event.relatedTarget); // Button that triggered the modal
+                        var id = button.data('id'); // Extract info from data-* attributes
+                        var year_name = button.data('year_name');
+
+                        var modal = $(this);
+                        modal.find('#edit_id').val(id);
+                        modal.find('#edit_year_name').val(year_name);
+                    });
+                </script>
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+              
+
+
+
             </div>
         </div>
-
-        <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
-        <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script> -->
-        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-        <script>
-            $('#editModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var id = button.data('id'); // Extract info from data-* attributes
-                var year_name = button.data('year_name');
-
-                var modal = $(this);
-                modal.find('#edit_id').val(id);
-                modal.find('#edit_year_name').val(year_name);
-            });
-        </script>
-
-
-
-        </div>
-        <!-- /.container-fluid -->
-
     </div>
-    <!-- End of Main Content -->
+</div>
 
+</div>
 
+</body>
 
-<?php include("./includes/footer.php"); ?>
-
-
-
-
-
+</html>
+<?php $conn->close(); ?>
