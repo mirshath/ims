@@ -190,3 +190,22 @@ CREATE TABLE decision_table (
     decision_name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL
 );
+
+-------------------------------------------------------------------------------------------
+-- transections 
+-------------------------------------------------------------------------------------------
+
+CREATE TABLE leads (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    lead_date DATE NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    university VARCHAR(255) NOT NULL,
+    programme VARCHAR(255) NOT NULL,
+    intake VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    contact VARCHAR(15) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    details TEXT,
+    status VARCHAR(255) NOT NULL
+);
