@@ -49,22 +49,11 @@
                  <a class="collapse-item" href="./create_batch">Batch</a>
                  <a class="collapse-item" href="./create_grade">Grade</a>
                  <a class="collapse-item" href="./create_currency">Currency</a>
-                 <a class="collapse-item" href="./create_">Status</a>
-                 <a class="collapse-item" href="./create_">Decision</a>
+                 <a class="collapse-item" href="./create_status">Status</a>
+                 <a class="collapse-item" href="./create_decision">Decision</a>
              </div>
          </div>
      </li>
-
-     <!-- Divider -->
-     <!-- <hr class="sidebar-divider"> -->
-
-
-
-     
-
-
-
-
 
      <!-- Nav Item - Tables -->
      <li class="nav-item">

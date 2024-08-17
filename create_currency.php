@@ -1,5 +1,8 @@
 <?php
-include './database/connection.php';
+include("database/connection.php");
+include("includes/header.php");
+
+
 
 // Initialize variables
 $currency_code = $currency_name = $short_name = $symbol = "";
@@ -65,88 +68,103 @@ if (isset($_GET['delete'])) {
         echo "Error: " . $stmt->error;
     }
 }
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Management</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+    <?php include("nav.php"); ?>
 
-<body>
-    <div class="container">
-        <h2 class="text-center mt-4">Currency Management</h2>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Form to Create/Update a Currency -->
-        <form action="" method="POST" class="mt-4">
-            <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
-            <div class="form-group">
-                <label for="currency_code">Currency Code:</label>
-                <input type="text" name="currency_code" class="form-control" value="<?php echo htmlspecialchars($currency_code); ?>"  required>
-            </div>
-            <div class="form-group">
-                <label for="currency_name">Currency Name:</label>
-                <input type="text" name="currency_name" class="form-control" value="<?php echo htmlspecialchars($currency_name); ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="short_name">Short Name:</label>
-                <input type="text" name="short_name" class="form-control" value="<?php echo htmlspecialchars($short_name); ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="symbol">Symbol:</label>
-                <input type="text" name="symbol" class="form-control" value="<?php echo htmlspecialchars($symbol); ?>" required>
-            </div>
-            <div class="form-group">
-                <?php if ($update == true): ?>
-                    <button type="submit" name="save" class="btn btn-info">Update Currency</button>
-                <?php else: ?>
-                    <button type="submit" name="save" class="btn btn-primary">Add Currency</button>
-                <?php endif; ?>
-            </div>
-        </form>
+        <!-- Main Content -->
+        <div id="content">
 
-        <!-- Display Currency Records -->
-        <h3 class="mt-4">Currency List</h3>
-        <table class="table table-bordered table-striped mt-2">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Currency Code</th>
-                    <th>Currency Name</th>
-                    <th>Short Name</th>
-                    <th>Symbol</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $stmt = $conn->prepare("SELECT * FROM currency_table");
-                $stmt->execute();
-                $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['currency_code']); ?></td>
-                        <td><?php echo htmlspecialchars($row['currency_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['short_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['symbol']); ?></td>
-                        <td>
-                            <a href="?edit=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-info">Edit</a>
-                            <a href="?delete=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this currency?');">Delete</a>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+            <!-- Topbar -->
+            <?php include("includes/topnav.php"); ?>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="h4 mb-0 text-gray-800">Currency managment</h4>
+                </div>
+
+
+                <!-- Add Criteria Form -->
+                <form action="" method="POST" class="mt-4">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
+                    <div class="form-group">
+                        <label for="currency_code">Currency Code:</label>
+                        <input type="text" name="currency_code" class="form-control" value="<?php echo htmlspecialchars($currency_code); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="currency_name">Currency Name:</label>
+                        <input type="text" name="currency_name" class="form-control" value="<?php echo htmlspecialchars($currency_name); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="short_name">Short Name:</label>
+                        <input type="text" name="short_name" class="form-control" value="<?php echo htmlspecialchars($short_name); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="symbol">Symbol:</label>
+                        <input type="text" name="symbol" class="form-control" value="<?php echo htmlspecialchars($symbol); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <?php if ($update == true): ?>
+                            <button type="submit" name="save" class="btn btn-info">Update Currency</button>
+                        <?php else: ?>
+                            <button type="submit" name="save" class="btn btn-primary">Add Currency</button>
+                        <?php endif; ?>
+                    </div>
+                </form>
+
+                <!-- Criteria Table -->
+
+                <h3 class="mt-4">Currency List</h3>
+                <table class="table table-bordered table-striped mt-2">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Currency Code</th>
+                            <th>Currency Name</th>
+                            <th>Short Name</th>
+                            <th>Symbol</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $stmt = $conn->prepare("SELECT * FROM currency_table");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['id']); ?></td>
+                                <td><?php echo htmlspecialchars($row['currency_code']); ?></td>
+                                <td><?php echo htmlspecialchars($row['currency_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['short_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['symbol']); ?></td>
+                                <td>
+                                    <a href="?edit=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-info">Edit</a>
+                                    <a href="?delete=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this currency?');">Delete</a>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
+
+</div>
+
 </body>
 
 </html>
-
-<?php
-$conn->close();
-?>
+<?php $conn->close(); ?>
