@@ -2,11 +2,12 @@
  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
      <!-- Sidebar - Brand -->
-     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+     <a class="sidebar-brand d-flex align-items-center justify-content-center mt-4 mb-4" href="index.php">
          <div class="sidebar-brand-icon rotate-n-15">
-             <i class="fas fa-laugh-wink"></i>
+             <!-- <i class="fas fa-laugh-wink"></i> -->
          </div>
-         <div class="sidebar-brand-text mx-3">IMS <sup>2</sup></div>
+         <!-- <div class="sidebar-brand-text mx-3">IMS <sup>2</sup></div> -->
+         <div class="sidebar-brand-text mx-3"><img src="https://www.bms.ac.lk/assets/images/logo/BMS-Logo.png" class="img-fluid"></div>
      </a>
 
      <!-- Divider -->
@@ -36,7 +37,7 @@
          </a>
          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
              <div class="bg-white py-2 collapse-inner rounded">
-                 <h6 class="collapse-header">MAster file > Components</h6>
+                 <h6 class="collapse-header">Components</h6>
                  <a class="collapse-item" href="create_lead">Lead Types</a>
                  <a class="collapse-item" href="./create_year">Year</a>
                  <a class="collapse-item" href="./create_semester">Semester</a>
