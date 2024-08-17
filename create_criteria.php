@@ -57,73 +57,74 @@ $total_pages = ceil($total_rows / $results_per_page);
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container">
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Criteria managment</h4>
                 </div>
- <!-- Add Criteria Form -->
- <form action="" method="post" class="mb-3">
-        <div class="form-group">
-            <label for="criteria_code">Criteria Code</label>
-            <input type="text" class="form-control" id="criteria_code" name="criteria_code" required>
-        </div>
-        <div class="form-group">
-            <label for="criteria_name">Criteria Name</label>
-            <input type="text" class="form-control" id="criteria_name" name="criteria_name" required>
-        </div>
-        <button type="submit" name="add_criteria" class="btn btn-primary">Add Criteria</button>
-    </form>
+                
+                <!-- Add Criteria Form -->
+                <form action="" method="post" class="mb-3">
+                    <div class="form-group">
+                        <label for="criteria_code">Criteria Code</label>
+                        <input type="text" class="form-control" id="criteria_code" name="criteria_code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="criteria_name">Criteria Name</label>
+                        <input type="text" class="form-control" id="criteria_name" name="criteria_name" required>
+                    </div>
+                    <button type="submit" name="add_criteria" class="btn btn-primary">Add Criteria</button>
+                </form>
 
-    <!-- Criteria Table -->
-    <table class="table table-striped table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Criteria Code</th>
-                <th>Criteria Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-                    <td><?php echo htmlspecialchars($row['criteria_code']); ?></td>
-                    <td><?php echo htmlspecialchars($row['criteria_name']); ?></td>
-                    <td>
-                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" data-id="<?php echo $row['id']; ?>" data-criteria_code="<?php echo htmlspecialchars($row['criteria_code']); ?>" data-criteria_name="<?php echo htmlspecialchars($row['criteria_name']); ?>">Edit</button>
-                        <form action="" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                            <button type="submit" name="delete_criteria" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
+                <!-- Criteria Table -->
+                <table class="table table-striped table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Criteria Code</th>
+                            <th>Criteria Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo $row['id']; ?></td>
+                                <td><?php echo htmlspecialchars($row['criteria_code']); ?></td>
+                                <td><?php echo htmlspecialchars($row['criteria_name']); ?></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editModal" data-id="<?php echo $row['id']; ?>" data-criteria_code="<?php echo htmlspecialchars($row['criteria_code']); ?>" data-criteria_name="<?php echo htmlspecialchars($row['criteria_name']); ?>">Edit</button>
+                                    <form action="" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="delete_criteria" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
 
-    <!-- Pagination Controls -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-end">
-            <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-            <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+                <!-- Pagination Controls -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                            </li>
+                        <?php endfor; ?>
+                        <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
 
 
 
@@ -170,7 +171,7 @@ $total_pages = ceil($total_rows / $results_per_page);
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    $('#editModal').on('show.bs.modal', function (event) {
+    $('#editModal').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var id = button.data('id'); // Extract info from data-* attributes
         var criteria_code = button.data('criteria_code');

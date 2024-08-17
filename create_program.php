@@ -192,16 +192,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container">
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Criteria managment</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Program managment</h4>
                 </div>
 
 
-                <!-- Add Criteria Form -->
-                <div class="container">
+                    <!-- Add Criteria Form -->
                     <div class="form-group">
                         <label for="program_select">Select Program to edit:</label>
                         <select class="form-control select2" id="program_select" name="program_select">
@@ -316,8 +315,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <!-- ----------  -->
 
 
-                    <h2 class="mt-5">current courses</h2>
-                    <h2 class="mt-5">Current Courses</h2>
+                    <h4 class="mt-5">Current Programs</h4>
+
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -358,7 +357,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </tbody>
                     </table>
 
-                </div>
 
             </div>
         </div>

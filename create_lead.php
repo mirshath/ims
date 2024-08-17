@@ -54,7 +54,7 @@ $total_pages = ceil($total_rows / $results_per_page);
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container">
 
                 <!-- Page Heading -->
                 <!-- Page Heading -->
