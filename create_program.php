@@ -244,10 +244,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <input type="text" class="form-control" id="program_name" name="program_name" required>
                                 </div>
 
-                                <!-- <div class="form-group">
-                        <label for="coordinator_name">Coordinator Name:</label>
-                        <input type="text" class="form-control" id="coordinator_name" name="coordinator_name" required>
-                    </div> -->
 
                                 <div class="form-group">
                                     <label for="coordinator_name">Coordinator Name:</label>
@@ -320,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <!-- <th>ID</th> -->
                                 <th>Program Name</th>
                                 <th>University</th>
                                 <th>Program Code</th>
@@ -336,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $programs_result = mysqli_query($conn, "SELECT * FROM program_table");
                             while ($row = mysqli_fetch_assoc($programs_result)) {
                                 echo '<tr>';
-                                echo '<td>' . htmlspecialchars($row['program_code']) . '</td>';
+                                // echo '<td>' . htmlspecialchars($row['program_code']) . '</td>';
                                 echo '<td>' . htmlspecialchars($row['program_name']) . '</td>';
                                 echo '<td>' . htmlspecialchars($row['university_id']) . '</td>'; // Assuming you have a way to get the university name from ID
                                 echo '<td>' . htmlspecialchars($row['prog_code']) . '</td>';

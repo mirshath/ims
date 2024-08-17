@@ -129,12 +129,12 @@ if (isset($_GET['delete'])) {
                 <table class="table table-bordered table-striped mt-2">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <!-- <th>ID</th> -->
                             <th>Currency Code</th>
                             <th>Currency Name</th>
                             <th>Short Name</th>
                             <th>Symbol</th>
-                            <th>Actions</th>
+                            <!-- <th>Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -144,7 +144,7 @@ if (isset($_GET['delete'])) {
                         $result = $stmt->get_result();
                         while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['id']); ?></td>
+                                <!-- <td><?php echo htmlspecialchars($row['id']); ?></td> -->
                                 <td><?php echo htmlspecialchars($row['currency_code']); ?></td>
                                 <td><?php echo htmlspecialchars($row['currency_name']); ?></td>
                                 <td><?php echo htmlspecialchars($row['short_name']); ?></td>

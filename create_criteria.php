@@ -81,16 +81,16 @@ $total_pages = ceil($total_rows / $results_per_page);
                 <table class="table table-striped table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <!-- <th>ID</th> -->
                             <th>Criteria Code</th>
                             <th>Criteria Name</th>
-                            <th>Actions</th>
+                            <!-- <th>Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo $row['id']; ?></td>
+                                <!-- <td><?php echo $row['id']; ?></td> -->
                                 <td><?php echo htmlspecialchars($row['criteria_code']); ?></td>
                                 <td><?php echo htmlspecialchars($row['criteria_name']); ?></td>
                                 <td>

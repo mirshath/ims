@@ -139,44 +139,7 @@ $result = $conn->query("SELECT * FROM module_table");
                         <label for="module_name">Module Name:</label>
                         <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
                     </div>
-                    <!-- Programs will be dynamically loaded here -->
-                    <!-- <div class="form-group">
-                <label for="programme">Programme:</label>
-                <select class="form-control" id="programme" name="programme" required>
-                    <option value="">Select Programme</option>
-                </select>
-            </div> -->
-
-                    <!-- <script>
-                $(document).ready(function() {
-                    $('#university').on('change', function() {
-                        var universityID = $(this).val();
-                        if (universityID) {
-                            $.ajax({
-                                type: 'POST',
-                                url: 'get_programs.php',
-                                data: {
-                                    university_id: universityID
-                                },
-                                dataType: 'json',
-                                success: function(data) {
-                                    $('#programme').html('<option value="">Select Programme</option>');
-                                    $.each(data, function(key, value) {
-                                        $('#programme').append('<option value="' + value.program_name + '">' + value.program_name + '</option>');
-                                    });
-                                }
-                            });
-                        } else {
-                            $('#programme').html('<option value="">Select Programme</option>');
-                        }
-                    });
-
-                    // Trigger change event to load programs if university is already selected (for edit mode)
-                    <?php if ($update && !empty($university)): ?>
-                        $('#university').trigger('change');
-                    <?php endif; ?>
-                });
-            </script> -->
+                  
 
 
 
@@ -284,7 +247,7 @@ $result = $conn->query("SELECT * FROM module_table");
                             <th>Assessment Components</th>
                             <th>Pass Mark</th>
                             <th>Type</th>
-                            <th>Action</th>
+                            <!-- <th>Action</th> -->
                         </tr>
                     </thead>
                     <tbody>

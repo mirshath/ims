@@ -106,18 +106,18 @@ $total_pages = ceil($total_rows / $results_per_page);
                 <table class="table table-striped table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <!-- <th>ID</th> -->
                             <th>Coordinator Code</th>
                             <th>Title</th>
                             <th>Coordinator Name</th>
                             <th>BMS Email</th>
-                            <th>Actions</th>
+                            <!-- <th>Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo $row['id']; ?></td>
+                                <!-- <td><?php echo $row['id']; ?></td> -->
                                 <td><?php echo htmlspecialchars($row['coordinator_code']); ?></td>
                                 <td><?php echo htmlspecialchars($row['title']); ?></td>
                                 <td><?php echo htmlspecialchars($row['coordinator_name']); ?></td>

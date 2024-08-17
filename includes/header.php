@@ -34,7 +34,7 @@
     <!-- ------------------------  -->
 
 
- 
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script> -->
@@ -46,8 +46,11 @@
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 
 
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include CKEditor -->
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+
+
 
 
 
@@ -64,6 +67,12 @@
         .form-control:focus {
             box-shadow: 0 0 5px #c110104f;
             border-color: #c110104f;
+        }
+
+        .cke_notification_warning {
+            background: #c83939;
+            border: 1px solid #902b2b;
+            display: none;
         }
     </style>
 </head>

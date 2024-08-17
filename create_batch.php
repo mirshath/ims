@@ -243,14 +243,14 @@ if (isset($_GET['delete'])) {
                 <table class="table table-bordered table-striped mt-2">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <!-- <th>ID</th> -->
                             <th>Batch Name</th>
                             <th>University</th>
                             <th>Programme</th>
                             <th>Year Batch Code</th>
                             <th>Intake Date</th>
                             <th>End Date</th>
-                            <th>Actions</th>
+                            <!-- <th>Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -260,7 +260,7 @@ if (isset($_GET['delete'])) {
                         $result = $stmt->get_result();
                         while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['id']); ?></td>
+                                <!-- <td><?php echo htmlspecialchars($row['id']); ?></td> -->
                                 <td><?php echo htmlspecialchars($row['batch_name']); ?></td>
                                 <td><?php echo htmlspecialchars($row['university']); ?></td>
                                 <td><?php echo htmlspecialchars($row['programme']); ?></td>

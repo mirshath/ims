@@ -66,7 +66,7 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Criteria managment</h4>
+                    <h4 class="h4 mb-0 text-gray-800">University managment</h4>
                 </div>
                 <!-- Add University Form -->
                 <form action="" method="post" class="mb-3">
@@ -93,18 +93,18 @@ $total_pages = ceil($total_rows / $results_per_page);
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <!-- <th>ID</th> -->
                             <th>University Code</th>
                             <th>University Name</th>
                             <th>Address</th>
                             <th>Uni Code</th>
-                            <th>Actions</th>
+                            <!-- <th>Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo $row['id']; ?></td>
+                                <!-- <td><?php echo $row['id']; ?></td> -->
                                 <td><?php echo htmlspecialchars($row['university_code']); ?></td>
                                 <td><?php echo htmlspecialchars($row['university_name']); ?></td>
                                 <td><?php echo htmlspecialchars($row['address']); ?></td>
