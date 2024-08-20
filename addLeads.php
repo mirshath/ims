@@ -14,6 +14,21 @@ $result_lead = $conn->query($sql_lead);
 
 
 // ------------------------------------------------------------------------ 
+// Fetch universities for the dropdown
+$universities_result = mysqli_query($conn, "SELECT * FROM universities");
+$universities = [];
+while ($row = mysqli_fetch_assoc($universities_result)) {
+    $universities[] = $row;
+}
+
+// Fetch programs for dropdown
+$sql = "SELECT * FROM program_table";
+$result = mysqli_query($conn, $sql);
+$programsOptions = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $programsOptions[] = $row;
+}
+// ------------------------------------------------------------------------ 
 
 
 // Handle form submissions
@@ -144,7 +159,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="university">University</label>
                                     <input type="text" class="form-control" id="university" name="university" required>
@@ -155,7 +170,73 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     <label for="programme">Programme</label>
                                     <input type="text" class="form-control" id="programme" name="programme" required>
                                 </div>
+                            </div> -->
+
+                            <!-- ----------------------------------------------------------------  -->
+
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="university">University</label>
+                                    <select class="form-control select2" id="university" name="university" required>
+                                        <option value="">Select University</option>
+                                        <?php foreach ($universities as $uni): ?>
+                                            <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university ? 'selected' : ''; ?>>
+                                                <?php echo htmlspecialchars($uni['university_name']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="programme">Programme</label>
+                                    <select class="form-control" id="programme" name="programme" required>
+                                        <option value="">Select Programme</option>
+                                        <!-- Programs will be dynamically loaded here -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                            <script>
+                                $(document).ready(function() {
+                                    var selectedProgramme = '<?php echo $programme; ?>';
+
+                                    $('#university').on('change', function() {
+                                        var universityID = $(this).val();
+                                        if (universityID) {
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: 'get_programs.php',
+                                                data: {
+                                                    university_id: universityID
+                                                },
+                                                dataType: 'json',
+                                                success: function(data) {
+                                                    $('#programme').html('<option value="">Select Programme</option>');
+                                                    $.each(data, function(key, value) {
+                                                        var isSelected = value.program_name == selectedProgramme ? 'selected' : '';
+                                                        $('#programme').append('<option value="' + value.program_name + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            $('#programme').html('<option value="">Select Programme</option>');
+                                        }
+                                    });
+
+                                    // Trigger change event to load programs if university is already selected (for edit mode)
+                                    <?php if ($update && !empty($university)): ?>
+                                        $('#university').trigger('change');
+                                    <?php endif; ?>
+                                });
+                            </script>
+
+                            
+                            <!-- ----------------------------------------------------------------  -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="intake">Intake</label>
