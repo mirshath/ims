@@ -397,41 +397,41 @@ $total_pages = ceil($total_rows / $results_per_page);
                         });
 
                         // Handle edit lead
-                        // Handle edit lead
-$('.edit-lead-btn').click(function() {
-    // Get data attributes from the button
-    var id = $(this).data('id');
-    var lead_date = $(this).data('lead-date');
-    var type = $(this).data('type');
-    var university = $(this).data('university');
-    var programme = $(this).data('programme');
-    var intake = $(this).data('intake');
-    var first_name = $(this).data('first-name');
-    var last_name = $(this).data('last-name');
-    var contact = $(this).data('contact');
-    var email = $(this).data('email');
-    var details = $(this).data('details');
-    var status = $(this).data('status');
+                        $('.edit-lead-btn').click(function() {
+                            // Get data attributes from the button
+                            var id = $(this).data('id');
+                            var lead_date = $(this).data('lead-date');
+                            var type = $(this).data('type');
+                            var university = $(this).data('university');
+                            var programme = $(this).data('programme');
+                            console.log(programme);
 
-    // Populate the form fields
-    $('input[name="id"]').val(id);
-    $('#lead_date').val(lead_date);
-    $('#type').val(type);
-    $('#university').val(university).trigger('change'); // Trigger change to load programs
-    $('#programme').val(programme);
-    $('#intake').val(intake);
-    $('#first_name').val(first_name);
-    $('#last_name').val(last_name);
-    $('#contact').val(contact);
-    $('#email').val(email);
-    $('#details').val(details);
-    $('#status').val(status);
+                            var intake = $(this).data('intake');
+                            var first_name = $(this).data('first-name');
+                            var last_name = $(this).data('last-name');
+                            var contact = $(this).data('contact');
+                            var email = $(this).data('email');
+                            var details = $(this).data('details');
+                            var status = $(this).data('status');
 
-    // Show the form and update the button
-    $('button[name="add_lead"]').hide();
-    $('button[name="update_lead"]').show();
-});
+                            // Populate the form fields
+                            $('input[name="id"]').val(id);
+                            $('#lead_date').val(lead_date);
+                            $('#type').val(type);
+                            $('#university').val(university).trigger('change'); // Trigger change to load programs
+                            $('#programme').val(programme);
+                            $('#intake').val(intake);
+                            $('#first_name').val(first_name);
+                            $('#last_name').val(last_name);
+                            $('#contact').val(contact);
+                            $('#email').val(email);
+                            $('#details').val(details);
+                            $('#status').val(status);
 
+                            // Show update button, hide add button
+                            $('button[name="add_lead"]').hide();
+                            $('button[name="update_lead"]').show();
+                        });
 
                         // Ensure the update button is hidden initially
                         $('button[name="update_lead"]').hide();
