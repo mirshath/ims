@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include("../database/connection.php");
+include("database/connection.php");
 
 // Retrieve form data
 $student_code = $_POST['student_code'];

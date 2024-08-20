@@ -152,38 +152,38 @@ $result = $conn->query("SELECT * FROM lecturer_table");
                 <!-- Criteria Table -->
 
 
-                <h3 class="mt-5">Lecturer List</h3>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <!-- <th>ID</th> -->
-                            <th>Title</th>
-                            <th>Lecturer Name</th>
-                            <th>Qualification</th>
-                            <th>Programs</th>
-                            <th>Hourly Rate</th>
-                            <!-- <th>Actions</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <!-- <td><?php echo $row['id']; ?></td> -->
-                                <td><?php echo htmlspecialchars($row['title']); ?></td>
-                                <td><?php echo htmlspecialchars($row['lecturer_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['qualification']); ?></td>
-                                <td><?php echo htmlspecialchars($row['programs']); ?></td>
-                                <td><?php echo htmlspecialchars($row['hourly_rate']); ?></td>
-                                <td>
-                                    <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-
             </div>
+            <h3 class="mt-5">Lecturer List</h3>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <!-- <th>ID</th> -->
+                        <th>Title</th>
+                        <th>Lecturer Name</th>
+                        <th>Qualification</th>
+                        <th>Programs</th>
+                        <th>Hourly Rate</th>
+                        <!-- <th>Actions</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <!-- <td><?php echo $row['id']; ?></td> -->
+                            <td><?php echo htmlspecialchars($row['title']); ?></td>
+                            <td><?php echo htmlspecialchars($row['lecturer_name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['qualification']); ?></td>
+                            <td><?php echo htmlspecialchars($row['programs']); ?></td>
+                            <td><?php echo htmlspecialchars($row['hourly_rate']); ?></td>
+                            <td>
+                                <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>
