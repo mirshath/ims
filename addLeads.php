@@ -6,6 +6,16 @@ $results_per_page = 10; // Number of results per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
 $start = ($page - 1) * $results_per_page;
 
+
+// ------------------------------------------------------------------------ 
+// Fetch distinct 'type' values from leads_table
+$sql_lead = "SELECT  lead_type FROM leads_table";
+$result_lead = $conn->query($sql_lead);
+
+
+// ------------------------------------------------------------------------ 
+
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_lead'])) {
@@ -109,12 +119,31 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     <input type="date" class="form-control" id="lead_date" name="lead_date" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="type">Type</label>
                                     <input type="text" class="form-control" id="type" name="type" required>
                                 </div>
+                            </div> -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="type">Type</label>
+                                    <select class="form-control" id="type" name="type" required>
+                                        <option value="" disabled selected>Select Type</option>
+                                        <?php
+                                        // Check if there are results and populate the dropdown
+                                        if ($result_lead->num_rows > 0) {
+                                            while ($row = $result_lead->fetch_assoc()) {
+                                                echo '<option value="' . htmlspecialchars($row['lead_type']) . '">' . htmlspecialchars($row['lead_type']) . '</option>';
+                                            }
+                                        } else {
+                                            echo '<option value="" disabled>No types available</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="university">University</label>
@@ -130,7 +159,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="intake">Intake</label>
-                                    <input type="text" class="form-control" id="intake" name="intake" required>
+                                    <input type="date" class="form-control" id="intake" name="intake" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -200,6 +229,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                             <th>Actions</th>
                         </tr>
                     </thead>
+
                     <tbody style="font-size: 12px;">
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
@@ -209,7 +239,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                 <!-- <td><?php echo $row['university']; ?></td> -->
                                 <td><?php echo $row['programme']; ?></td>
                                 <td><?php echo $row['intake']; ?></td>
-                                <td><?php echo $row['first_name']; ?><?php echo $row['last_name']; ?></td>
+                                <td><?php echo $row['first_name']; ?>&nbsp;<?php echo $row['last_name']; ?></td>
                                 <!-- <td><?php echo $row['last_name']; ?></td> -->
                                 <td><?php echo $row['contact']; ?></td>
                                 <td><?php echo $row['email']; ?></td>
@@ -224,7 +254,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                             <option value="Lost" <?php if ($row['status'] == 'Lost') echo 'selected'; ?>>Lost</option>
                                             <option value="Converted" <?php if ($row['status'] == 'Converted') echo 'selected'; ?>>Converted</option>
                                         </select>
-                                        <button type="button" class="btn btn-primary btn-sm mt-2 update-status-btn">Update</button>
+                                        <button type="button" class="btn btn-primary btn-sm mt-2 update-status-btn w-100">Update</button>
                                     </form>
                                 </td>
 
@@ -299,7 +329,7 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                 <!-- Pagination Controls -->
                 <nav aria-label="Page navigation">
-                    <ul class="pagination">
+                    <ul class="pagination justify-content-center">
                         <?php if ($page > 1): ?>
                             <li class="page-item">
                                 <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
@@ -307,11 +337,13 @@ $total_pages = ceil($total_rows / $results_per_page);
                                 </a>
                             </li>
                         <?php endif; ?>
+
                         <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                             <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
                                 <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
                             </li>
                         <?php endfor; ?>
+
                         <?php if ($page < $total_pages): ?>
                             <li class="page-item">
                                 <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
@@ -321,6 +353,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                         <?php endif; ?>
                     </ul>
                 </nav>
+
 
             </div>
             <!-- End of Page Content -->
