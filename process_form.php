@@ -121,7 +121,7 @@ if (mysqli_num_rows($result) > 0) {
 // Execute the query
 if (mysqli_query($conn, $sql)) {
     // Redirect to the index page or another success page
-    header("Location: index.php");
+    header("Location: studentRegister");
     exit();
 } else {
     // Display an error message

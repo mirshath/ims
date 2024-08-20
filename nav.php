@@ -120,7 +120,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Components</h6>
                 <a class="collapse-item" href="addLeads">Add Lead</a>
-                <a class="collapse-item" href="indexs">Student Registration</a>
+                <a class="collapse-item" href="studentRegister">Student Registration</a>
             </div>
         </div>
     </li>
