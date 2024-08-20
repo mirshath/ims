@@ -6,14 +6,10 @@ $results_per_page = 10; // Number of results per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
 $start = ($page - 1) * $results_per_page;
 
-
-// ------------------------------------------------------------------------ 
 // Fetch distinct 'type' values from leads_table
-$sql_lead = "SELECT  lead_type FROM leads_table";
+$sql_lead = "SELECT DISTINCT lead_type FROM leads_table";
 $result_lead = $conn->query($sql_lead);
 
-
-// ------------------------------------------------------------------------ 
 // Fetch universities for the dropdown
 $universities_result = mysqli_query($conn, "SELECT * FROM universities");
 $universities = [];
@@ -21,15 +17,13 @@ while ($row = mysqli_fetch_assoc($universities_result)) {
     $universities[] = $row;
 }
 
-// Fetch programs for dropdown
+// Fetch programs for dropdown (if needed, otherwise AJAX will load them)
+$programsOptions = [];
 $sql = "SELECT * FROM program_table";
 $result = mysqli_query($conn, $sql);
-$programsOptions = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $programsOptions[] = $row;
 }
-// ------------------------------------------------------------------------ 
-
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -134,19 +128,14 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     <input type="date" class="form-control" id="lead_date" name="lead_date" required>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="type">Type</label>
-                                    <input type="text" class="form-control" id="type" name="type" required>
-                                </div>
-                            </div> -->
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="type">Type</label>
                                     <select class="form-control" id="type" name="type" required>
                                         <option value="" disabled selected>Select Type</option>
                                         <?php
-                                        // Check if there are results and populate the dropdown
+                                        // Populate the dropdown with lead types
                                         if ($result_lead->num_rows > 0) {
                                             while ($row = $result_lead->fetch_assoc()) {
                                                 echo '<option value="' . htmlspecialchars($row['lead_type']) . '">' . htmlspecialchars($row['lead_type']) . '</option>';
@@ -159,30 +148,13 @@ $total_pages = ceil($total_rows / $results_per_page);
                                 </div>
                             </div>
 
-                            <!-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="university">University</label>
-                                    <input type="text" class="form-control" id="university" name="university" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="programme">Programme</label>
-                                    <input type="text" class="form-control" id="programme" name="programme" required>
-                                </div>
-                            </div> -->
-
-                            <!-- ----------------------------------------------------------------  -->
-
-
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="university">University</label>
                                     <select class="form-control select2" id="university" name="university" required>
                                         <option value="">Select University</option>
                                         <?php foreach ($universities as $uni): ?>
-                                            <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university ? 'selected' : ''; ?>>
+                                            <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo isset($university) && $uni['id'] == $university ? 'selected' : ''; ?>>
                                                 <?php echo htmlspecialchars($uni['university_name']); ?>
                                             </option>
                                         <?php endforeach; ?>
@@ -203,7 +175,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                             <script>
                                 $(document).ready(function() {
-                                    var selectedProgramme = '<?php echo $programme; ?>';
+                                    var selectedProgramme = '<?php echo isset($programme) ? $programme : ''; ?>';
 
                                     $('#university').on('change', function() {
                                         var universityID = $(this).val();
@@ -229,14 +201,12 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     });
 
                                     // Trigger change event to load programs if university is already selected (for edit mode)
-                                    <?php if ($update && !empty($university)): ?>
+                                    <?php if (isset($university) && !empty($university)): ?>
                                         $('#university').trigger('change');
                                     <?php endif; ?>
                                 });
                             </script>
 
-                            
-                            <!-- ----------------------------------------------------------------  -->
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="intake">Intake</label>
@@ -270,7 +240,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="details">Details</label>
-                                    <textarea class="form-control" id="details" name="details"></textarea>
+                                    <textarea class="form-control" id="details" name="details" required></textarea>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -288,12 +258,15 @@ $total_pages = ceil($total_rows / $results_per_page);
                         </div>
                         <button type="submit" name="add_lead" class="btn btn-primary">Add Lead</button>
                     </form>
+
+
+
                 </div>
 
                 <!-- Leads Table -->
                 <!-- Leads Table -->
                 <table class="table table-striped">
-                    <thead>
+                    <thead style="font-size: 13px;">
                         <tr>
                             <!-- <th>ID</th> -->
                             <th>Lead Date</th>
@@ -437,10 +410,14 @@ $total_pages = ceil($total_rows / $results_per_page);
 
 
             </div>
-            <!-- End of Page Content -->
+            <!-- /.container-fluid -->
 
         </div>
         <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <?php include("includes/footer.php"); ?>
+        <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
@@ -448,4 +425,23 @@ $total_pages = ceil($total_rows / $results_per_page);
 </div>
 <!-- End of Page Wrapper -->
 
-<?php include("includes/footer.php"); ?>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
