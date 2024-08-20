@@ -280,6 +280,41 @@ $result = $conn->query("SELECT * FROM module_table");
                     </tbody>
                 </table>
 
+                <script>
+    $(document).ready(function() {
+        $('.edit-lead-btn').click(function() {
+            var leadId = $(this).data('id');
+
+            $.ajax({
+                url: 'get_lead.php',
+                type: 'POST',
+                data: { id: leadId },
+                dataType: 'json',
+                success: function(data) {
+                    if (data) {
+                        // Populate the form fields with the data
+                        $('#lead_date').val(data.lead_date);
+                        $('#type').val(data.type);
+                        $('#university').val(data.university).trigger('change'); // Trigger change to load programs
+                        $('#programme').val(data.programme);
+                        $('#intake').val(data.intake);
+                        $('#first_name').val(data.first_name);
+                        $('#last_name').val(data.last_name);
+                        $('#contact').val(data.contact);
+                        $('#email').val(data.email);
+                        $('#details').val(data.details);
+                        $('#status').val(data.status);
+                        
+                        // Update form action to handle edit
+                        $('#leadForm').attr('action', 'your_edit_script.php').append('<input type="hidden" name="id" value="' + leadId + '">');
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
                
                 <script>
                     $(document).ready(function() {
