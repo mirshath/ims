@@ -176,9 +176,9 @@ if (isset($_GET['delete'])) {
                         </select>
                     </div>
 
-          
+
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                   
+
 
                     <script>
                         $(document).ready(function() {
@@ -239,12 +239,16 @@ if (isset($_GET['delete'])) {
                         <textarea name="details" class="form-control"><?php echo htmlspecialchars($details); ?></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="status">Status:</label>
-                        <select name="status" class="form-control">
-                            <option value="Active" <?php echo ($status == 'Active') ? 'selected' : ''; ?>>Active</option>
-                            <option value="Inactive" <?php echo ($status == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="New" <?php echo ($status == 'New') ? 'selected' : ''; ?>>New</option>
+                            <option value="Contacted" <?php echo ($status == 'Contacted') ? 'selected' : ''; ?>>Contacted</option>
+                            <option value="Qualified" <?php echo ($status == 'Qualified') ? 'selected' : ''; ?>>Qualified</option>
+                            <option value="Lost" <?php echo ($status == 'Lost') ? 'selected' : ''; ?>>Lost</option>
+                            <option value="Converted" <?php echo ($status == 'Converted') ? 'selected' : ''; ?>>Converted</option>
                         </select>
                     </div>
+
 
                     <!-- Submit Button -->
                     <button type="submit" name="save" class="btn btn-primary"><?php echo $update ? 'Update' : 'Save'; ?> Lead</button>
