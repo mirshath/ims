@@ -316,7 +316,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     </form>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-warning btn-sm edit-lead-btn"
+                                    <!-- <button type="button" class="btn btn-warning btn-sm edit-lead-btn"
                                         data-id="<?php echo htmlspecialchars($row['id']); ?>"
                                         data-lead-date="<?php echo htmlspecialchars($row['lead_date']); ?>"
                                         data-type="<?php echo htmlspecialchars($row['type']); ?>"
@@ -329,7 +329,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                         data-email="<?php echo htmlspecialchars($row['email']); ?>"
                                         data-details="<?php echo htmlspecialchars($row['details']); ?>"
                                         data-status="<?php echo htmlspecialchars($row['status']); ?>">Edit
-                                    </button>
+                                    </button> -->
 
                                     <form class="delete-lead-form" style="display: inline;">
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
