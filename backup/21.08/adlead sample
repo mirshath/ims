@@ -3,20 +3,37 @@ include("database/connection.php");
 include("includes/header.php");
 
 // Initialize variables
-$date = $type = $university = $programme = $intake = $first_name = $last_name = $contact = $email = $details = $status = "";
+$lead_date = $type = $university = $programme = $intake = $first_name = $last_name = $contact = $email = $details = $status = "";
 $update = false;
 $id = 0;
 
+
+$results_per_page = 10; // Number of results per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
+$start = ($page - 1) * $results_per_page;
 
 // Fetch distinct 'type' values from leads_table
 $sql_lead = "SELECT DISTINCT lead_type FROM leads_table";
 $result_lead = $conn->query($sql_lead);
 
+// Fetch universities for the dropdown
+$universities_result = mysqli_query($conn, "SELECT * FROM universities");
+$universities = [];
+while ($row = mysqli_fetch_assoc($universities_result)) {
+    $universities[] = $row;
+}
 
+// Fetch programs for dropdown
+$sql = "SELECT * FROM program_table";
+$result = mysqli_query($conn, $sql);
+$programsOptions = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $programsOptions[] = $row;
+}
 
 // Create or Update a lead
 if (isset($_POST['save'])) {
-    $date = $_POST['date'];
+    $lead_date = $_POST['lead_date'];
     $type = $_POST['type'];
     $university = $_POST['university'];
     $programme = $_POST['programme'];
@@ -31,20 +48,21 @@ if (isset($_POST['save'])) {
 
     if ($id == 0) {
         // Insert new lead
-        $sql = "INSERT INTO leads (date, type, university, programme, intake, first_name, last_name, contact, email, details, status) 
+        $sql = "INSERT INTO leads (lead_date, type, university, programme, intake, first_name, last_name, contact, email, details, status) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssssss", $date, $type, $university, $programme, $intake, $first_name, $last_name, $contact, $email, $details, $status);
+        $stmt->bind_param("sssisssssss", $lead_date, $type, $university, $programme, $intake, $first_name, $last_name, $contact, $email, $details, $status);
     } else {
         // Update existing lead
-        $sql = "UPDATE leads SET date=?, type=?, university=?, programme=?, intake=?, first_name=?, last_name=?, contact=?, email=?, details=?, status=? 
+        $sql = "UPDATE leads SET 
+                lead_date=?, type=?, university=?, programme=?, intake=?, first_name=?, last_name=?, contact=?, email=?, details=?, status=? 
                 WHERE id=?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssssssi", $date, $type, $university, $programme, $intake, $first_name, $last_name, $contact, $email, $details, $status, $id);
+        $stmt->bind_param("sssisssssssi", $lead_date, $type, $university, $programme, $intake, $first_name, $last_name, $contact, $email, $details, $status, $id);
     }
 
     if ($stmt->execute()) {
-        echo '<script>window.location.href = "addLeads.php";</script>';
+        header('Location: addLeads.php');
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -61,7 +79,7 @@ if (isset($_GET['edit'])) {
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $date = htmlspecialchars($row['date']);
+        $lead_date = htmlspecialchars($row['lead_date']);
         $type = htmlspecialchars($row['type']);
         $university = htmlspecialchars($row['university']);
         $programme = htmlspecialchars($row['programme']);
@@ -81,7 +99,7 @@ if (isset($_GET['delete'])) {
     $stmt = $conn->prepare("DELETE FROM leads WHERE id=?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
-        echo '<script>window.location.href = "addLeads.php";</script>';
+        header('Location: addLeads.php');
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -113,28 +131,29 @@ if (isset($_GET['delete'])) {
                 </div>
 
                 <!-- Add/Edit Lead Form -->
-                <form action="addLeads.php" method="POST" class="mt-4">
+                <form action="" method="POST" class="mt-4">
                     <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
-
-                    <!-- Form fields for lead details -->
                     <div class="form-group">
-                        <label for="date">Date:</label>
-                        <input type="date" name="date" class="form-control" value="<?php echo htmlspecialchars($date); ?>" required>
+                        <label for="lead_date">Lead Date:</label>
+                        <input type="date" name="lead_date" class="form-control" value="<?php echo htmlspecialchars($lead_date); ?>" required>
                     </div>
 
-                    <!-- ----------------------------------  -->
 
-
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="type">Type:</label>
+                        <input type="text" name="type" class="form-control" value="<?php echo htmlspecialchars($type); ?>" required>
+                    </div> -->
+
+                    <!-- ---------------------------------  -->
+                    <div class="form-group">
+                        <label for="type">Type</label>
                         <select class="form-control" id="type" name="type" required>
-                            <option value="" disabled>Select Type</option>
+                            <option value="" disabled selected>Select Type</option>
                             <?php
                             // Populate the dropdown with lead types
                             if ($result_lead->num_rows > 0) {
                                 while ($row = $result_lead->fetch_assoc()) {
-                                    $selected = ($row['lead_type'] === $type) ? 'selected' : '';
-                                    echo '<option value="' . htmlspecialchars($row['lead_type']) . '" ' . $selected . '>' . htmlspecialchars($row['lead_type']) . '</option>';
+                                    echo '<option value="' . htmlspecialchars($row['lead_type']) . '">' . htmlspecialchars($row['lead_type']) . '</option>';
                                 }
                             } else {
                                 echo '<option value="" disabled>No types available</option>';
@@ -144,17 +163,102 @@ if (isset($_GET['delete'])) {
                     </div>
 
 
-                    <!-- -----------------------------------  -->
+                    <!-- ---------------------------------  -->
+
+
+
+
+
+                    <!-- 
+                    <div class="form-group">
+                        <label for="university">University ID:</label>
+                        <input type="number" name="university" class="form-control" value="<?php echo htmlspecialchars($university); ?>" required>
+                    </div> -->
+
+                    <!-- ----------------------------  -->
+
+
                     <div class="form-group">
                         <label for="university">University:</label>
-                        <input type="text" name="university" class="form-control" value="<?php echo htmlspecialchars($university); ?>" required>
+                        <select class="form-control select2" id="university" name="university" required>
+                            <option value="">Select University</option>
+                            <?php foreach ($universities as $uni): ?>
+                                <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($uni['university_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
+
+                    <!-- ----------------------------  -->
+
+
+
+
+
+
+
+                    <!-- 
                     <div class="form-group">
                         <label for="programme">Programme:</label>
                         <input type="text" name="programme" class="form-control" value="<?php echo htmlspecialchars($programme); ?>" required>
-                    </div>
+                    </div> -->
+
+
+                    <!-- --------------  -->
+
+
+
                     <div class="form-group">
-                        <label for="intake">Intake Date:</label>
+                        <label for="programme">Programme:</label>
+                        <select class="form-control" id="programme" name="programme">
+                            <option value="">Select Programme</option>
+                            <!-- Programs will be dynamically loaded here -->
+                        </select>
+                    </div>
+
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                    <script>
+                        $(document).ready(function() {
+                            var selectedProgramme = '<?php echo $programme; ?>';
+
+                            $('#university').on('change', function() {
+                                var universityID = $(this).val();
+                                if (universityID) {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'get_programs.php',
+                                        data: {
+                                            university_id: universityID
+                                        },
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            $('#programme').html('<option value="">Select Programme</option>');
+                                            $.each(data, function(key, value) {
+                                                var isSelected = value.program_name == selectedProgramme ? 'selected' : '';
+                                                $('#programme').append('<option value="' + value.program_name + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    $('#programme').html('<option value="">Select Programme</option>');
+                                }
+                            });
+
+                            // Trigger change event to load programs if university is already selected (for edit mode)
+                            <?php if ($update && !empty($university)): ?>
+                                $('#university').trigger('change');
+                            <?php endif; ?>
+                        });
+                    </script>
+                    <!-- --------------  -->
+
+
+
+
+                    <div class="form-group">
+                        <label for="intake">Intake:</label>
                         <input type="date" name="intake" class="form-control" value="<?php echo htmlspecialchars($intake); ?>" required>
                     </div>
                     <div class="form-group">
@@ -177,10 +281,21 @@ if (isset($_GET['delete'])) {
                         <label for="details">Details:</label>
                         <textarea name="details" class="form-control"><?php echo htmlspecialchars($details); ?></textarea>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="status">Status:</label>
                         <input type="text" name="status" class="form-control" value="<?php echo htmlspecialchars($status); ?>" required>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="New">New</option>
+                            <option value="Contacted">Contacted</option>
+                            <option value="Qualified">Qualified</option>
+                            <option value="Lost">Lost</option>
+                            <option value="Converted">Converted</option>
+                        </select>
                     </div>
+
 
                     <div class="form-group">
                         <?php if ($update == true): ?>
@@ -191,16 +306,16 @@ if (isset($_GET['delete'])) {
                     </div>
                 </form>
 
-                <!-- Lead List Table -->
+                <!-- Lead Table -->
                 <h3 class="mt-4">Lead List</h3>
                 <table class="table table-bordered table-striped mt-2">
                     <thead>
                         <tr>
-                            <th>Date</th>
+                            <th>Lead Date</th>
                             <th>Type</th>
                             <th>University</th>
                             <th>Programme</th>
-                            <th>Intake Date</th>
+                            <th>Intake</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Contact</th>
@@ -217,7 +332,7 @@ if (isset($_GET['delete'])) {
                         $result = $stmt->get_result();
                         while ($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['date']); ?></td>
+                                <td><?php echo htmlspecialchars($row['lead_date']); ?></td>
                                 <td><?php echo htmlspecialchars($row['type']); ?></td>
                                 <td><?php echo htmlspecialchars($row['university']); ?></td>
                                 <td><?php echo htmlspecialchars($row['programme']); ?></td>
@@ -229,8 +344,8 @@ if (isset($_GET['delete'])) {
                                 <td><?php echo htmlspecialchars($row['details']); ?></td>
                                 <td><?php echo htmlspecialchars($row['status']); ?></td>
                                 <td>
-                                    <a href="addLeads.php?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="addLeads.php?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this lead?');">Delete</a>
+                                    <a href="?edit=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-info">Edit</a>
+                                    <a href="?delete=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this lead?');">Delete</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -238,23 +353,13 @@ if (isset($_GET['delete'])) {
                 </table>
 
             </div>
-            <!-- End of Main Content -->
-
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Wrapper -->
-
-    <?php include("includes/footer.php"); ?>
+</div>
 
 </div>
-<!-- End of Page Wrapper -->
-
-<!-- Bootstrap core JavaScript -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
 </html>
+<?php $conn->close(); ?>
