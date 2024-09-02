@@ -1,0 +1,31 @@
+while ($row = $result_leads->fetch_assoc()) {
+                                echo '<tr>';
+                                echo '<td>' . htmlspecialchars($row['date']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['type']) . '</td>';
+                                // echo '<td>' . htmlspecialchars($row['university']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['programme']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['intake']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['first_name']) . ' ' . $row['last_name'] . '</td>';
+                                // echo '<td>' . htmlspecialchars($row['last_name']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['contact']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['email']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['details']) . '</td>';
+                                // echo '<td>' . htmlspecialchars($row['status']) . '</td>';
+
+
+                                echo '<td>';
+                                echo '<select class="status-dropdown" data-id="' . htmlspecialchars($row['id']) . '">';
+                                foreach ($statusOptions as $option) {
+                                    $selected = $row['status'] == $option['status'] ? 'selected' : '';
+                                    echo '<option value="' . htmlspecialchars($option['status']) . '" ' . $selected . '>' . htmlspecialchars($option['status_name']) . '</option>';
+                                }
+                                echo '</select>';
+                                echo '</td>';
+
+
+                                echo '<td>';
+                                echo '<a href="addLeads.php?edit=' . htmlspecialchars($row['id']) . '" class="btn btn-sm btn-warning">Edit</a> ';
+                                echo '<a href="addLeads.php?delete=' . htmlspecialchars($row['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure you want to delete this lead?\')">Delete</a>';
+                                echo '</td>';
+                                echo '</tr>';
+                            }
