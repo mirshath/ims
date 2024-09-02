@@ -261,14 +261,6 @@ include("includes/header.php");
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Name to be appeared</th>
-                            <th scope="col">DOB</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">TP</th>
-                            <th scope="col">Mobile</th>
-                            <th scope="col">NIC</th>
-                            <th scope="col">Passport</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Occupation</th>
                             <!-- Add more columns if needed -->
                         </tr>
                     </thead>
@@ -282,20 +274,26 @@ include("includes/header.php");
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['student_code']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['first_name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['last_name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['certificate_name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['date_of_birth']) . "</td>";
-                        echo "</tr>";
+                ?> 
+                        
+                        <tr>
+                            <td><?php echo $row['student_id']; ?></td>
+                            <td><?php echo $row['first_name']; ?></td>
+                            <td><?php echo $row['last_name']; ?></td>
+                            <td><?php echo $row['certificate_name']; ?></td>
+                            <td><?php echo $row['certificate_name']; ?></td>
+                        </tr>
+                        
+                        
+                        <?php
+
                     }
                 } else {
-                    echo "<tr><td colspan='12'>No registered students found.</td></tr>";
+                    echo "<tr><td colspan='3'>No registered students found.</td></tr>";
                 }
 
                 $conn->close();
-                ?>
+                        ?>
             </tbody> -->
                     <tbody id="studentTableBody">
                         <!-- Data will be loaded here -->
