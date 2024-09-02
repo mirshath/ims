@@ -250,7 +250,7 @@ if (isset($_GET['delete'])) {
                             <th>Batch Name</th>
                             <th>University</th>
                             <th>Programme</th>
-                            <th>Year Batch Code</th>
+                            <th>Year & Batch</th>
                             <th>Intake Date</th>
                             <th>End Date</th>
                             <!-- <th>Actions</th> -->

@@ -242,7 +242,7 @@ $result = $conn->query("SELECT * FROM module_table");
                         <tr>
                             <th>Module Code</th>
                             <th>Module Name</th>
-                            <th>University</th>
+                            <!-- <th>University</th> -->
                             <th>Programme</th>
                             <th>Assessment Components</th>
                             <th>Pass Mark</th>
@@ -255,18 +255,15 @@ $result = $conn->query("SELECT * FROM module_table");
                             <tr>
                                 <td><?php echo htmlspecialchars($row['module_code']); ?></td>
                                 <td><?php echo htmlspecialchars($row['module_name']); ?></td>
-                                <td>
+                                <!-- <td>
                                     <?php
-                                    // $universityID = $row['university'];
-                                    // $uniResult = $conn->query("SELECT university_name FROM universities WHERE id=$universityID");
                                     $universityID = $row['university'];
                                     $uniResult = $conn->query("SELECT university_name FROM universities WHERE id='$universityID'");
-                                    // Ensure $universityID is quoted if it is a string, otherwise remove quotes if it's an integer
 
                                     $uniRow = $uniResult->fetch_assoc();
                                     echo htmlspecialchars($uniRow['university_name']);
                                     ?>
-                                </td>
+                                </td> -->
                                 <td><?php echo htmlspecialchars($row['programme']); ?></td>
                                 <td><?php echo htmlspecialchars($row['assessment_components']); ?></td>
                                 <td><?php echo htmlspecialchars($row['pass_mark']); ?></td>
