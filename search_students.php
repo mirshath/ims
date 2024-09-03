@@ -5,7 +5,7 @@ include("database/connection.php");
 // Retrieve the search query from the AJAX request and sanitize it
 $query = mysqli_real_escape_string($conn, $_POST['query']);
 
-$sql = "SELECT * FROM students WHERE first_name LIKE '%$query%' OR last_name LIKE '%$query%' OR student_code LIKE '%$query%'";
+$sql = "SELECT * FROM students WHERE first_name LIKE '%$query%' OR last_name LIKE '%$query%' OR student_code LIKE '%$query%' OR nic LIKE '%$query%'";
 $result = mysqli_query($conn, $sql);
 
 $results = '';
