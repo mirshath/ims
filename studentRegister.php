@@ -220,45 +220,51 @@ include("includes/header.php");
                 </div>
                 <!-- Criteria Table -->
                 <!-- <h5 class="mt-5 mb-4 text-muted">Registered Students</h5> -->
+                <div class="card mt-4 mb-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <!-- Centering content both vertically and horizontally -->
+                            <div class="col-md-6 d-flex justify-content-cente align-items-center text-muted fw-bolder">
+                                <p class="mb-0">Registered Students</p>
+                            </div>
 
-                <!-- Container for search input and label -->
-                <div class="mb-3 d-flex justify-content-end align-items-center float-md-right w-50" style="height: 100px;">
-                    <label for="tableSearch" class="form-label mr-2" style="flex-shrink: 0; width: 150px;">Search Students:</label>
-                    <input type="text" id="tableSearch" class="form-control" placeholder="Type to search..." style="flex-grow: 1;">
+                            <div class="col-md-6"><!-- Container for search input and label -->
+                                <div class="pt-3 pb-3 d-flex justify-content-end align-items-center " style="">
+                                    <label for="tableSearch" class="form-label  fw-bolder" style="flex-shrink: 0; width: 150px;">Search Students:</label>
+                                    <input type="text" id="tableSearch" class="form-control" placeholder="Type to search..." style="flex-grow: 1;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped mt-3 border mb-4">
+                            <thead>
+                                <tr style="font-size: 13px;">
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Name to be appeared</th>
+                                    <th scope="col">DOB</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">TP</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">NIC</th>
+                                    <th scope="col">Passport</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Occupation</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="studentTableBody" style="font-size: 12px;">
+                                <!-- Data will be loaded here -->
+                            </tbody>
+                        </table>
+
+                        <!-- Pagination Controls -->
+                        <div id="paginationControls" class="d-flex justify-content-center">
+                            <!-- Pagination buttons will be inserted here -->
+                        </div>
+                    </div>
                 </div>
-
-                <table class="table table-striped mt-3 border mb-4">
-                    <thead>
-                        <tr style="font-size: 13px; ">
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Name to be appeared</th>
-                            <th scope="col">DOB</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">TP</th>
-                            <th scope="col">Mobile</th>
-                            <th scope="col">NIC</th>
-                            <th scope="col">Passport</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Occupation</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="studentTableBody" style="font-size: 12px;">
-                        <!-- Data will be loaded here -->
-                    </tbody>
-                </table>
-
-                <!-- Pagination Controls -->
-                <!-- <ul id="paginationControls" class="pagination"> -->
-                <!-- Pagination buttons will be inserted here -->
-                <!-- </ul> -->
-
-                <!-- Pagination Controls -->
-                <div id="paginationControls" class="d-flex justify-content-center">
-                    <!-- Pagination buttons will be inserted here -->
-                </div>
-
 
                 <script>
                     $(document).ready(function() {
@@ -281,37 +287,28 @@ include("includes/header.php");
                                     let tableBody = "";
                                     data.data.forEach((student) => {
                                         tableBody += `<tr>
-                            <td>${student.first_name}</td>
-                            <td>${student.last_name}</td>
-                            <td>${student.certificate_name}</td>
-                            <td>${student.date_of_birth}</td>
-                            <td>${student.permanent_address}</td>
-                            <td>${student.telephone}</td>
-                            <td>${student.mobile}</td>
-                            <td>${student.nic}</td>
-                            <td>${student.passport}</td>
-                            <td>${student.personal_email}</td>
-                            <td>${student.occupation}</td>
-                        </tr>`;
+                                                    <td>${student.first_name}</td>
+                                                    <td>${student.last_name}</td>
+                                                    <td>${student.certificate_name}</td>
+                                                    <td>${student.date_of_birth}</td>
+                                                    <td>${student.permanent_address}</td>
+                                                    <td>${student.telephone}</td>
+                                                    <td>${student.mobile}</td>
+                                                    <td>${student.nic}</td>
+                                                    <td>${student.passport}</td>
+                                                    <td>${student.personal_email}</td>
+                                                    <td>${student.occupation}</td>
+                                                </tr>`;
                                     });
                                     $("#studentTableBody").html(tableBody);
-
-                                    // Update pagination controls
-                                    //             let paginationControls = "";
-                                    //             for (let i = 1; i <= data.totalPages; i++) {
-                                    //                 paginationControls += `<li class="page-item ${i === page ? 'active' : ''}">
-                                    //     <a class="page-link" href="#">${i}</a>
-                                    // </li>`;
-                                    //             }
-                                    //             $("#paginationControls").html(paginationControls);
 
                                     // Update pagination controls
                                     let paginationControls = `<ul class="pagination justify-content-end">`; // Add justify-content-end class here
                                     for (let i = 1; i <= data.totalPages; i++) {
                                         paginationControls += `
-        <li class="page-item ${i === parseInt(page) ? 'active' : ''}">
-            <a class="page-link" href="#" data-page="${i}">${i}</a>
-        </li>`;
+                                            <li class="page-item ${i === parseInt(page) ? 'active' : ''}">
+                                                <a class="page-link" href="#" data-page="${i}">${i}</a>
+                                            </li>`;
                                     }
                                     paginationControls += `</ul>`;
                                     $("#paginationControls").html(paginationControls);
@@ -331,12 +328,6 @@ include("includes/header.php");
                             loadStudents(currentPage, searchQuery);
                         });
 
-                        // Handle pagination clicks
-                        // $(document).on("click", "#paginationControls .page-link", function(e) {
-                        //     e.preventDefault();
-                        //     currentPage = $(this).text();
-                        //     loadStudents(currentPage, searchQuery);
-                        // });
                         // Handle pagination clicks
                         $(document).on("click", "#paginationControls .page-link", function(e) {
                             e.preventDefault();
