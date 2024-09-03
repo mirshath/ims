@@ -4,6 +4,8 @@ include("includes/header.php");
 
 
 
+
+
 ?>
 
 <!-- Page Wrapper -->
@@ -28,7 +30,7 @@ include("includes/header.php");
                     <!-- Add Criteria Form -->
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 float-md-right">
                             <div class="form-group position-relative">
                                 <label class="form-label text-danger" for="search">Search Students for Edit:</label>
                                 <input type="text" class="form-control" id="search" name="search" placeholder="Type to search..." autocomplete="off">
@@ -233,23 +235,14 @@ include("includes/header.php");
                                     <button type="submit" class="btn btn-primary  float-right">Submit</button>
                                 </div>
                             </div>
-
-
                         </div>
-
-
-
-
                     </form>
 
                 </div>
-
                 <!-- Criteria Table -->
-
                 <h5 class="mt-5 mb-4 text-muted">Registered Students</h5>
-
                 <!-- Search Input Box -->
-                <div class="mb-3 float-md-right">
+                <!-- <div class="mb-3 float-md-right">
                     <label for="tableSearch" class="form-label">Search Students:</label>
                     <input type="text" id="tableSearch" class="form-control" placeholder="Type to search...">
                 </div>
@@ -269,7 +262,15 @@ include("includes/header.php");
                             });
                         });
                     });
-                </script>
+                </script> -->
+
+                <!-- Search Input Box -->
+                <div class="mb-3 float-md-right">
+                    <label for="tableSearch" class="form-label">Search Students:</label>
+                    <input type="text" id="tableSearch" class="form-control" placeholder="Type to search...">
+                </div>
+
+
 
                 <table class="table table-striped mt-3 border mb-4">
                     <thead>
@@ -293,6 +294,87 @@ include("includes/header.php");
                         <!-- Data will be loaded here -->
                     </tbody>
                 </table>
+
+                <!-- pagination section  -->
+
+                <!-- Pagination Controls -->
+                <!-- <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center" id="paginationControls">
+                       
+                    </ul>
+                </nav> -->
+
+                <!-- Pagination Controls -->
+                <ul id="paginationControls" class="pagination">
+                    <!-- Pagination buttons will be inserted here -->
+                </ul>
+
+                <script>
+                    $(document).ready(function() {
+                        const limit = 3; // Number of items per page
+                        let currentPage = 1; // Current page number
+                        let searchQuery = ''; // Search query
+
+                        // Function to load students data based on page and search query
+                        function loadStudents(page, query = '') {
+                            $.ajax({
+                                url: "fetch_students.php", // Server-side script
+                                type: "POST",
+                                data: {
+                                    limit: limit,
+                                    page: page,
+                                    search: query,
+                                },
+                                success: function(response) {
+                                    const data = JSON.parse(response);
+                                    let tableBody = "";
+                                    data.data.forEach((student) => {
+                                        tableBody += `<tr>
+                            <td>${student.first_name}</td>
+                            <td>${student.last_name}</td>
+                            <td>${student.certificate_name}</td>
+                            <td>${student.date_of_birth}</td>
+                            <td>${student.permanent_address}</td>
+                            <td>${student.telephone}</td>
+                            <td>${student.mobile}</td>
+                            <td>${student.nic}</td>
+                            <td>${student.passport}</td>
+                            <td>${student.personal_email}</td>
+                            <td>${student.occupation}</td>
+                        </tr>`;
+                                    });
+                                    $("#studentTableBody").html(tableBody);
+
+                                    // Update pagination controls
+                                    let paginationControls = "";
+                                    for (let i = 1; i <= data.totalPages; i++) {
+                                        paginationControls += `<li class="page-item ${i === page ? 'active' : ''}">
+                            <a class="page-link" href="#">${i}</a>
+                        </li>`;
+                                    }
+                                    $("#paginationControls").html(paginationControls);
+                                },
+                            });
+                        }
+
+                        // Load initial data
+                        loadStudents(currentPage);
+
+                        // Handle search input
+                        $("#tableSearch").on("input", function() {
+                            searchQuery = $(this).val();
+                            currentPage = 1; // Reset to first page on search
+                            loadStudents(currentPage, searchQuery);
+                        });
+
+                        // Handle pagination clicks
+                        $(document).on("click", "#paginationControls .page-link", function(e) {
+                            e.preventDefault();
+                            currentPage = $(this).text();
+                            loadStudents(currentPage, searchQuery);
+                        });
+                    });
+                </script>
             </div>
         </div>
     </div>
@@ -300,49 +382,7 @@ include("includes/header.php");
 
 </div>
 
-<!-- scripts  -->
-<script>
-    $(document).ready(function() {
-        const limit = 10;
 
-        function loadStudents(page) {
-            $.ajax({
-                url: "fetch_students.php",
-                type: "POST",
-                data: {
-                    limit: limit,
-                    page: page,
-                },
-                success: function(response) {
-                    const data = JSON.parse(response);
-                    let tableBody = "";
-                    data.data.forEach((student) => {
-                        tableBody += `<tr>
-                                <td>${student.first_name}</td>
-                                <td>${student.last_name}</td>
-                                <td>${student.certificate_name}</td>
-                                <td>${student.date_of_birth}</td>
-                                <td>${student.permanent_address}</td>
-                                <td>${student.telephone}</td>
-                                <td>${student.mobile}</td>
-                                <td>${student.nic}</td>
-                                <td>${student.passport}</td>
-                                <td>${student.personal_email}</td>
-                                <td>${student.occupation}</td>
-                            </tr>`;
-                    });
-                    $("#studentTableBody").html(tableBody);
-
-                },
-            });
-        }
-
-        // Load initial data
-        loadStudents(1);
-
-
-    });
-</script>
 
 <script>
     $(document).ready(function() {
