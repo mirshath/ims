@@ -43,8 +43,8 @@
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-        <!-- new   -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <!-- new   -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 
@@ -76,6 +76,24 @@
 
 
     <style>
+        .form-control {
+            display: block;
+            width: 90%;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
+            background-clip: padding-box;
+            border: var(--bs-border-width) solid var(--bs-border-color);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: var(--bs-border-radius);
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
         .form-control:focus {
             box-shadow: 0 0 5px #c110104f;
             border-color: #c110104f;
