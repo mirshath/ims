@@ -4,10 +4,6 @@ include("includes/header.php");
 
 
 
-
-
-
-
 ?>
 
 <!-- Page Wrapper -->
@@ -246,68 +242,57 @@ include("includes/header.php");
 
                     </form>
 
-
-
-
                 </div>
 
                 <!-- Criteria Table -->
 
                 <h5 class="mt-5 mb-4 text-muted">Registered Students</h5>
-                <table class="table table-striped mt-3 border">
+
+                <!-- Search Input Box -->
+                <div class="mb-3">
+                    <label for="tableSearch" class="form-label">Search Students:</label>
+                    <input type="text" id="tableSearch" class="form-control" placeholder="Type to search...">
+                </div>
+
+                <script>
+                    $(document).ready(function() {
+                        $("#tableSearch").on("input", function() {
+                            let searchTerm = $(this).val().toLowerCase();
+
+                            $("#studentTableBody tr").each(function() {
+                                let rowText = $(this).text().toLowerCase();
+                                if (rowText.includes(searchTerm)) {
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        });
+                    });
+                </script>
+
+                <table class="table table-striped mt-3 border mb-4">
                     <thead>
-                        <tr>
-                            <th scope="col">Student ID</th>
+                        <tr style="font-size: 13px; ">
+
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Name to be appeared</th>
-                            <!-- Add more columns if needed -->
+                            <th scope="col">DOB</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">TP</th>
+                            <th scope="col">Mobile</th>
+                            <th scope="col">NIC</th>
+                            <th scope="col">Passport</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Occupation</th>
                         </tr>
                     </thead>
-                    <!-- <tbody>
-                <?php
 
-
-
-                $sql = "SELECT * FROM students";
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                ?> 
-                        
-                        <tr>
-                            <td><?php echo $row['student_id']; ?></td>
-                            <td><?php echo $row['first_name']; ?></td>
-                            <td><?php echo $row['last_name']; ?></td>
-                            <td><?php echo $row['certificate_name']; ?></td>
-                            <td><?php echo $row['certificate_name']; ?></td>
-                        </tr>
-                        
-                        
-                        <?php
-
-                    }
-                } else {
-                    echo "<tr><td colspan='3'>No registered students found.</td></tr>";
-                }
-
-                $conn->close();
-                        ?>
-            </tbody> -->
-                    <tbody id="studentTableBody">
+                    <tbody id="studentTableBody" style="font-size: 12px;">
                         <!-- Data will be loaded here -->
                     </tbody>
                 </table>
-
-
-
-
-
-
-
-
-
             </div>
         </div>
     </div>
@@ -333,23 +318,21 @@ include("includes/header.php");
                     let tableBody = "";
                     data.data.forEach((student) => {
                         tableBody += `<tr>
-                                <td>${student.student_code}</td>
                                 <td>${student.first_name}</td>
                                 <td>${student.last_name}</td>
                                 <td>${student.certificate_name}</td>
+                                <td>${student.date_of_birth}</td>
+                                <td>${student.permanent_address}</td>
+                                <td>${student.telephone}</td>
+                                <td>${student.mobile}</td>
+                                <td>${student.nic}</td>
+                                <td>${student.passport}</td>
+                                <td>${student.personal_email}</td>
+                                <td>${student.occupation}</td>
                             </tr>`;
                     });
                     $("#studentTableBody").html(tableBody);
 
-                    let pagination = "";
-                    for (let i = 1; i <= data.pages; i++) {
-                        pagination += `<li class="page-item ${
-                  i === page ? "active" : ""
-                }">
-                                <a class="page-link" href="#" data-page="${i}">${i}</a>
-                            </li>`;
-                    }
-                    $("#pagination").html(pagination);
                 },
             });
         }
@@ -357,12 +340,7 @@ include("includes/header.php");
         // Load initial data
         loadStudents(1);
 
-        // Handle page click
-        $(document).on("click", ".page-link", function(e) {
-            e.preventDefault();
-            const page = $(this).data("page");
-            loadStudents(page);
-        });
+
     });
 </script>
 
@@ -478,13 +456,7 @@ include("includes/header.php");
 </script>
 
 
-
-
-
-
-
-
 </body>
 
 </html>
-<!-- <?php $conn->close(); ?> -->
+<?php $conn->close(); ?>
