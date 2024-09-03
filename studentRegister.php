@@ -249,7 +249,7 @@ include("includes/header.php");
                 <h5 class="mt-5 mb-4 text-muted">Registered Students</h5>
 
                 <!-- Search Input Box -->
-                <div class="mb-3">
+                <div class="mb-3 float-md-right">
                     <label for="tableSearch" class="form-label">Search Students:</label>
                     <input type="text" id="tableSearch" class="form-control" placeholder="Type to search...">
                 </div>
