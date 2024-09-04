@@ -229,3 +229,28 @@ CREATE TABLE leads (
     details TEXT,
     status VARCHAR(50) NOT NULL
 );
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------
+CREATE TABLE `Allocate_Programme` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) NOT NULL,
+  `university_id` int(11) NOT NULL,
+  `programme_id` int(11) NOT NULL,
+  `batch_id` int(11) NOT NULL,
+  `student_registration_id` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`student_id`) REFERENCES `students` (`student_code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`university_id`) REFERENCES `universities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`programme_id`) REFERENCES `program_table` (`program_code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`batch_id`) REFERENCES `batch_table` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+

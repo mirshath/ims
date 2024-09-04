@@ -25,6 +25,9 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 
+
+
+
 // Create or Update a batch
 if (isset($_POST['save'])) {
     $batch_name = $_POST['batch_name'];
@@ -146,6 +149,17 @@ if (isset($_GET['delete'])) {
                         </select>
                     </div>
 
+
+
+
+
+
+
+                    <!-- ------------------------------------------------------------------------  -->
+                    <!-- <div class="form-group">
+                <label for="programme">Programme:</label>
+                <input type="text" name="programme" class="form-control" value="<?php echo htmlspecialchars($programme); ?>" required>
+            </div> -->
                     <!-- -----------------------------------------------------------------------------------------------  -->
 
 
@@ -161,7 +175,7 @@ if (isset($_GET['delete'])) {
 
                     <script>
                         $(document).ready(function() {
-
+                            
                             var selectedProgramme = '<?php echo $programme; ?>';
 
                             $('#university').on('change', function() {
@@ -177,10 +191,9 @@ if (isset($_GET['delete'])) {
                                         success: function(data) {
                                             $('#programme').html('<option value="">Select Programme</option>');
                                             $.each(data, function(key, value) {
-                                                var isSelected = value.program_code == selectedProgramme ? 'selected' : '';
-                                                $('#programme').append('<option value="' + value.program_code + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                                var isSelected = value.program_name == selectedProgramme ? 'selected' : '';
+                                                $('#programme').append('<option value="' + value.program_name + '" ' + isSelected + '>' + value.program_name + '</option>');
                                             });
-
                                         }
                                     });
                                 } else {
