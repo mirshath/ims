@@ -140,9 +140,6 @@ $result = $conn->query("SELECT * FROM module_table");
                         <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
                     </div>
 
-
-
-
                     <div class="form-group">
                         <label for="university">University:</label>
                         <select class="form-control select2" id="university" name="university" required>
