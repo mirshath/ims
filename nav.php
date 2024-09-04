@@ -127,6 +127,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
                 <h6 class="collapse-header">Components</h6>
                 <a class="collapse-item" href="addLeads">Add Lead</a>
                 <a class="collapse-item" href="studentRegister">Student Registration</a>
+                <a class="collapse-item" href="allocateProgram">Allocate Program</a>
             </div>
         </div>
     </li>

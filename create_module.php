@@ -2,7 +2,6 @@
 include("database/connection.php");
 include("includes/header.php");
 
-
 // Initialize variables
 $module_code = $module_name = $university = $programme = $assessment_components = "";
 $pass_mark = $type = $lecturers = $institution = "";
@@ -99,8 +98,6 @@ if (isset($_GET['delete'])) {
 // Fetch all records
 $result = $conn->query("SELECT * FROM module_table");
 
-
-
 ?>
 
 <!-- Page Wrapper -->
@@ -125,8 +122,6 @@ $result = $conn->query("SELECT * FROM module_table");
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">module managment</h4>
                 </div>
-
-
                 <!-- Add Criteria Form -->
                 <form method="POST" action="">
                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -152,8 +147,6 @@ $result = $conn->query("SELECT * FROM module_table");
                         </select>
                     </div>
 
-
-
                     <div class="form-group">
                         <label for="programme">Programme:</label>
                         <select class="form-control" id="programme" name="programme" required>
@@ -166,9 +159,6 @@ $result = $conn->query("SELECT * FROM module_table");
 
                     <!-- Include Select2 CSS -->
                     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-                    <!-- Include jQuery (if not already included) -->
-                    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
                     <!-- Include Select2 JS -->
                     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -328,8 +318,6 @@ $result = $conn->query("SELECT * FROM module_table");
                     });
                 </script>
 
-
-
                 <script>
                     $(document).ready(function() {
                         $('#enable_lecturers').change(function() {
@@ -341,11 +329,6 @@ $result = $conn->query("SELECT * FROM module_table");
                         });
                     });
                 </script>
-
-
-
-
-
             </div>
         </div>
     </div>
