@@ -160,14 +160,32 @@ $result = $conn->query("SELECT * FROM module_table");
                     <div class="form-group">
                         <label for="programme">Programme:</label>
                         <select class="form-control" id="programme" name="programme" required>
-                            <option value="">Select Programme</option>
                             <!-- Programs will be dynamically loaded here -->
+                            <option value="">Select Programme</option>
                         </select>
                     </div>
+
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                    <!-- Include Select2 CSS -->
+                    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+                    <!-- Include jQuery (if not already included) -->
+                    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+                    <!-- Include Select2 JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
 
                     <script>
                         $(document).ready(function() {
+                            // Initialize Select2 for both University and Programme dropdowns
+                            $('#university, #programme').select2({
+                                placeholder: "Select an option",
+                                allowClear: true
+                            });
+
                             var selectedProgramme = '<?php echo $programme; ?>';
 
                             $('#university').on('change', function() {

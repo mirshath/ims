@@ -25,13 +25,14 @@ include("includes/header.php");
                         <div class="col-md-5 offset-md-6">
                             <div class="form-group position-relative">
                                 <label class="form-label text-danger fw-bolder" for="search">Select Students for Edit:</label>
-                                <input type="text" class="form-control" id="search" name="search" placeholder="Type to search..." autocomplete="off">
+                                <!-- Search results will be dynamically inserted here -->
+                                <input type="text" class="form-control select2" id="search" name="search" placeholder="Type to search..." autocomplete="off">
                                 <div id="search-results" class="dropdown-menu w-100" style="display: none;">
-                                    <!-- Search results will be dynamically inserted here -->
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                     <form id="studentForm" action="process_form.php" method="post">
                         <div class="mb-3">
