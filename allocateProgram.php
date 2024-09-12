@@ -8,15 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $programme_code = $_POST['programme_code'];
     $batch_id = $_POST['batch_id'];
     $student_registration_id = $_POST['student_registration_id'];
-    $compulsory_subs = isset($_POST['compulsory_subs']) ? $_POST['compulsory_subs'] : '';
-    $elective_subs = isset($_POST['elective_subs']) ? $_POST['elective_subs'] : '';
 
     // Insert data into `allocate_programme` table
-    $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id, compulsory_subs, elective_subs) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id) 
+            VALUES (?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iiiisss", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id, $compulsory_subs, $elective_subs);
+    $stmt->bind_param("iiiis", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id);
 
     if ($stmt->execute()) {
         echo '<script>window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
@@ -28,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn->close();
 }
 ?>
-
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -145,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         });
 
-        // On programme change, load batches and modules old
+        // On programme change, load batches and modules
         // $('#programme').change(function() {
         //     const programmeCode = $(this).val();
         //     $('#batch').empty().append('<option value="">Select Batch</option>');
@@ -200,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //     }
         // });
 
-        // On programme change, load batches and modules new
+        // On programme change, load batches and modules
         $('#programme').change(function() {
             const programmeCode = $(this).val();
             $('#batch').empty().append('<option value="">Select Batch</option>');
@@ -271,25 +268,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 });
             }
         });
-
-
-        // Update hidden fields on checkbox change
-        $(document).on('change', 'input[name="compulsory_modules[]"], input[name="elective_modules[]"]', function() {
-            let compulsoryModules = [];
-            let electiveModules = [];
-
-            $('input[name="compulsory_modules[]"]:checked').each(function() {
-                compulsoryModules.push($(this).val());
-            });
-
-            $('input[name="elective_modules[]"]:checked').each(function() {
-                electiveModules.push($(this).val());
-            });
-
-            $('#compulsory-modules').val(compulsoryModules.join(','));
-            $('#elective-modules').val(electiveModules.join(','));
-        });
-
     });
 </script>
 </body>
