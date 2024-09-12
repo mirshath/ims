@@ -77,7 +77,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
                             $current_url == 'create_coordinators' ||
                             $current_url == 'create_program' ||
                             $current_url == 'create_lecturer' ||
-                            $current_url == 'create_module' ||
+                            $current_url == 'crea_module_table' ||
                             $current_url == 'create_batch' ||
                             $current_url == 'create_grade' ||
                             $current_url == 'create_currency' ||
@@ -100,7 +100,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
                 <a class="collapse-item <?= ($current_url == 'create_coordinators') ? 'active' : '' ?>" href="./create_coordinators">Coordinator</a>
                 <a class="collapse-item <?= ($current_url == 'create_program') ? 'active' : '' ?>" href="./create_program">Program</a>
                 <a class="collapse-item <?= ($current_url == 'create_lecturer') ? 'active' : '' ?>" href="./create_lecturer">Lecture</a>
-                <a class="collapse-item <?= ($current_url == 'create_module') ? 'active' : '' ?>" href="./create_module">Module</a>
+                <a class="collapse-item <?= ($current_url == 'crea_module_table') ? 'active' : '' ?>" href="./crea_module_table">Module</a>
                 <a class="collapse-item <?= ($current_url == 'create_batch') ? 'active' : '' ?>" href="./create_batch">Batch</a>
                 <a class="collapse-item <?= ($current_url == 'create_grade') ? 'active' : '' ?>" href="./create_grade">Grade</a>
                 <a class="collapse-item <?= ($current_url == 'create_currency') ? 'active' : '' ?>" href="./create_currency">Currency</a>
