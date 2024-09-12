@@ -101,7 +101,6 @@ $result = $conn->query("
     LEFT JOIN program_table p ON m.programme_id = p.program_code
 ");
 
-
 ?>
 
 <!-- Page Wrapper -->
@@ -127,8 +126,6 @@ $result = $conn->query("
                     <h4 class="h4 mb-0 text-gray-800">Modules</h4>
                 </div>
 
-
-                <!-- Add Criteria Form -->
                 <!-- Add Criteria Form -->
                 <form method="POST" action="">
                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -243,14 +240,6 @@ $result = $conn->query("
 
                     <!-- ---------------------------------------------  -->
 
-                    <!-- <div class="form-group">
-                        <label for="lecturers">Lecturers:</label>
-                        <input type="text" class="form-control" placeholder="Lecturers" id="lecturers" name="lecturers" value="<?php echo htmlspecialchars($lecturers); ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="institution">Institution:</label>
-                        <input type="text" class="form-control" placeholder="Institution" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>">
-                    </div> -->
                     <?php if ($update): ?>
                         <button type="submit" class="btn btn-primary" name="update">Update</button>
                     <?php else: ?>
@@ -311,8 +300,6 @@ $result = $conn->query("
             </div>
         </div>
     </div>
-</div>
-
 </div>
 
 </body>
