@@ -99,20 +99,15 @@ $result = $conn->query("SELECT * FROM modules");
 <!-- Page Wrapper -->
 <div id="wrapper">
     <?php include("nav.php"); ?>
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <?php include("includes/topnav.php"); ?>
             <!-- End of Topbar -->
-
             <!-- Begin Page Content -->
             <div class="container">
-
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Module Management</h4>
@@ -129,7 +124,7 @@ $result = $conn->query("SELECT * FROM modules");
                         <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="university">University:</label>
                         <select class="form-control select2" id="university" name="university" required>
                             <option value="">Select University</option>
@@ -139,9 +134,9 @@ $result = $conn->query("SELECT * FROM modules");
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
+                    </div> -->
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="programme">Programme:</label>
                         <select class="form-control select2" id="programme" name="programme" required>
                             <option value="">Select Programme</option>
@@ -151,9 +146,9 @@ $result = $conn->query("SELECT * FROM modules");
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
+                    </div> -->
 
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
                     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -193,7 +188,69 @@ $result = $conn->query("SELECT * FROM modules");
                                 $('#university').trigger('change');
                             <?php endif; ?>
                         });
+                    </script> -->
+                    <!-- ------------------------------------------------------------------------  -->
+                    <!-- ------------------------------------------------------------------------  -->
+                    <div class="form-group">
+                        <label for="university">University:</label>
+                        <select class="form-control select2" id="university" name="university" required>
+                            <option value="">Select University</option>
+                            <?php foreach ($universities as $uni): ?>
+                                <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university_id ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($uni['university_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="programme">Programme:</label>
+                        <select class="form-control" id="programme" name="programme" required>
+                            <option value="">Select Programme</option>
+                            <!-- Programs will be dynamically loaded here -->
+                        </select>
+                    </div>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                   
+
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            var selectedProgramme = '<?php echo $programme_id; ?>';
+
+                            $('#university').on('change', function() {
+                                var universityID = $(this).val();
+                                if (universityID) {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'get_programs.php', // Ensure this path is correct
+                                        data: {
+                                            university_id: universityID
+                                        },
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            $('#programme').html('<option value="">Select Programme</option>'); // Reset the dropdown
+                                            $.each(data, function(key, value) {
+                                                var isSelected = value.program_code == selectedProgramme ? 'selected' : '';
+                                                $('#programme').append('<option value="' + value.program_code + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                            });
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error("AJAX Error: " + status + error);
+                                        }
+                                    });
+                                } else {
+                                    $('#programme').html('<option value="">Select Programme</option>');
+                                }
+                            });
+
+                            // Trigger change event to load programs if university is already selected (for edit mode)
+                            <?php if ($update && !empty($university_id)): ?>
+                                $('#university').trigger('change');
+                            <?php endif; ?>
+                        });
                     </script>
+
+                    <!-- ------------------------------------------------------------------------  -->
 
                     <div class="form-group">
                         <label for="assessment_components">Assessment Components:</label>
@@ -203,14 +260,7 @@ $result = $conn->query("SELECT * FROM modules");
                         <label for="pass_mark">Pass Mark:</label>
                         <input type="number" placeholder="Pass Mark" class="form-control" id="pass_mark" name="pass_mark" value="<?php echo htmlspecialchars($pass_mark); ?>" required>
                     </div>
-                    <!-- <div class="form-group">
-                        <label>Type:</label>
-                        <select class="form-control" id="type" name="type" required>
-                            <option value="">Select Type</option>
-                            <option value="Compulsory" <?php echo $type == 'Compulsory' ? 'selected' : ''; ?>>Compulsory</option>
-                            <option value="Elective" <?php echo $type == 'Elective' ? 'selected' : ''; ?>>Elective</option>
-                        </select>
-                    </div> -->
+
                     <div class="form-group">
                         <label>Type:</label>
                         <div class="form-check">
@@ -226,7 +276,7 @@ $result = $conn->query("SELECT * FROM modules");
                             </label>
                         </div>
                     </div>
-                        
+
                     <div class="form-group">
                         <label for="lecturers">Lecturers:</label>
                         <input type="text" class="form-control" placeholder="Lecturers" id="lecturers" name="lecturers" value="<?php echo htmlspecialchars($lecturers); ?>" required>
@@ -281,14 +331,10 @@ $result = $conn->query("SELECT * FROM modules");
                 </table>
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
-
         <?php include("includes/footer.php"); ?>
-
     </div>
     <!-- End of Content Wrapper -->
-
 </div>
 <!-- End of Page Wrapper -->
