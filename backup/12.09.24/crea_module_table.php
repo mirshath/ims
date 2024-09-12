@@ -2,7 +2,6 @@
 include("database/connection.php");
 include("includes/header.php");
 
-
 // Initialize variables
 $module_code = $module_name = $university_id = $programme_id = $assessment_components = "";
 $pass_mark = $type = $lecturers = $institution = "";
@@ -95,34 +94,24 @@ if (isset($_GET['delete'])) {
 
 // Fetch all records
 $result = $conn->query("SELECT * FROM modules");
-
 ?>
 
 <!-- Page Wrapper -->
 <div id="wrapper">
-
     <?php include("nav.php"); ?>
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <?php include("includes/topnav.php"); ?>
             <!-- End of Topbar -->
-
             <!-- Begin Page Content -->
             <div class="container">
-
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Modules</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Module Management</h4>
                 </div>
-
-
-                <!-- Add Criteria Form -->
                 <!-- Add Criteria Form -->
                 <form method="POST" action="">
                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -303,9 +292,7 @@ $result = $conn->query("SELECT * FROM modules");
                     <?php endif; ?>
                 </form>
 
-
-
-                <!-- Criteria Table -->
+                <!-- List all modules -->
                 <h4 class="mt-5">All Modules</h4>
                 <table class="table">
                     <thead>
@@ -343,18 +330,12 @@ $result = $conn->query("SELECT * FROM modules");
                         <?php endwhile; ?>
                     </tbody>
                 </table>
-
-
-
-
             </div>
+            <!-- /.container-fluid -->
         </div>
+        <!-- End of Main Content -->
+        <?php include("includes/footer.php"); ?>
     </div>
+    <!-- End of Content Wrapper -->
 </div>
-
-</div>
-
-</body>
-
-</html>
-<?php $conn->close(); ?>
+<!-- End of Page Wrapper -->
