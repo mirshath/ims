@@ -94,7 +94,13 @@ if (isset($_GET['delete'])) {
 }
 
 // Fetch all records
-$result = $conn->query("SELECT * FROM modules");
+// $result = $conn->query("SELECT * FROM modules");
+$result = $conn->query("
+    SELECT m.*, p.program_name 
+    FROM modules m
+    LEFT JOIN program_table p ON m.programme_id = p.program_code
+");
+
 
 ?>
 
@@ -135,71 +141,6 @@ $result = $conn->query("SELECT * FROM modules");
                         <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <label for="university">University:</label>
-                        <select class="form-control select2" id="university" name="university" required>
-                            <option value="">Select University</option>
-                            <?php foreach ($universities as $uni): ?>
-                                <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university_id ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($uni['university_name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div> -->
-
-                    <!-- <div class="form-group">
-                        <label for="programme">Programme:</label>
-                        <select class="form-control select2" id="programme" name="programme" required>
-                            <option value="">Select Programme</option>
-                            <?php foreach ($programsOptions as $prog): ?>
-                                <option value="<?php echo htmlspecialchars($prog['program_code']); ?>" <?php echo $prog['program_code'] == $programme_id ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($prog['program_name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div> -->
-
-                    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-                    <script>
-                        $(document).ready(function() {
-                            $('#university, #programme').select2({
-                                placeholder: "Select an option",
-                                allowClear: true
-                            });
-
-                            var selectedProgramme = '<?php echo $programme_id; ?>';
-
-                            $('#university').on('change', function() {
-                                var universityID = $(this).val();
-                                if (universityID) {
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: 'get_programs.php',
-                                        data: {
-                                            university_id: universityID
-                                        },
-                                        dataType: 'json',
-                                        success: function(data) {
-                                            $('#programme').html('<option value="">Select Programme</option>');
-                                            $.each(data, function(key, value) {
-                                                var isSelected = value.program_code == selectedProgramme ? 'selected' : '';
-                                                $('#programme').append('<option value="' + value.program_code + '" ' + isSelected + '>' + value.program_name + '</option>');
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    $('#programme').html('<option value="">Select Programme</option>');
-                                }
-                            });
-
-                            <?php if ($update && !empty($university_id)): ?>
-                                $('#university').trigger('change');
-                            <?php endif; ?>
-                        });
-                    </script> -->
                     <!-- ------------------------------------------------------------------------  -->
                     <!-- ------------------------------------------------------------------------  -->
                     <div class="form-group">
@@ -213,6 +154,7 @@ $result = $conn->query("SELECT * FROM modules");
                             <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="programme">Programme:</label>
                         <select class="form-control" id="programme" name="programme" required>
@@ -287,23 +229,45 @@ $result = $conn->query("SELECT * FROM modules");
                             </label>
                         </div>
                     </div>
+                    <!-- ---------------------------------------------  -->
 
                     <div class="form-group">
+                        <label for="lecturers"><input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>> Lecturer/s:</label>
+                        <textarea class="form-control" placeholder="lecturers" id="lecturers" name="lecturers" rows="3" <?php echo empty($lecturers) ? 'disabled' : ''; ?>><?php echo htmlspecialchars($lecturers); ?></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="institution"><input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label>
+                        <input type="text" placeholder="institution" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
+                    </div>
+
+                    <!-- ---------------------------------------------  -->
+
+                    <!-- <div class="form-group">
                         <label for="lecturers">Lecturers:</label>
-                        <input type="text" class="form-control" placeholder="Lecturers" id="lecturers" name="lecturers" value="<?php echo htmlspecialchars($lecturers); ?>" required>
+                        <input type="text" class="form-control" placeholder="Lecturers" id="lecturers" name="lecturers" value="<?php echo htmlspecialchars($lecturers); ?>">
                     </div>
                     <div class="form-group">
                         <label for="institution">Institution:</label>
-                        <input type="text" class="form-control" placeholder="Institution" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" required>
-                    </div>
+                        <input type="text" class="form-control" placeholder="Institution" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>">
+                    </div> -->
                     <?php if ($update): ?>
                         <button type="submit" class="btn btn-primary" name="update">Update</button>
                     <?php else: ?>
                         <button type="submit" class="btn btn-primary" name="save">Save</button>
                     <?php endif; ?>
                 </form>
+                <script>
+                    $(document).ready(function() {
+                        $('#enable_lecturers').change(function() {
+                            $('#lecturers').prop('disabled', !this.checked);
+                        });
 
-
+                        $('#enable_institution').change(function() {
+                            $('#institution').prop('disabled', !this.checked);
+                        });
+                    });
+                </script>
 
                 <!-- Criteria Table -->
                 <h4 class="mt-5">All Modules</h4>
@@ -312,13 +276,13 @@ $result = $conn->query("SELECT * FROM modules");
                         <tr>
                             <th>Module Code</th>
                             <th>Module Name</th>
-                            <th>University</th>
+                            <!-- <th>University</th> -->
                             <th>Programme</th>
                             <th>Assessment Components</th>
                             <th>Pass Mark</th>
                             <th>Type</th>
-                            <th>Lecturers</th>
-                            <th>Institution</th>
+                            <!-- <th>Lecturers</th> -->
+                            <!-- <th>Institution</th> -->
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -327,14 +291,15 @@ $result = $conn->query("SELECT * FROM modules");
                             <tr>
                                 <td><?php echo htmlspecialchars($row['module_code']); ?></td>
                                 <td><?php echo htmlspecialchars($row['module_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['university_id']); ?></td>
-                                <td><?php echo htmlspecialchars($row['programme_id']); ?></td>
+                                <!-- <td><?php echo htmlspecialchars($row['university_id']); ?></td> -->
+                                <!-- <td><?php echo htmlspecialchars($row['programme_id']); ?></td> -->
+                                <td><?php echo htmlspecialchars($row['program_name']); ?></td>
                                 <td><?php echo htmlspecialchars($row['assessment_components']); ?></td>
                                 <td><?php echo htmlspecialchars($row['pass_mark']); ?></td>
                                 <td><?php echo htmlspecialchars($row['type']); ?></td>
 
-                                <td><?php echo htmlspecialchars($row['lecturers']); ?></td>
-                                <td><?php echo htmlspecialchars($row['institution']); ?></td>
+                                <!-- <td><?php echo htmlspecialchars($row['lecturers']); ?></td> -->
+                                <!-- <td><?php echo htmlspecialchars($row['institution']); ?></td> -->
                                 <td>
                                     <a href="crea_module_table?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                                     <a href="crea_module_table?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this module?');">Delete</a>
@@ -343,10 +308,6 @@ $result = $conn->query("SELECT * FROM modules");
                         <?php endwhile; ?>
                     </tbody>
                 </table>
-
-
-
-
             </div>
         </div>
     </div>
