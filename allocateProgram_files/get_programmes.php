@@ -1,10 +1,7 @@
 <?php
 include("../database/connection.php");
 
-
 $university_id = $_GET['university_id'];
-
-
 
 $sql = "SELECT program_code, program_name FROM program_table WHERE university_id = ?";
 $stmt = $conn->prepare($sql);

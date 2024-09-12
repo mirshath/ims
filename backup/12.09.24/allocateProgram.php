@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <!-- Modules will be dynamically loaded here -->
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -140,59 +141,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
 
         // On programme change, load batches and modules
-        $('#programme').change(function() {
-            const programmeCode = $(this).val();
-            $('#batch').empty().append('<option value="">Select Batch</option>');
+    $('#programme').change(function() {
+        const programmeCode = $(this).val();
+        $('#batch').empty().append('<option value="">Select Batch</option>');
 
-            if (programmeCode) {
-                // Fetch batches
-                $.ajax({
-                    url: 'allocateProgram_files/get_batches.php',
-                    type: 'GET',
-                    data: {
-                        programme_code: programmeCode
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#batch').empty().append('<option value="">Select Batch</option>');
+        if (programmeCode) {
+            // Fetch batches
+            $.ajax({
+                url: 'allocateProgram_files/get_batches.php',
+                type: 'GET',
+                data: { programme_code: programmeCode },
+                dataType: 'json',
+                success: function(data) {
+                    $('#batch').empty().append('<option value="">Select Batch</option>');
+                    $.each(data, function(key, value) {
+                        $('#batch').append(`<option value="${value.id}">${value.batch_name}</option>`);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                }
+            });
+
+            // Fetch modules
+            $.ajax({
+                url: 'allocateProgram_files/get_modules.php',
+                type: 'GET',
+                data: { programme_code: programmeCode },
+                dataType: 'json',
+                success: function(data) {
+                    $('#modules-container').empty();
+                    if (data.length > 0) {
                         $.each(data, function(key, value) {
-                            $('#batch').append(`<option value="${value.id}">${value.batch_name}</option>`);
+                            $('#modules-container').append(`<p>${value.module_name}</p>`);
                         });
+                    } else {
+                        $('#modules-container').append('<p>No modules found for this programme.</p>');
                     }
-                });
-
-                // Fetch modules for the selected programme
-                $.ajax({
-                    url: 'allocateProgram_files/get_modules.php',
-                    type: 'GET',
-                    data: {
-                        programme_code: programmeCode
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#modules-container').empty();
-                        if (data.length > 0) {
-                            $.each(data, function(key, value) {
-                                $('#modules-container').append(`
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="module${value.module_id}" name="modules[]" value="${value.module_id}">
-                                    <label class="form-check-label" for="module${value.module_id}">
-                                        ${value.module_name}
-                                    </label>
-                                </div>
-                            `);
-                            });
-                        } else {
-                            $('#modules-container').append('<p>No modules found for this programme.</p>');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        $('#modules-container').empty().append('<p>Error fetching modules.</p>');
-                        console.error('Error:', error);
-                    }
-                });
-            }
-        });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                }
+            });
+        }
+    });
     });
 </script>
 </body>

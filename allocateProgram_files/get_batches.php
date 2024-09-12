@@ -1,9 +1,7 @@
 <?php
 include("../database/connection.php");
 
-
 $programme_code = $_GET['programme_code'];
-
 
 $sql = "SELECT id, batch_name FROM batch_table WHERE programme = ?";
 $stmt = $conn->prepare($sql);

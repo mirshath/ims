@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2024 at 11:24 AM
+-- Generation Time: Sep 12, 2024 at 12:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -285,29 +285,31 @@ INSERT INTO `lecturer_table` (`id`, `title`, `lecturer_name`, `hourly_rate`, `qu
 -- --------------------------------------------------------
 
 --
--- Table structure for table `module_table`
+-- Table structure for table `modules`
 --
 
-CREATE TABLE `module_table` (
+CREATE TABLE `modules` (
   `id` int(11) NOT NULL,
   `module_code` varchar(50) NOT NULL,
   `module_name` varchar(255) NOT NULL,
-  `university` int(11) NOT NULL,
-  `programme` int(11) NOT NULL,
+  `university_id` int(11) NOT NULL,
+  `programme_id` int(11) NOT NULL,
   `assessment_components` text NOT NULL,
-  `pass_mark` int(11) NOT NULL,
+  `pass_mark` int(11) NOT NULL CHECK (`pass_mark` >= 0 and `pass_mark` <= 100),
   `type` enum('Compulsory','Elective') NOT NULL,
-  `lecturers` text DEFAULT NULL,
-  `institution` varchar(255) DEFAULT NULL
+  `lecturers` varchar(255) NOT NULL,
+  `institution` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `module_table`
+-- Dumping data for table `modules`
 --
 
-INSERT INTO `module_table` (`id`, `module_code`, `module_name`, `university`, `programme`, `assessment_components`, `pass_mark`, `type`, `lecturers`, `institution`) VALUES
-(11, 'IFDB 301', 'Economics for Business', 1, 0, 'Assignment - 60% Group Presentation - 40%', 60, 'Compulsory', '', ''),
-(12, 'BIMT 410', 'Academic Writing and Study Skills', 1, 0, 'Assignment - 60% Group Presentation - 40%', 50, 'Compulsory', '', '');
+INSERT INTO `modules` (`id`, `module_code`, `module_name`, `university_id`, `programme_id`, `assessment_components`, `pass_mark`, `type`, `lecturers`, `institution`) VALUES
+(9, 'BIMT 410', 'IFD MODULE 1', 1, 20, '50% assignment', 50, 'Compulsory', '', ''),
+(10, 'BIMT 410', 'IFD MODULE 2', 1, 20, '50% Exams ', 50, 'Elective', '', ''),
+(11, 'BIMT 411', 'HD BS MODULE1', 1, 24, '50% ', 50, 'Compulsory', '', ''),
+(12, 'BIMT 411', 'HD BS MODULE 2', 1, 24, '40% assignment', 50, 'Elective', '', '');
 
 -- --------------------------------------------------------
 
@@ -551,12 +553,12 @@ ALTER TABLE `lecturer_table`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `module_table`
+-- Indexes for table `modules`
 --
-ALTER TABLE `module_table`
+ALTER TABLE `modules`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_university` (`university`),
-  ADD KEY `programme` (`programme`) USING BTREE;
+  ADD KEY `university_id` (`university_id`),
+  ADD KEY `programme_id` (`programme_id`);
 
 --
 -- Indexes for table `program_table`
@@ -666,9 +668,9 @@ ALTER TABLE `lecturer_table`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
--- AUTO_INCREMENT for table `module_table`
+-- AUTO_INCREMENT for table `modules`
 --
-ALTER TABLE `module_table`
+ALTER TABLE `modules`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
@@ -728,10 +730,11 @@ ALTER TABLE `batch_table`
   ADD CONSTRAINT `fk_programme_code` FOREIGN KEY (`programme`) REFERENCES `program_table` (`program_code`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `module_table`
+-- Constraints for table `modules`
 --
-ALTER TABLE `module_table`
-  ADD CONSTRAINT `fk_university` FOREIGN KEY (`university`) REFERENCES `universities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `modules`
+  ADD CONSTRAINT `modules_ibfk_1` FOREIGN KEY (`university_id`) REFERENCES `universities` (`id`),
+  ADD CONSTRAINT `modules_ibfk_2` FOREIGN KEY (`programme_id`) REFERENCES `program_table` (`program_code`);
 
 --
 -- Constraints for table `program_table`
