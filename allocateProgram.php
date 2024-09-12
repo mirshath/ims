@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         });
 
-        // On programme change, load batches and modules
+        // On programme change, load batches and modules old
         // $('#programme').change(function() {
         //     const programmeCode = $(this).val();
         //     $('#batch').empty().append('<option value="">Select Batch</option>');
@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //     }
         // });
 
-        // On programme change, load batches and modules
+        // On programme change, load batches and modules new
         $('#programme').change(function() {
             const programmeCode = $(this).val();
             $('#batch').empty().append('<option value="">Select Batch</option>');

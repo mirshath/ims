@@ -8,13 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $programme_code = $_POST['programme_code'];
     $batch_id = $_POST['batch_id'];
     $student_registration_id = $_POST['student_registration_id'];
+    $compulsory_subs = isset($_POST['compulsory_subs']) ? $_POST['compulsory_subs'] : '';
+    $elective_subs = isset($_POST['elective_subs']) ? $_POST['elective_subs'] : '';
 
     // Insert data into `allocate_programme` table
-    $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id) 
-            VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id, compulsory_subs, elective_subs) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iiiis", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id);
+    $stmt->bind_param("iiiisss", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id, $compulsory_subs, $elective_subs);
 
     if ($stmt->execute()) {
         echo '<script>window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
@@ -26,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn->close();
 }
 ?>
+
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -77,7 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <!-- Modules will be dynamically loaded here -->
                         </div>
                     </div>
-
+                    <!-- Hidden fields to store checked module IDs -->
+                    <input type="hidden" id="compulsory-modules" name="compulsory_subs">
+                    <input type="hidden" id="elective-modules" name="elective_subs">
                 </div>
             </div>
         </div>
@@ -141,50 +146,150 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
 
         // On programme change, load batches and modules
-    $('#programme').change(function() {
-        const programmeCode = $(this).val();
-        $('#batch').empty().append('<option value="">Select Batch</option>');
+        // $('#programme').change(function() {
+        //     const programmeCode = $(this).val();
+        //     $('#batch').empty().append('<option value="">Select Batch</option>');
 
-        if (programmeCode) {
-            // Fetch batches
-            $.ajax({
-                url: 'allocateProgram_files/get_batches.php',
-                type: 'GET',
-                data: { programme_code: programmeCode },
-                dataType: 'json',
-                success: function(data) {
-                    $('#batch').empty().append('<option value="">Select Batch</option>');
-                    $.each(data, function(key, value) {
-                        $('#batch').append(`<option value="${value.id}">${value.batch_name}</option>`);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error:", status, error);
-                }
-            });
+        //     if (programmeCode) {
+        //         // Fetch batches
+        //         $.ajax({
+        //             url: 'allocateProgram_files/get_batches.php',
+        //             type: 'GET',
+        //             data: {
+        //                 programme_code: programmeCode
+        //             },
+        //             dataType: 'json',
+        //             success: function(data) {
+        //                 $('#batch').empty().append('<option value="">Select Batch</option>');
+        //                 $.each(data, function(key, value) {
+        //                     $('#batch').append(`<option value="${value.id}">${value.batch_name}</option>`);
+        //                 });
+        //             }
+        //         });
 
-            // Fetch modules
-            $.ajax({
-                url: 'allocateProgram_files/get_modules.php',
-                type: 'GET',
-                data: { programme_code: programmeCode },
-                dataType: 'json',
-                success: function(data) {
-                    $('#modules-container').empty();
-                    if (data.length > 0) {
+        //         // Fetch modules for the selected programme
+        //         $.ajax({
+        //             url: 'allocateProgram_files/get_modules.php',
+        //             type: 'GET',
+        //             data: {
+        //                 programme_code: programmeCode
+        //             },
+        //             dataType: 'json',
+        //             success: function(data) {
+        //                 $('#modules-container').empty();
+        //                 if (data.length > 0) {
+        //                     $.each(data, function(key, value) {
+        //                         $('#modules-container').append(`
+        //                         <div class="form-check">
+        //                             <input class="form-check-input" type="checkbox" id="module${value.module_id}" name="modules[]" value="${value.module_id}">
+        //                             <label class="form-check-label" for="module${value.module_id}">
+        //                                 ${value.module_name}
+        //                             </label>
+        //                         </div>
+        //                     `);
+        //                     });
+        //                 } else {
+        //                     $('#modules-container').append('<p>No modules found for this programme.</p>');
+        //                 }
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 $('#modules-container').empty().append('<p>Error fetching modules.</p>');
+        //                 console.error('Error:', error);
+        //             }
+        //         });
+        //     }
+        // });
+
+        // On programme change, load batches and modules
+        $('#programme').change(function() {
+            const programmeCode = $(this).val();
+            $('#batch').empty().append('<option value="">Select Batch</option>');
+
+            if (programmeCode) {
+                // Fetch batches
+                $.ajax({
+                    url: 'allocateProgram_files/get_batches.php',
+                    type: 'GET',
+                    data: {
+                        programme_code: programmeCode
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#batch').empty().append('<option value="">Select Batch</option>');
                         $.each(data, function(key, value) {
-                            $('#modules-container').append(`<p>${value.module_name}</p>`);
+                            $('#batch').append(`<option value="${value.id}">${value.batch_name}</option>`);
                         });
-                    } else {
-                        $('#modules-container').append('<p>No modules found for this programme.</p>');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error:", status, error);
-                }
+                });
+
+                // Fetch modules for the selected programme
+                $.ajax({
+                    url: 'allocateProgram_files/get_modules.php',
+                    type: 'GET',
+                    data: {
+                        programme_code: programmeCode
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#modules-container').empty();
+                        let compulsoryModules = [];
+                        let electiveModules = [];
+
+                        if (data.length > 0) {
+                            $.each(data, function(key, value) {
+                                const moduleType = value.module_type; // Assuming module_type is 'compulsory' or 'elective'
+                                const moduleId = value.module_id;
+                                const moduleName = value.module_name;
+
+                                if (moduleType === 'compulsory') {
+                                    compulsoryModules.push(moduleId);
+                                } else if (moduleType === 'elective') {
+                                    electiveModules.push(moduleId);
+                                }
+
+                                $('#modules-container').append(`
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="module${moduleId}" name="${moduleType}_modules[]" value="${moduleId}">
+                                    <label class="form-check-label" for="module${moduleId}">
+                                        ${moduleName}
+                                    </label>
+                                </div>
+                            `);
+                            });
+
+                            // Update hidden fields with selected module IDs
+                            $('#compulsory-modules').val(compulsoryModules.join(','));
+                            $('#elective-modules').val(electiveModules.join(','));
+                        } else {
+                            $('#modules-container').append('<p>No modules found for this programme.</p>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#modules-container').empty().append('<p>Error fetching modules.</p>');
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+
+
+        // Update hidden fields on checkbox change
+        $(document).on('change', 'input[name="compulsory_modules[]"], input[name="elective_modules[]"]', function() {
+            let compulsoryModules = [];
+            let electiveModules = [];
+
+            $('input[name="compulsory_modules[]"]:checked').each(function() {
+                compulsoryModules.push($(this).val());
             });
-        }
-    });
+
+            $('input[name="elective_modules[]"]:checked').each(function() {
+                electiveModules.push($(this).val());
+            });
+
+            $('#compulsory-modules').val(compulsoryModules.join(','));
+            $('#elective-modules').val(electiveModules.join(','));
+        });
+
     });
 </script>
 </body>
