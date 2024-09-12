@@ -4,7 +4,7 @@ include("includes/header.php");
 
 
 // Initialize variables
-$module_code = $module_name = $university = $programme = $assessment_components = "";
+$module_code = $module_name = $university_id = $programme_id = $assessment_components = "";
 $pass_mark = $type = $lecturers = $institution = "";
 $id = 0;
 $update = false;
@@ -28,16 +28,16 @@ while ($row = mysqli_fetch_assoc($result)) {
 if (isset($_POST['save'])) {
     $module_code = $_POST['module_code'];
     $module_name = $_POST['module_name'];
-    $university = $_POST['university'];
-    $programme = $_POST['programme'];
+    $university_id = $_POST['university'];
+    $programme_id = $_POST['programme'];
     $assessment_components = $_POST['assessment_components'];
     $pass_mark = $_POST['pass_mark'];
     $type = $_POST['type'];
     $lecturers = $_POST['lecturers'];
     $institution = $_POST['institution'];
 
-    $sql = "INSERT INTO module_table (module_code, module_name, university, programme, assessment_components, pass_mark, type, lecturers, institution) 
-            VALUES ('$module_code', '$module_name', '$university', '$programme', '$assessment_components', '$pass_mark', '$type', '$lecturers', '$institution')";
+    $sql = "INSERT INTO modules (module_code, module_name, university_id, programme_id, assessment_components, pass_mark, type, lecturers, institution) 
+            VALUES ('$module_code', '$module_name', '$university_id', '$programme_id', '$assessment_components', '$pass_mark', '$type', '$lecturers', '$institution')";
     if ($conn->query($sql) === TRUE) {
         echo '<script> window.location.href = "create_module";</script>';
     } else {
@@ -49,12 +49,12 @@ if (isset($_POST['save'])) {
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $update = true;
-    $result = $conn->query("SELECT * FROM module_table WHERE id=$id");
+    $result = $conn->query("SELECT * FROM modules WHERE id=$id");
     $row = $result->fetch_assoc();
     $module_code = $row['module_code'];
     $module_name = $row['module_name'];
-    $university = $row['university'];
-    $programme = $row['programme'];
+    $university_id = $row['university_id'];
+    $programme_id = $row['programme_id'];
     $assessment_components = $row['assessment_components'];
     $pass_mark = $row['pass_mark'];
     $type = $row['type'];
@@ -62,23 +62,19 @@ if (isset($_GET['edit'])) {
     $institution = $row['institution'];
 }
 
-
 // Handle form update
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
-    // $module_code = $_POST['module_code'];
     $module_name = $_POST['module_name'];
-    $university = $_POST['university'];
-    $programme = $_POST['programme'];
+    $university_id = $_POST['university'];
+    $programme_id = $_POST['programme'];
     $assessment_components = $_POST['assessment_components'];
     $pass_mark = $_POST['pass_mark'];
     $type = $_POST['type'];
     $lecturers = $_POST['lecturers'];
     $institution = $_POST['institution'];
 
-    // module_code='$module_code',
-
-    $sql = "UPDATE module_table SET  module_name='$module_name', university='$university', programme='$programme', assessment_components='$assessment_components', pass_mark='$pass_mark', type='$type', lecturers='$lecturers', institution='$institution' WHERE id=$id";
+    $sql = "UPDATE modules SET module_name='$module_name', university_id='$university_id', programme_id='$programme_id', assessment_components='$assessment_components', pass_mark='$pass_mark', type='$type', lecturers='$lecturers', institution='$institution' WHERE id=$id";
     if ($conn->query($sql) === TRUE) {
         echo '<script> window.location.href = "create_module";</script>';
     } else {
@@ -86,11 +82,10 @@ if (isset($_POST['update'])) {
     }
 }
 
-
 // Handle record deletion
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    $sql = "DELETE FROM module_table WHERE id=$id";
+    $sql = "DELETE FROM modules WHERE id=$id";
     if ($conn->query($sql) === TRUE) {
         echo '<script> window.location.href = "create_module";</script>';
     } else {
@@ -99,7 +94,12 @@ if (isset($_GET['delete'])) {
 }
 
 // Fetch all records
-$result = $conn->query("SELECT * FROM module_table");
+// $result = $conn->query("SELECT * FROM modules");
+$result = $conn->query("
+    SELECT m.*, p.program_name 
+    FROM modules m
+    LEFT JOIN program_table p ON m.programme_id = p.program_code
+");
 
 ?>
 
@@ -123,14 +123,14 @@ $result = $conn->query("SELECT * FROM module_table");
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">module managment</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Modules</h4>
                 </div>
+
                 <!-- Add Criteria Form -->
                 <form method="POST" action="">
                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                     <div class="form-group">
                         <label for="module_code">Module Code:</label>
-                        <!-- <input type="text" class="form-control" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" required> -->
                         <input type="text" class="form-control" placeholder="Module Code" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" <?php echo $update ? 'disabled' : ''; ?> required>
                     </div>
                     <div class="form-group">
@@ -138,12 +138,14 @@ $result = $conn->query("SELECT * FROM module_table");
                         <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
                     </div>
 
+                    <!-- ------------------------------------------------------------------------  -->
+                    <!-- ------------------------------------------------------------------------  -->
                     <div class="form-group">
                         <label for="university">University:</label>
                         <select class="form-control select2" id="university" name="university" required>
                             <option value="">Select University</option>
                             <?php foreach ($universities as $uni): ?>
-                                <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university ? 'selected' : ''; ?>>
+                                <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university_id ? 'selected' : ''; ?>>
                                     <?php echo htmlspecialchars($uni['university_name']); ?>
                                 </option>
                             <?php endforeach; ?>
@@ -153,47 +155,37 @@ $result = $conn->query("SELECT * FROM module_table");
                     <div class="form-group">
                         <label for="programme">Programme:</label>
                         <select class="form-control" id="programme" name="programme" required>
-                            <!-- Programs will be dynamically loaded here -->
                             <option value="">Select Programme</option>
+                            <!-- Programs will be dynamically loaded here -->
                         </select>
                     </div>
-
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-                    <!-- Include Select2 CSS -->
-                    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-                    <!-- Include Select2 JS -->
-                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script>
                         $(document).ready(function() {
-                            // Initialize Select2 for both University and Programme dropdowns
-                            $('#university, #programme').select2({
-                                placeholder: "Select an option",
-                                allowClear: true
-                            });
-
-                            var selectedProgramme = '<?php echo $programme; ?>';
+                            var selectedProgramme = '<?php echo $programme_id; ?>';
 
                             $('#university').on('change', function() {
                                 var universityID = $(this).val();
                                 if (universityID) {
                                     $.ajax({
                                         type: 'POST',
-                                        url: 'get_programs.php',
+                                        url: 'get_programs.php', // Ensure this path is correct
                                         data: {
                                             university_id: universityID
                                         },
                                         dataType: 'json',
                                         success: function(data) {
-                                            $('#programme').html('<option value="">Select Programme</option>');
+                                            $('#programme').html('<option value="">Select Programme</option>'); // Reset the dropdown
                                             $.each(data, function(key, value) {
-                                                var isSelected = value.program_name == selectedProgramme ? 'selected' : '';
-                                                $('#programme').append('<option value="' + value.program_name + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                                var isSelected = value.program_code == selectedProgramme ? 'selected' : '';
+                                                $('#programme').append('<option value="' + value.program_code + '" ' + isSelected + '>' + value.program_name + '</option>');
                                             });
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error("AJAX Error: " + status + error);
                                         }
                                     });
                                 } else {
@@ -202,11 +194,13 @@ $result = $conn->query("SELECT * FROM module_table");
                             });
 
                             // Trigger change event to load programs if university is already selected (for edit mode)
-                            <?php if ($update && !empty($university)): ?>
+                            <?php if ($update && !empty($university_id)): ?>
                                 $('#university').trigger('change');
                             <?php endif; ?>
                         });
                     </script>
+
+                    <!-- ------------------------------------------------------------------------  -->
 
                     <div class="form-group">
                         <label for="assessment_components">Assessment Components:</label>
@@ -214,15 +208,25 @@ $result = $conn->query("SELECT * FROM module_table");
                     </div>
                     <div class="form-group">
                         <label for="pass_mark">Pass Mark:</label>
-                        <input type="number" placeholder="pass mark" class="form-control" id="pass_mark" name="pass_mark" value="<?php echo htmlspecialchars($pass_mark); ?>" required>
+                        <input type="number" placeholder="Pass Mark" class="form-control" id="pass_mark" name="pass_mark" value="<?php echo htmlspecialchars($pass_mark); ?>" required>
                     </div>
+
                     <div class="form-group">
-                        <label>Type:</label><br>
-                        <input type="radio" id="compulsory" name="type" value="Compulsory" <?php echo $type == 'Compulsory' ? 'checked' : ''; ?> required>
-                        <label for="compulsory">Compulsory</label><br>
-                        <input type="radio" id="elective" name="type" value="Elective" <?php echo $type == 'Elective' ? 'checked' : ''; ?>>
-                        <label for="elective">Elective</label>
+                        <label>Type:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="type" id="type_compulsory" value="Compulsory" <?php echo $type == 'Compulsory' ? 'checked' : ''; ?>>
+                            <label class="form-check-label" for="type_compulsory">
+                                Compulsory
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="type" id="type_elective" value="Elective" <?php echo $type == 'Elective' ? 'checked' : ''; ?>>
+                            <label class="form-check-label" for="type_elective">
+                                Elective
+                            </label>
+                        </div>
                     </div>
+                    <!-- ---------------------------------------------  -->
 
                     <div class="form-group">
                         <label for="lecturers"><input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>> Lecturer/s:</label>
@@ -234,93 +238,14 @@ $result = $conn->query("SELECT * FROM module_table");
                         <input type="text" placeholder="institution" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
                     </div>
 
+                    <!-- ---------------------------------------------  -->
+
                     <?php if ($update): ?>
-                        <button type="submit" class="btn btn-warning" name="update">Update</button>
+                        <button type="submit" class="btn btn-primary" name="update">Update</button>
                     <?php else: ?>
                         <button type="submit" class="btn btn-primary" name="save">Save</button>
                     <?php endif; ?>
                 </form>
-
-                <!-- Criteria Table -->
-
-                <h4>Modules List</h4>
-
-                <table class="table table-bordered mt-4 table-striped">
-                    <thead>
-                        <tr>
-                            <th>Module Code</th>
-                            <th>Module Name</th>
-                            <!-- <th>University</th> -->
-                            <th>Programme</th>
-                            <th>Assessment Components</th>
-                            <th>Pass Mark</th>
-                            <th>Type</th>
-                            <!-- <th>Action</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['module_code']); ?></td>
-                                <td><?php echo htmlspecialchars($row['module_name']); ?></td>
-                                <!-- <td>
-                                    <?php
-                                    $universityID = $row['university'];
-                                    $uniResult = $conn->query("SELECT university_name FROM universities WHERE id='$universityID'");
-
-                                    $uniRow = $uniResult->fetch_assoc();
-                                    echo htmlspecialchars($uniRow['university_name']);
-                                    ?>
-                                </td> -->
-                                <td><?php echo htmlspecialchars($row['programme']); ?></td>
-                                <td><?php echo htmlspecialchars($row['assessment_components']); ?></td>
-                                <td><?php echo htmlspecialchars($row['pass_mark']); ?></td>
-                                <td><?php echo htmlspecialchars($row['type']); ?></td>
-                                <td>
-                                    <a href="create_module.php?edit=<?php echo $row['id']; ?>" class="btn btn-info">Edit</a>
-                                    <a href="create_module.php?delete=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-
-                <script>
-                    $(document).ready(function() {
-                        $('.edit-lead-btn').click(function() {
-                            var leadId = $(this).data('id');
-
-                            $.ajax({
-                                url: 'get_lead.php',
-                                type: 'POST',
-                                data: {
-                                    id: leadId
-                                },
-                                dataType: 'json',
-                                success: function(data) {
-                                    if (data) {
-                                        // Populate the form fields with the data
-                                        $('#lead_date').val(data.lead_date);
-                                        $('#type').val(data.type);
-                                        $('#university').val(data.university).trigger('change'); // Trigger change to load programs
-                                        $('#programme').val(data.programme);
-                                        $('#intake').val(data.intake);
-                                        $('#first_name').val(data.first_name);
-                                        $('#last_name').val(data.last_name);
-                                        $('#contact').val(data.contact);
-                                        $('#email').val(data.email);
-                                        $('#details').val(data.details);
-                                        $('#status').val(data.status);
-
-                                        // Update form action to handle edit
-                                        $('#leadForm').attr('action', 'your_edit_script.php').append('<input type="hidden" name="id" value="' + leadId + '">');
-                                    }
-                                }
-                            });
-                        });
-                    });
-                </script>
-
                 <script>
                     $(document).ready(function() {
                         $('#enable_lecturers').change(function() {
@@ -332,11 +257,49 @@ $result = $conn->query("SELECT * FROM module_table");
                         });
                     });
                 </script>
+
+                <!-- Criteria Table -->
+                <h4 class="mt-5">All Modules</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Module Code</th>
+                            <th>Module Name</th>
+                            <!-- <th>University</th> -->
+                            <th>Programme</th>
+                            <th>Assessment Components</th>
+                            <th>Pass Mark</th>
+                            <th>Type</th>
+                            <!-- <th>Lecturers</th> -->
+                            <!-- <th>Institution</th> -->
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['module_code']); ?></td>
+                                <td><?php echo htmlspecialchars($row['module_name']); ?></td>
+                                <!-- <td><?php echo htmlspecialchars($row['university_id']); ?></td> -->
+                                <!-- <td><?php echo htmlspecialchars($row['programme_id']); ?></td> -->
+                                <td><?php echo htmlspecialchars($row['program_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['assessment_components']); ?></td>
+                                <td><?php echo htmlspecialchars($row['pass_mark']); ?></td>
+                                <td><?php echo htmlspecialchars($row['type']); ?></td>
+
+                                <!-- <td><?php echo htmlspecialchars($row['lecturers']); ?></td> -->
+                                <!-- <td><?php echo htmlspecialchars($row['institution']); ?></td> -->
+                                <td>
+                                    <a href="create_module?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="create_module?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this module?');">Delete</a>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</div>
-
 </div>
 
 </body>
