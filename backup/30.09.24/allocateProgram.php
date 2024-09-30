@@ -73,22 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div id="module-list" class="form-group mt-4">
                             <h5>Modules</h5>
                             <div id="modules-container">
-                                <h6>Compulsory Modules</h6>
-                                <div id="compulsory-modules-container">
-                                    <!-- Compulsory modules will be dynamically loaded here -->
-                                </div>
-
-                                <h6>Elective Modules</h6>
-                                <div id="elective-modules-container">
-                                    <!-- Elective modules will be dynamically loaded here -->
-                                </div>
+                                <!-- Modules will be dynamically loaded here -->
                             </div>
                         </div>
-
                         <input type="hidden" id="compulsory-modules" name="compulsory_subs">
                         <input type="hidden" id="elective-modules" name="elective_subs">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+
+
                 </div>
             </div>
         </div>
@@ -182,42 +175,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     },
                     dataType: 'json',
                     success: function(data) {
-                        // Clear both sections
                         $('#modules-container').empty();
-                        $('#modules-container').append(`
-            <h6>Compulsory Modules</h6>
-            <div id="compulsory-modules-container"></div>
-            <h6>Elective Modules</h6>
-            <div id="elective-modules-container"></div>
-        `);
-
                         let compulsoryModules = [];
                         let electiveModules = [];
 
                         if (data.length > 0) {
                             $.each(data, function(key, value) {
-                                const moduleType = value.type;
-                                const moduleId = value.id;
+                                const moduleType = value.module_type;
+                                const moduleId = value.module_id;
                                 const moduleName = value.module_name;
 
-                                // Create the module checkbox HTML
-                                const moduleHTML = `
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="module${moduleId}" name="${moduleType}_modules[]" value="${moduleId}">
-                        <label class="form-check-label" for="module${moduleId}">
-                            ${moduleName}
-                        </label>
-                    </div>
-                `;
-
-                                // Append to the corresponding container based on the module type
-                                if (moduleType === 'Compulsory') {
+                                if (moduleType === 'compulsory') {
                                     compulsoryModules.push(moduleId);
-                                    $('#compulsory-modules-container').append(moduleHTML);
-                                } else if (moduleType === 'Elective') {
+                                } else if (moduleType === 'elective') {
                                     electiveModules.push(moduleId);
-                                    $('#elective-modules-container').append(moduleHTML);
                                 }
+
+                                $('#modules-container').append(`
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="module${moduleId}" name="${moduleType}_modules[]" value="${moduleId}">
+                                    <label class="form-check-label" for="module${moduleId}">
+                                        ${moduleName}
+                                    </label>
+                                </div>
+                            `);
                             });
 
                             // Update hidden fields with selected module IDs
@@ -232,7 +213,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         console.error('Error:', error);
                     }
                 });
-
             }
         });
 
@@ -264,3 +244,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </html>
 <?php $conn->close(); ?>
+
