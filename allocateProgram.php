@@ -185,11 +185,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         // Clear both sections
                         $('#modules-container').empty();
                         $('#modules-container').append(`
-            <h6>Compulsory Modules</h6>
-            <div id="compulsory-modules-container"></div>
-            <h6>Elective Modules</h6>
-            <div id="elective-modules-container"></div>
-        `);
+                        <h6>Compulsory Modules</h6>
+                        <div id="compulsory-modules-container"></div>
+                        <h6>Elective Modules</h6>
+                        <div id="elective-modules-container"></div>
+                    `);
 
                         let compulsoryModules = [];
                         let electiveModules = [];
@@ -202,13 +202,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 // Create the module checkbox HTML
                                 const moduleHTML = `
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="module${moduleId}" name="${moduleType}_modules[]" value="${moduleId}">
-                        <label class="form-check-label" for="module${moduleId}">
-                            ${moduleName}
-                        </label>
-                    </div>
-                `;
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="module${moduleId}" name="${moduleType}_modules[]" value="${moduleId}">
+                                    <label class="form-check-label" for="module${moduleId}">
+                                        ${moduleName}
+                                    </label>
+                                </div>
+                            `;
 
                                 // Append to the corresponding container based on the module type
                                 if (moduleType === 'Compulsory') {
