@@ -14,7 +14,7 @@ if (isset($_GET['student_code'])) {
         $row = $result->fetch_assoc();
         echo json_encode($row);
     } else {
-        echo json_encode([]); // No data found for the given student code
+        echo json_encode([]);
     }
 
     $stmt->close();
