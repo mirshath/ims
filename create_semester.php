@@ -153,7 +153,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                         </table>
 
 
-                        <!-- Pagination Controls -->
+
 
                         <!-- Pagination Controls -->
                         <nav aria-label="Page navigation">
@@ -177,16 +177,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                         </nav>
 
                     </div>
-
                 </div>
-
-
-
-                <!-- -----------------------------------------------------------------------  -->
-                <!-- -----------------------------------------------------------------------  -->
-
-
-
 
             </div>
         </div>
