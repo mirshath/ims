@@ -8,47 +8,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $programme_code = $_POST['programme_code'];
     $batch_id = $_POST['batch_id'];
     $student_registration_id = $_POST['student_registration_id'];
+    $compulsory_subs = $_POST['compulsory_subs'];
+    $elective_subs = $_POST['elective_subs'];
 
-    // Store selected compulsory modules
-    // $compulsory_subs = isset($_POST['compulsory_modules']) ? implode(',', $_POST['compulsory_modules']) : '';    compulsory_subs = ?, $compulsory_subs,
-    // Store selected elective modules
-    $elective_subs = isset($_POST['elective_modules']) ? implode(',', $_POST['elective_modules']) : '';
-
-    // Check if the student already has a record
-    $checkSql = "SELECT * FROM allocate_programme WHERE student_code = ?";
+    // Check for duplicate student_registration_id
+    $checkSql = "SELECT COUNT(*) FROM `allocate_programme` WHERE student_registration_id = ?";
     $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("i", $student_code);
+    $checkStmt->bind_param("s", $student_registration_id);
     $checkStmt->execute();
-    $checkResult = $checkStmt->get_result();
-
-    if ($checkResult->num_rows > 0) {
-        // Update existing record
-        $updateSql = "UPDATE allocate_programme SET university_id = ?, programme_code = ?, batch_id = ?, student_registration_id = ?,  elective_subs = ? WHERE student_code = ?";
-        $updateStmt = $conn->prepare($updateSql);
-        $updateStmt->bind_param("iisssi", $university_id, $programme_code, $batch_id, $student_registration_id,  $elective_subs, $student_code);
-
-        if ($updateStmt->execute()) {
-            echo '<script>alert("Record updated successfully!"); window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
-        } else {
-            echo "Error: " . $updateStmt->error;
-        }
-        $updateStmt->close();
-    } else {
-        // Insert new record     , compulsory_subs,    $compulsory_subs, 
-        $insertSql = "INSERT INTO allocate_programme (student_code, university_id, programme_code, batch_id, student_registration_id ,elective_subs) VALUES (?,  ?, ?, ?, ?, ?)";
-        $insertStmt = $conn->prepare($insertSql);
-        $insertStmt->bind_param("iiiiss", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id,  $elective_subs);
-
-        if ($insertStmt->execute()) {
-            echo '<script>alert("Record added successfully!"); window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
-        } else {
-            echo "Error: " . $insertStmt->error;
-        }
-        $insertStmt->close();
-    }
+    $checkStmt->bind_result($count);
+    $checkStmt->fetch();
     $checkStmt->close();
+
+    if ($count > 0) {
+        echo '<script>alert("Duplicate Student Registration ID found! Please use a unique ID.");</script>';
+    } else {
+        // Insert data into `allocate_programme` table
+        $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id, elective_subs) 
+                VALUES (?, ?, ?, ?, ?, ?)";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iiiiss", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id, $elective_subs);
+
+        if ($stmt->execute()) {
+            echo '<script>window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+
+    $conn->close();
 }
-$conn->close();
 ?>
 
 <!-- Page Wrapper -->
@@ -69,52 +61,76 @@ $conn->close();
                     </div>
                     <!-- forms  -->
                     <form id="allocate-form" action="" method="POST">
-                        <div class="form-group">
-                            <label for="student">Student</label>
-                            <select id="student" name="student_code" class="form-control select2" required></select>
-                        </div>
-                        <div class="form-group">
-                            <label for="university">University</label>
-                            <select id="university" name="university_id" class="form-control select2" required></select>
-                        </div>
-                        <div class="form-group">
-                            <label for="programme">Programme</label>
-                            <select id="programme" name="programme_code" class="form-control select2" required></select>
-                        </div>
-                        <div class="form-group">
-                            <label for="batch">Batch</label>
-                            <select id="batch" name="batch_id" class="form-control select2" required></select>
-                        </div>
-                        <div class="form-group">
-                            <label for="registration_id">Student Registration ID</label>
-                            <input type="text" id="registration_id" name="student_registration_id" class="form-control" required>
-                        </div>
-                        <!-- Modules display area -->
-                        <div id="module-list" class="form-group mt-4">
-                            <h5>Modules</h5>
-                            <div id="modules-container">
-                                <h6>Compulsory Modules</h6>
-                                <div id="compulsory-modules-container">
-                                    <!-- Compulsory modules will be dynamically loaded here -->
+
+                        <div class="row">
+                            <!-- left column  -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="student">Student</label>
+                                    <select id="student" name="student_code" class="form-control select2" required></select>
                                 </div>
 
-                                <h6>Elective Modules</h6>
-                                <div id="elective-modules-container">
-                                    <!-- Elective modules will be dynamically loaded here -->
+                                <div class="form-group">
+                                    <label for="university">University</label>
+                                    <select id="university" name="university_id" class="form-control select2" required></select>
                                 </div>
+
+
+                                <div class="form-group">
+                                    <label for="programme">Programme</label>
+                                    <select id="programme" name="programme_code" class="form-control select2" required></select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="batch">Batch</label>
+                                    <select id="batch" name="batch_id" class="form-control select2" required></select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="registration_id">Student Registration ID</label>
+                                    <input type="text" id="registration_id" name="student_registration_id" class="form-control" required>
+                                </div>
+
+                            </div>
+
+                            <!-- right column   -->
+                            <div class="col-md-6">
+
+                                <!-- Modules display area -->
+                                <div id="module-list" class="form-group mt-4">
+                                    <h5>Modules</h5>
+                                    <hr>
+                                    <div id="modules-container">
+                                        <h6>Compulsory Modules</h6>
+                                        <div id="compulsory-modules-container">
+                                            <!-- Compulsory modules will be dynamically loaded here -->
+                                        </div>
+
+                                        <h6>Elective Modules</h6>
+                                        <div id="elective-modules-container">
+                                            <!-- Elective modules will be dynamically loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
                         <input type="hidden" id="compulsory-modules" name="compulsory_subs">
                         <input type="hidden" id="elective-modules" name="elective_subs">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" style="padding-left: 35px; padding-right: 35px;">Add</button>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- 
 
+
+<!-- 
 <script>
     $(document).ready(function() {
         // Initialize Select2
@@ -361,6 +377,7 @@ $conn->close();
                     },
                     dataType: 'json',
                     success: function(data) {
+
                         if (data) {
                             // Populate the university dropdown and load programs and batches after it's populated
                             populateUniversities(data.university_id, data.programme_code, data.batch_id);
@@ -377,6 +394,7 @@ $conn->close();
                             // Clear fields if no data is found
                             clearFields();
                         }
+
                     },
                     error: function(xhr, status, error) {
                         console.error('Error fetching student details:', error);
@@ -527,59 +545,57 @@ $conn->close();
 
     });
 
-
-
     // On programme change, load batches and modules
     $('#programme').change(function() {
-            const programmeCode = $(this).val();
-            $('#batch').empty().append('<option value="">Select Batch</option>');
+        const programmeCode = $(this).val();
+        $('#batch').empty().append('<option value="">Select Batch</option>');
 
-            if (programmeCode) {
-                // Fetch batches
-                $.ajax({
-                    url: 'allocateProgram_files/get_batches.php',
-                    type: 'GET',
-                    data: {
-                        programme_code: programmeCode
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $('#batch').empty().append('<option value="">Select Batch</option>');
-                        $.each(data, function(key, value) {
-                            $('#batch').append(`<option value="${value.id}">${value.batch_name}</option>`);
-                        });
-                    }
-                });
+        if (programmeCode) {
+            // Fetch batches
+            $.ajax({
+                url: 'allocateProgram_files/get_batches.php',
+                type: 'GET',
+                data: {
+                    programme_code: programmeCode
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#batch').empty().append('<option value="">Select Batch</option>');
+                    $.each(data, function(key, value) {
+                        $('#batch').append(`<option value="${value.id}">${value.batch_name}</option>`);
+                    });
+                }
+            });
 
-                // Fetch modules for the selected programme
-                $.ajax({
-                    url: 'allocateProgram_files/get_modules.php',
-                    type: 'GET',
-                    data: {
-                        programme_code: programmeCode
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        // Clear both sections
-                        $('#modules-container').empty();
-                        $('#modules-container').append(`
+            // Fetch modules for the selected programme
+            $.ajax({
+                url: 'allocateProgram_files/get_modules.php',
+                type: 'GET',
+                data: {
+                    programme_code: programmeCode
+                },
+                dataType: 'json',
+                success: function(data) {
+                    // Clear both sections
+                    $('#modules-container').empty();
+                    $('#modules-container').append(`
                         <h6>Compulsory Modules</h6>
                         <div id="compulsory-modules-container"></div>
                         <h6>Elective Modules</h6>
                         <div id="elective-modules-container"></div>
                     `);
 
-                        let compulsoryModules = [];
-                        let electiveModules = [];
+                    let compulsoryModules = [];
+                    let electiveModules = [];
 
-                        if (data.length > 0) {
-                            $.each(data, function(key, value) {
-                                const moduleType = value.type;
-                                const moduleId = value.id;
-                                const moduleName = value.module_name;
+                    if (data.length > 0) {
+                        $.each(data, function(key, value) {
+                            const moduleType = value.type;
+                            const moduleId = value.id;
+                            const moduleName = value.module_name;
 
-                                // Create the module checkbox HTML
-                                const moduleHTML = `
+                            // Create the module checkbox HTML
+                            const moduleHTML = `
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="module${moduleId}" name="elective_modules[]" value="${moduleName}">
                                         <label class="form-check-label" for="module${moduleId}">
@@ -587,35 +603,31 @@ $conn->close();
                                         </label>
                                     </div>
                                 `;
+                            // Append to the corresponding container based on the module type
+                            if (moduleType === 'Compulsory') {
+                                compulsoryModules.push(moduleId);
+                                $('#compulsory-modules-container').append(moduleHTML);
+                            } else if (moduleType === 'Elective') {
+                                electiveModules.push(moduleId);
+                                $('#elective-modules-container').append(moduleHTML);
+                            }
+                        });
 
-                                // Append to the corresponding container based on the module type
-                                if (moduleType === 'Compulsory') {
-                                    compulsoryModules.push(moduleId);
-                                    $('#compulsory-modules-container').append(moduleHTML);
-                                } else if (moduleType === 'Elective') {
-                                    electiveModules.push(moduleId);
-                                    $('#elective-modules-container').append(moduleHTML);
-                                }
-                            });
-
-                            // Update hidden fields with selected module IDs
-                            $('#compulsory-modules').val(compulsoryModules.join(','));
-                            $('#elective-modules').val(electiveModules.join(','));
-                        } else {
-                            $('#modules-container').append('<p>No modules found for this programme.</p>');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        $('#modules-container').empty().append('<p>Error fetching modules.</p>');
-                        console.error('Error:', error);
+                        // Update hidden fields with selected module IDs
+                        $('#compulsory-modules').val(compulsoryModules.join(','));
+                        $('#elective-modules').val(electiveModules.join(','));
+                    } else {
+                        $('#modules-container').append('<p>No modules found for this programme.</p>');
                     }
-                });
-            }
-        });
+                },
+                error: function(xhr, status, error) {
+                    $('#modules-container').empty().append('<p>Error fetching modules.</p>');
+                    console.error('Error:', error);
+                }
+            });
+        }
+    });
 </script>
-
-
-
 </body>
 
 </html>
