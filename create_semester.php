@@ -61,63 +61,132 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <h4 class="h4 mb-0 text-gray-800">Semester Management</h4>
                 </div>
 
+                <!-- ----------------------------------------------------------  -->
+                <!-- ----------------------------------------------------------  -->
+
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center" style="height: 60px;">
+                                <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add Semester</h6>
+                            </div>
+
+                            <div class="card-body">
+                                <form action="" method="post" class="mb-3">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3 "><label for="lead_type"> Semester Name</label></div>
+                                            <div class="col-md-9"> <input type="text" class="form-control" id="semester_name" name="semester_name" required></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-righ">
+                                        <button type="submit" name="add_semester" class="btn btn-primary">Add Semester</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- ----------------------------------------------------------  -->
+                <!-- ----------------------------------------------------------  -->
+
                 <!-- Add Semester Form -->
-                <form action="" method="post" class="mb-3">
+                <!-- <form action="" method="post" class="mb-3">
                     <div class="form-group">
                         <label for="semester_name">Semester Name</label>
                         <input type="text" class="form-control" id="semester_name" name="semester_name" required>
                     </div>
                     <button type="submit" name="add_semester" class="btn btn-primary">Add Semester</button>
-                </form>
+                </form> -->
 
-                <!-- Semesters Table -->
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Semester Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <form action="" method="post" class="d-inline">
-                                    <td><?php echo $row['id']; ?></td>
-                                    <td>
-                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <input type="text" class="form-control form-control-sm" name="semester_name" value="<?php echo htmlspecialchars($row['semester_name']); ?>" required>
-                                    </td>
-                                    <td>
-                                        <button type="submit" name="update_semester" class="btn btn-info btn-sm">Update</button>
-                                        <button type="submit" name="delete_semester" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
-                                </form>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
 
-                <!-- Pagination Controls -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                        <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+
+                <!-- -----------------------------------------------------------------------  -->
+                <!-- -----------------------------------------------------------------------  -->
+
+
+
+                <div class="card">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
+                        <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fas fa-list"></i>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current Semesters</h6>
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Leads Table -->
+                        <!-- Semesters Table -->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Semester Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <form action="" method="post" class="d-inline">
+                                            <td><?php echo $row['id']; ?></td>
+                                            <td>
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="text" class="form-control form-control-sm" name="semester_name" value="<?php echo htmlspecialchars($row['semester_name']); ?>" required>
+                                            </td>
+                                            <td>
+                                                <button type="submit" name="update_semester" class="btn btn-info btn-sm">Update</button>
+                                                <button type="submit" name="delete_semester" class="btn btn-danger btn-sm">Delete</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+
+
+                        <!-- Pagination Controls -->
+
+                        <!-- Pagination Controls -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+                                <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- -----------------------------------------------------------------------  -->
+                <!-- -----------------------------------------------------------------------  -->
+
+
+
 
             </div>
         </div>
@@ -127,4 +196,5 @@ $total_pages = ceil($total_rows / $results_per_page);
 <?php $conn->close(); ?>
 
 </body>
+
 </html>
