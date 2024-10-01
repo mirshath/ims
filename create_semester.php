@@ -79,7 +79,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3 "><label for="lead_type"> Semester Name</label></div>
-                                            <div class="col-md-9"> <input type="text" class="form-control" id="semester_name" name="semester_name" required></div>
+                                            <div class="col-md-9"> <input type="text" class="form-control" id="semester_name" name="semester_name" placeholder="Semester Name" required></div>
                                         </div>
                                     </div>
 
