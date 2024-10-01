@@ -58,66 +58,103 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Leads Management</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Manage Inquiry Types</h4>
                 </div>
 
-                <!-- Add Lead Form -->
-                <form action="" method="post" class="mb-3">
-                    <div class="form-group">
-                        <label for="lead_type">Lead Type</label>
-                        <input type="text" class="form-control" id="lead_type" name="lead_type" required>
-                    </div>
-                    <button type="submit" name="add_lead" class="btn btn-primary">Add Lead</button>
-                </form>
 
-                <!-- Leads Table -->
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Lead Type</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <form action="" method="post">
-                                    <td><?php echo $row['id']; ?></td>
-                                    <td>
-                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <input type="text" class="form-control" name="lead_type" value="<?php echo htmlspecialchars($row['lead_type']); ?>" required>
-                                    </td>
-                                    <td>
-                                        <button type="submit" name="update_lead" class="btn btn-info btn-sm">Update</button>
-                                        <button type="submit" name="delete_lead" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center" style="height: 60px;">
+                                <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add inquiry</h6>
+                            </div>
+
+                            <div class="card-body">
+                                <form action="" method="post" class="mb-3">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-2 "><label for="lead_type"> Type Name</label></div>
+                                            <div class="col-md-10"> <input type="text" class="form-control" id="lead_type" name="lead_type" placeholder="Type Inquiry Name" required></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-righ">
+                                        <button type="submit" name="add_lead" class="btn btn-primary">Add Lead</button>
+                                    </div>
                                 </form>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Pagination Controls -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                        <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+
+
+
+                <div class="card">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
+                        <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fas fa-list"></i>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current inquiry Types</h6>
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Leads Table -->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Type code </th>
+                                    <th>Type Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <form action="" method="post">
+                                            <td><?php echo $row['id']; ?></td>
+                                            <td>
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="text" class="form-control" name="lead_type" value="<?php echo htmlspecialchars($row['lead_type']); ?>" required>
+                                            </td>
+                                            <td>
+                                                <button type="submit" name="update_lead" class="btn btn-info btn-sm">Update</button>
+                                                <button type="submit" name="delete_lead" class="btn btn-danger btn-sm">Delete</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+
+                        <!-- Pagination Controls -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+                                <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+
 
             </div>
         </div>
