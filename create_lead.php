@@ -39,7 +39,7 @@ $total_pages = ceil($total_rows / $results_per_page);
 ?>
 
 <!-- Page Wrapper -->
-<div id="wrapper">
+<div id="wrapper" style="background-color: red;">
 
     <?php include("nav.php"); ?>
 
@@ -61,7 +61,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <h4 class="h4 mb-0 text-gray-800">Manage Inquiry Types</h4>
                 </div>
 
-
+                <!-- add form // create forms -->
                 <div class="row mb-5">
                     <div class="col-md-6">
                         <div class="card">
@@ -81,7 +81,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                         </div>
                                     </div>
 
-                                    <div class="text-righ">
+                                    <div class="text-right">
                                         <button type="submit" name="add_lead" class="btn btn-primary">Add Lead</button>
                                     </div>
                                 </form>
@@ -89,8 +89,6 @@ $total_pages = ceil($total_rows / $results_per_page);
                         </div>
                     </div>
                 </div>
-
-
 
 
                 <div class="card">

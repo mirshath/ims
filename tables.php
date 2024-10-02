@@ -5,20 +5,16 @@ include("./includes/header.php");
 
 ?>
 
-
 <!-- Page Wrapper -->
 <div id="wrapper">
 
     <!-- Sidebar -->
     <?php include("nav.php"); ?>
     <!-- End of Sidebar -->
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <?php include("includes/topnav.php"); ?>
             <!-- End of Topbar -->

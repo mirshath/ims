@@ -219,6 +219,8 @@ include("includes/header.php");
                     </form>
 
                 </div>
+
+
                 <!-- Criteria Table -->
                 <!-- <h5 class="mt-5 mb-4 text-muted">Registered Students</h5> -->
                 <div class="card mt-4 mb-4">
@@ -230,7 +232,7 @@ include("includes/header.php");
                             </div>
 
                             <div class="col-md-6"><!-- Container for search input and label -->
-                                <div class="pt-3 pb-3 d-flex justify-content-end align-items-center " style="">
+                                <div class="pt-3 pb-3 d-flex justify-content-end align-items-center " >
                                     <label for="tableSearch" class="form-label  fw-bolder" style="flex-shrink: 0; width: 150px;">Search Students:</label>
                                     <input type="text" id="tableSearch" class="form-control" placeholder="Type to search..." style="flex-grow: 1;">
                                 </div>

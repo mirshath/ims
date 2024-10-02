@@ -128,4 +128,4 @@
     </style>
 </head>
 
-<body id="page-top">
+<body id="page-top" style="background-color: #c83939;">

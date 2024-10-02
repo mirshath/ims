@@ -64,69 +64,141 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <h4 class="h4 mb-0 text-gray-800">Criteria Management</h4>
                 </div>
 
-                <!-- Add Criteria Form -->
-                <form action="" method="post" class="mb-3">
-                    <div class="form-group">
-                        <label for="criteria_code">Criteria Code</label>
-                        <input type="text" class="form-control" id="criteria_code" name="criteria_code" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="criteria_name">Criteria Name</label>
-                        <input type="text" class="form-control" id="criteria_name" name="criteria_name" required>
-                    </div>
-                    <button type="submit" name="add_criteria" class="btn btn-primary">Add Criteria</button>
-                </form>
 
-                <!-- Criteria Table -->
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Criteria Code</th>
-                            <th>Criteria Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <form action="" method="post">
-                                    <td>
-                                        <input type="text" name="criteria_code" value="<?php echo htmlspecialchars($row['criteria_code']); ?>" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="text" name="criteria_name" value="<?php echo htmlspecialchars($row['criteria_name']); ?>" class="form-control">
-                                    </td>
-                                    <td>
-                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="update_criteria" class="btn btn-info btn-sm">Update</button>
-                                        <button type="submit" name="delete_criteria" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
+
+                <!-- ------------------------------------------------------------------------------  -->
+
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center" style="height: 60px;">
+                                <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add Criteria</h6>
+                            </div>
+
+                            <div class="card-body">
+                                <form action="" method="post" class="mb-3">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="criteria_code">Criteria Code</label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control" id="criteria_code" name="criteria_code" placeholder="Criteria Code" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="criteria_name">Criteria Name</label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <input type="text" class="form-control" id="criteria_name" name="criteria_name" placeholder="Criteria Name" required>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <button type="submit" name="add_criteria" class="btn btn-primary">Add Criterias</button>
+                                    </div>
                                 </form>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Pagination Controls -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                        <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+
+                <!-- ------------------------------------------------------------------------------  -->
+
+
+
+
+                <div class="card">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
+                        <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fas fa-list"></i>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current Criterias</h6>
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Criteria Table -->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Criteria Code</th>
+                                    <th>Criteria Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <form action="" method="post">
+                                            <td>
+                                                <input type="text" name="criteria_code" value="<?php echo htmlspecialchars($row['criteria_code']); ?>" class="form-control">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="criteria_name" value="<?php echo htmlspecialchars($row['criteria_name']); ?>" class="form-control">
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <button type="submit" name="update_criteria" class="btn btn-info btn-sm">Update</button>
+                                                <button type="submit" name="delete_criteria" class="btn btn-danger btn-sm">Delete</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+
+
+
+
+                        <!-- Pagination Controls -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+                                <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+                <!-- ------------------------------------------------------------------------------  -->
+                <!-- ------------------------------------------------------------------------------  -->
+
+
 
             </div>
         </div>

@@ -86,7 +86,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
                         ) ? 'active' : '' ?>" id="navHover">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
             aria-expanded="true" aria-controls="collapseOne">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-file-alt"></i>
             <span>Master File</span>
         </a>
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
@@ -119,7 +119,8 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
     <li class="nav-item" id="navHover">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-exchange-alt"></i>
+
             <span>Transections</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
