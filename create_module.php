@@ -127,7 +127,7 @@ $result = $conn->query("
             <div class="p-3">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Module managment</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Module Managment</h4>
                 </div>
 
 
@@ -353,7 +353,7 @@ $result = $conn->query("
                                         <th>Assessment Components</th>
                                         <th>Pass Mark</th>
                                         <th>Type</th>
-                                        <th>Actions</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -368,8 +368,8 @@ $result = $conn->query("
                                         echo '<td>' . htmlspecialchars($row['pass_mark']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['type']) . '</td>';
                                         echo '<td>';
-                                        echo '<a href="create_module?edit=' . htmlspecialchars($row['id']) . '" class="btn btn-warning btn-sm">Edit</a> &nbsp;';
-                                        echo '<a href="create_module?delete=' . htmlspecialchars($row['id']) . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this module?\')">Delete</a>';
+                                        echo '<a href="create_module?edit=' . htmlspecialchars($row['id']) . '" class="btn btn-warning btn-sm"> <i class="fas fa-edit"></i></a> &nbsp;';
+                                        echo '<a href="create_module?delete=' . htmlspecialchars($row['id']) . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this module?\')"> <i class="fas fa-trash-alt"></i></a>';
                                         echo '</td>';
                                         echo '</tr>';
                                     }

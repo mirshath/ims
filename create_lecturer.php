@@ -106,7 +106,7 @@ $result = $conn->query("SELECT * FROM lecturer_table");
             <div class="p-3">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Lecture managment</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Lecture Managment</h4>
                 </div>
 
 
@@ -230,7 +230,7 @@ $result = $conn->query("SELECT * FROM lecturer_table");
                                         <th>Qualification</th>
                                         <th>Programs</th>
                                         <th>Hourly Rate</th>
-                                        <th>Actions</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
