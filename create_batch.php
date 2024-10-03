@@ -123,7 +123,7 @@ if (isset($_GET['delete'])) {
                 <!-- add form // create forms -->
 
                 <div class="row mb-5">
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="card">
                             <div class="card-header d-flex align-items-center" style="height: 60px;">
                                 <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
@@ -163,7 +163,6 @@ if (isset($_GET['delete'])) {
                                         </div>
 
                                     </div>
-
 
                                     <div class="form-group">
                                         <div class="row">
@@ -254,11 +253,21 @@ if (isset($_GET['delete'])) {
 
                                     </div>
                                 </form>
-
-
-
+                                
+                                
+                                
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-5">
+
+                        <ul style="font-size: 12px;">
+                            <li>MBA IHM - MBA IHM ()</li>
+                            <li>Qualifi Health And Social Care - QLHS BG()</li>
+                            <li>Foundation and Diploma in Project Management - IIPM BG()</li>
+                            <li>Business Psychology - BP BG()</li>
+                            <li>MBA - General - MBAG BG()</li>
+                        </ul>
                     </div>
                 </div>
 
