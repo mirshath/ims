@@ -8,7 +8,6 @@ $batch_name = $university = $programme = $year_batch_code = $intake_date = $end_
 $update = false;
 $id = 0;
 
-
 // Fetch universities for the dropdown
 $universities_result = mysqli_query($conn, "SELECT * FROM universities");
 $universities = [];
@@ -23,7 +22,6 @@ $programsOptions = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $programsOptions[] = $row;
 }
-
 
 // Create or Update a batch
 if (isset($_POST['save'])) {
@@ -57,7 +55,6 @@ if (isset($_POST['save'])) {
         echo "Error: " . $stmt->error;
     }
 }
-
 // Edit a batch
 if (isset($_GET['edit'])) {
     $id = (int)$_GET['edit'];
@@ -95,8 +92,6 @@ if (isset($_GET['delete'])) {
 ?>
 
 
-
-
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
@@ -108,19 +103,11 @@ if (isset($_GET['delete'])) {
             <!-- Topbar -->
             <?php include("includes/topnav.php"); ?>
             <!-- Begin Page Content -->
-
-            <!-- ----------------------------------------------------------  -->
-            <!-- ----------------------------------------------------------  -->
-
-
             <div class="p-3">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Batches Managment</h4>
                 </div>
-
-
-                <!-- add form // create forms -->
 
                 <div class="row mb-5">
                     <div class="col-md-7">
@@ -143,10 +130,7 @@ if (isset($_GET['delete'])) {
                                                 <input type="text" name="batch_name" class="form-control" value="<?php echo htmlspecialchars($batch_name); ?>" placeholder="Batch Name" required>
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3"> <label for="university">University:</label></div>
@@ -161,7 +145,6 @@ if (isset($_GET['delete'])) {
                                                 </select>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div class="form-group">
@@ -221,7 +204,6 @@ if (isset($_GET['delete'])) {
                                                 <input type="text" name="year_batch_code" class="form-control" placeholder="Year Batch Code" value="<?php echo htmlspecialchars($year_batch_code); ?>" required>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
@@ -230,7 +212,6 @@ if (isset($_GET['delete'])) {
                                                 <input type="date" name="intake_date" class="form-control" value="<?php echo htmlspecialchars($intake_date); ?>" required>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
@@ -241,8 +222,6 @@ if (isset($_GET['delete'])) {
                                         </div>
 
                                     </div>
-
-
                                     <div class="text-right">
                                         <!-- buttons  -->
                                         <?php if ($update == true): ?>
@@ -253,14 +232,10 @@ if (isset($_GET['delete'])) {
 
                                     </div>
                                 </form>
-                                
-                                
-                                
                             </div>
                         </div>
                     </div>
                     <div class="col-md-5">
-
                         <ul style="font-size: 12px;">
                             <li>MBA IHM - MBA IHM ()</li>
                             <li>Qualifi Health And Social Care - QLHS BG()</li>
@@ -270,12 +245,8 @@ if (isset($_GET['delete'])) {
                         </ul>
                     </div>
                 </div>
-
             </div>
 
-
-
-            <!-- ----------------------------------------------------------  -->
             <!-- ----------------------------------------------------------  -->
             <div class="container-fluid">
                 <div class="card shadow mb-4" style="font-size: 13px;">
@@ -291,7 +262,7 @@ if (isset($_GET['delete'])) {
                                 <thead>
                                     <tr>
                                         <th>Batch Name</th>
-                                        <th>University</th>
+                                        <!-- <th>University</th> -->
                                         <th>Programme</th>
                                         <th>Year & Batch</th>
                                         <th>Intake Date</th>
@@ -301,16 +272,19 @@ if (isset($_GET['delete'])) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    // Fetch all batches from the batch_table
-                                    $stmt = $conn->prepare("SELECT * FROM batch_table");
+                                    // Prepare a query to fetch all batches from the batch_table along with the program_name from the program_table
+                                    $stmt = $conn->prepare("
+                                    SELECT batch_table.*, program_table.program_name 
+                                    FROM batch_table
+                                    LEFT JOIN program_table ON batch_table.programme = program_table.program_code 
+                                ");
                                     $stmt->execute();
                                     $result = $stmt->get_result();
 
                                     while ($row = $result->fetch_assoc()) {
                                         echo '<tr>';
                                         echo '<td>' . htmlspecialchars($row['batch_name']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['university']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['programme']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['program_name']) . '</td>';  // Fetch program_name from program_table
                                         echo '<td>' . htmlspecialchars($row['year_batch_code']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['intake_date']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['end_date']) . '</td>';
@@ -322,13 +296,12 @@ if (isset($_GET['delete'])) {
                                     }
                                     ?>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
             <!-- /.container-fluid -->
         </div>
@@ -337,10 +310,6 @@ if (isset($_GET['delete'])) {
     <!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
-
-
-
-
 <!-- Page level plugins -->
 <script src="vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>

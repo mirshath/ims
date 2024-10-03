@@ -50,19 +50,14 @@ $total_pages = ceil($total_rows / $results_per_page);
 
 <!-- Page Wrapper -->
 <div id="wrapper">
-
     <?php include("nav.php"); ?>
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <?php include("includes/topnav.php"); ?>
             <!-- End of Topbar -->
-
             <!-- Begin Page Content -->
             <div class="container">
 
@@ -70,42 +65,6 @@ $total_pages = ceil($total_rows / $results_per_page);
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Coordinator Management</h4>
                 </div>
-
-                <!-- Add Coordinator Form -->
-                <!-- <form action="" method="post" class="mb-3">
-                    <div class="form-group">
-                        <label for="coordinator_code">Coordinator Code</label>
-                        <input type="text" class="form-control" id="coordinator_code" name="coordinator_code" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <select class="form-control" id="title" name="title" required>
-                            <option value="Mr">Mr</option>
-                            <option value="Mrs">Mrs</option>
-                            <option value="Ms">Ms</option>
-                            <option value="Dr">Dr</option>
-                            <option value="Prof">Prof</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="coordinator_name">Coordinator Name</label>
-                        <input type="text" class="form-control" id="coordinator_name" name="coordinator_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bms_email">BMS Email</label>
-                        <input type="email" class="form-control" id="bms_email" name="bms_email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <button type="submit" name="add_coordinator" class="btn btn-primary">Add Coordinator</button>
-                </form> -->
-
-
-                <!-- -------------------------------------------------------------------------------------  -->
-                <!-- -------------------------------------------------------------------------------------  -->
-
                 <!-- add form // create forms -->
                 <div class="row mb-5">
                     <div class="col-md-6">
@@ -139,7 +98,6 @@ $total_pages = ceil($total_rows / $results_per_page);
                                                 </select>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
@@ -159,8 +117,6 @@ $total_pages = ceil($total_rows / $results_per_page);
                                             <div class="col"> <input type="password" class="form-control" id="password" name="password" required></div>
                                         </div>
                                     </div>
-
-
                                     <div class="text-right">
                                         <button type="submit" name="add_coordinator" class="btn btn-primary">Add Coordinator</button>
                                     </div>
@@ -169,11 +125,6 @@ $total_pages = ceil($total_rows / $results_per_page);
                         </div>
                     </div>
                 </div>
-
-                <!-- -------------------------------------------------------------------------------------  -->
-                <!-- -------------------------------------------------------------------------------------  -->
-
-
 
                 <div class="card">
                     <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
@@ -185,7 +136,6 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                     <div class="card-body">
 
-                        <!-- Leads Table -->
                         <!-- Coordinators Table -->
                         <table class="table table-striped">
                             <thead>
@@ -224,43 +174,8 @@ $total_pages = ceil($total_rows / $results_per_page);
                             </tbody>
                         </table>
 
-
-
-                        <!-- Pagination Controls -->
-                        <!-- Pagination Controls -->
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-end">
-                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                    </li>
-                                <?php endfor; ?>
-                                <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-
-
-
                     </div>
-
                 </div>
-
-
-                <!-- -------------------------------------------------------------------------------------  -->
-                <!-- -------------------------------------------------------------------------------------  -->
-
-
-
-
             </div>
         </div>
     </div>

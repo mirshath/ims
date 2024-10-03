@@ -129,7 +129,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
                 <a class="collapse-item" href="addLeads">Add Lead</a>
                 <a class="collapse-item" href="studentRegister">Student Registration</a>
                 <a class="collapse-item" href="allocateProgram">Allocate Program</a>
-                <a class="collapse-item" href="testing">Testing</a>
+                <!-- <a class="collapse-item" href="testing">Testing</a> -->
             </div>
         </div>
     </li>
@@ -144,6 +144,11 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
         <a class="nav-link" href="tables">
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a>
+    </li>
+    <li class="nav-item" id="navHover">
+        <a class="nav-link" href="testing">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Testing</span></a>
     </li>
 
 
