@@ -3,6 +3,11 @@ include("database/connection.php");
 include("includes/header.php");
 
 
+// Initialize variables
+$module_code = $module_name = $university_id = $programme_id = $assessment_components = "";
+$pass_mark = $type = $lecturers = $institution = "";
+$id = 0;
+$update = false;
 
 // Fetch universities for the dropdown
 $universities_result = mysqli_query($conn, "SELECT * FROM universities");
@@ -11,173 +16,92 @@ while ($row = mysqli_fetch_assoc($universities_result)) {
     $universities[] = $row;
 }
 
-// Fetch coordinators for the dropdown (assuming coordinators are necessary)
-$coordinators_result = mysqli_query($conn, "SELECT * FROM coordinator_table");
-$coordinators = [];
-while ($row = mysqli_fetch_assoc($coordinators_result)) {
-    $coordinators[] = $row;
+// Fetch programs for dropdown
+$sql = "SELECT * FROM program_table";
+$result = mysqli_query($conn, $sql);
+$programsOptions = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $programsOptions[] = $row;
 }
 
-// Fetch criteria for checkboxes
-$criterias_result = mysqli_query($conn, "SELECT * FROM criterias");
-$criterias = [];
-while ($row = mysqli_fetch_assoc($criterias_result)) {
-    $criterias[] = $row;
-}
+// Handle form submission
+if (isset($_POST['save'])) {
+    $module_code = $_POST['module_code'];
+    $module_name = $_POST['module_name'];
+    $university_id = $_POST['university'];
+    $programme_id = $_POST['programme'];
+    $assessment_components = $_POST['assessment_components'];
+    $pass_mark = $_POST['pass_mark'];
+    $type = $_POST['type'];
+    $lecturers = $_POST['lecturers'];
+    $institution = $_POST['institution'];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['delete_program'])) {
-        if (!empty($_POST['program_code'])) {
-            $program_code = mysqli_real_escape_string($conn, $_POST['program_code']);
-            $delete_sql = "DELETE FROM program_table WHERE program_code='$program_code'";
-
-            if (mysqli_query($conn, $delete_sql)) {
-                // echo "<div class='alert alert-success'>Program deleted successfully.</div>";
-                echo "<script>alert('Program deleted successfully!');</script>";
-            } else {
-                echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
-            }
-        } else {
-            echo "<div class='alert alert-danger'>Error: Program Code is missing.</div>";
-        }
+    $sql = "INSERT INTO modules (module_code, module_name, university_id, programme_id, assessment_components, pass_mark, type, lecturers, institution) 
+            VALUES ('$module_code', '$module_name', '$university_id', '$programme_id', '$assessment_components', '$pass_mark', '$type', '$lecturers', '$institution')";
+    if ($conn->query($sql) === TRUE) {
+        echo '<script> window.location.href = "create_module";</script>';
     } else {
-        // Handle insert or update
-        $program_code = isset($_POST['program_code']) ? mysqli_real_escape_string($conn, $_POST['program_code']) : '';
-        $university_id = mysqli_real_escape_string($conn, $_POST['university']);
-        $program_name = mysqli_real_escape_string($conn, $_POST['program_name']);
-        $prog_code = mysqli_real_escape_string($conn, $_POST['prog_code']);
-        $coordinator_name = mysqli_real_escape_string($conn, $_POST['coordinator_name']);
-        $medium = mysqli_real_escape_string($conn, $_POST['medium']);
-        $duration = mysqli_real_escape_string($conn, $_POST['duration']);
-        $course_fee_lkr = mysqli_real_escape_string($conn, $_POST['course_fee_lkr']);
-        $course_fee_gbp = mysqli_real_escape_string($conn, $_POST['course_fee_gbp']);
-        $course_fee_usd = mysqli_real_escape_string($conn, $_POST['course_fee_usd']);
-        $course_fee_euro = mysqli_real_escape_string($conn, $_POST['course_fee_euro']);
-
-        // Handle entry requirements
-        $entry_requirements = isset($_POST['entry_requirement']) ? implode(',', $_POST['entry_requirement']) : '';
-
-        if (isset($_POST['edit_program']) && !empty($program_code)) {
-            // Update existing program
-            $update_sql = "UPDATE program_table SET 
-                university_id='$university_id',
-                program_name='$program_name',
-                prog_code='$prog_code',
-                coordinator_name='$coordinator_name',
-                medium='$medium',
-                duration='$duration',
-                course_fee_lkr='$course_fee_lkr',
-                course_fee_gbp='$course_fee_gbp',
-                course_fee_usd='$course_fee_usd',
-                course_fee_euro='$course_fee_euro',
-                entry_requirement='$entry_requirements'
-                WHERE program_code='$program_code'";
-
-            // Output the query for debugging
-            // echo $update_sql;
-
-            if (mysqli_query($conn, $update_sql)) {
-                echo '<script>window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
-            } else {
-                echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
-            }
-        } else {
-            // Insert new program
-            $insert_sql = "INSERT INTO program_table 
-                (university_id, program_name, prog_code, coordinator_name, medium, duration, course_fee_lkr, course_fee_gbp, course_fee_usd, course_fee_euro, entry_requirement) 
-                VALUES ('$university_id', '$program_name', '$prog_code', '$coordinator_name', '$medium', '$duration', '$course_fee_lkr', '$course_fee_gbp', '$course_fee_usd', '$course_fee_euro', '$entry_requirements')";
-
-            if (mysqli_query($conn, $insert_sql)) {
-                echo "<div class='alert alert-success'>Program added successfully.</div>";
-                echo '<script>window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
-            } else {
-                echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
-            }
-        }
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 
+// Handle record update
+if (isset($_GET['edit'])) {
+    $id = $_GET['edit'];
+    $update = true;
+    $result = $conn->query("SELECT * FROM modules WHERE id=$id");
+    $row = $result->fetch_assoc();
+    $module_code = $row['module_code'];
+    $module_name = $row['module_name'];
+    $university_id = $row['university_id'];
+    $programme_id = $row['programme_id'];
+    $assessment_components = $row['assessment_components'];
+    $pass_mark = $row['pass_mark'];
+    $type = $row['type'];
+    $lecturers = $row['lecturers'];
+    $institution = $row['institution'];
+}
+
+// Handle form update
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $module_name = $_POST['module_name'];
+    $university_id = $_POST['university'];
+    $programme_id = $_POST['programme'];
+    $assessment_components = $_POST['assessment_components'];
+    $pass_mark = $_POST['pass_mark'];
+    $type = $_POST['type'];
+    $lecturers = $_POST['lecturers'];
+    $institution = $_POST['institution'];
+
+    $sql = "UPDATE modules SET module_name='$module_name', university_id='$university_id', programme_id='$programme_id', assessment_components='$assessment_components', pass_mark='$pass_mark', type='$type', lecturers='$lecturers', institution='$institution' WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        echo '<script> window.location.href = "create_module";</script>';
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Handle record deletion
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $sql = "DELETE FROM modules WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        echo '<script> window.location.href = "create_module";</script>';
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+// Fetch all records
+// $result = $conn->query("SELECT * FROM modules");
+$result = $conn->query("
+    SELECT m.*, p.program_name 
+    FROM modules m
+    LEFT JOIN program_table p ON m.programme_id = p.program_code
+");
+
 ?>
-
-
-
-<script>
-    $(document).ready(function() {
-        // Initialize select2 for dropdowns
-        $('.select2').select2();
-
-        // Event listener for program selection change
-        $('#program_select').on('change', function() {
-            var program_code = $(this).val();
-
-            if (program_code) {
-                // If a program is selected, fetch its data
-                $.ajax({
-                    url: 'fetch_program_data.php',
-                    type: 'POST',
-                    data: {
-                        program_code: program_code
-                    },
-                    success: function(response) {
-                        try {
-                            var data = JSON.parse(response);
-
-                            // Populate the form fields with the fetched data
-                            $('#program_code').val(data.program_code);
-                            $('#university').val(data.university_id).trigger('change');
-                            $('#program_name').val(data.program_name);
-                            $('#prog_code').val(data.prog_code);
-                            $('#coordinator_name').val(data.coordinator_name).trigger('change');
-                            $('#medium').val(data.medium);
-                            $('#duration').val(data.duration);
-                            $('#course_fee_lkr').val(data.course_fee_lkr);
-                            $('#course_fee_gbp').val(data.course_fee_gbp);
-                            $('#course_fee_usd').val(data.course_fee_usd);
-                            $('#course_fee_euro').val(data.course_fee_euro);
-
-                            // Populate entry requirements checkboxes
-                            $('input[name="entry_requirement[]"]').each(function() {
-                                var value = $(this).val();
-                                if (data.entry_requirements.includes(value)) {
-                                    $(this).prop('checked', true);
-                                } else {
-                                    $(this).prop('checked', false);
-                                }
-                            });
-
-                            // Show the "Update" button and hide the "Submit" button
-                            $('#submit_button').hide();
-                            $('#update_button').show();
-                        } catch (e) {
-                            console.error("Error parsing JSON response: ", e);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error: ", status, error);
-                    }
-                });
-            } else {
-                // Clear form fields if no program is selected
-                $('#program_code').val('');
-                $('#university').val('').trigger('change');
-                $('#program_name').val('');
-                $('#prog_code').val('');
-                $('#coordinator_name').val('').trigger('change');
-                $('#medium').val('');
-                $('#duration').val('');
-                $('#course_fee_lkr').val('');
-                $('#course_fee_gbp').val('');
-                $('#course_fee_usd').val('');
-                $('#course_fee_euro').val('');
-                $('input[name="entry_requirement[]"]').prop('checked', false);
-
-                // Show the "Submit" button and hide the "Update" button
-                $('#submit_button').show();
-                $('#update_button').hide();
-            }
-        });
-    });
-</script>
 
 
 
@@ -203,30 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="p-3">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">Program managment</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Module managment</h4>
                 </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-4 ml-auto">
-
-                        <!-- Add Criteria Form -->
-                        <div class="form-group">
-                            <label for="program_select" style="color: red; font-weight: 600;">Select Program to edit:</label>
-                            <select class="form-control select2" id="program_select" name="program_select">
-                                <option value="">-- Select a Program --</option>
-                                <?php
-                                // Fetch program names for the dropdown
-                                $programs_result = mysqli_query($conn, "SELECT program_code, program_name FROM program_table");
-                                while ($row = mysqli_fetch_assoc($programs_result)) {
-                                    echo '<option value="' . htmlspecialchars($row['program_code']) . '">' . htmlspecialchars($row['program_name']) . '</option>';
-                                }
-                                ?>
-                            </select>
-
-                        </div>
-                    </div>
-                </div>
-
 
 
                 <!-- add form // create forms -->
@@ -238,93 +140,189 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                                     <i class="fas fa-plus-circle"></i>
                                 </span> &nbsp;&nbsp;&nbsp;&nbsp;
-                                <h6 class="mb-0 me-2">Add Program</h6>
+                                <h6 class="mb-0 me-2">Add Modules</h6>
                             </div>
 
                             <div class="card-body">
                                 <form action="" method="post" class="mb-3">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <!-- <label for="program_code">Program ID:</label> -->
-                                                <input type="hidden" id="program_code" name="program_code">
+
+                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="module_code">Module Code:</label></div>
+                                            <div class="col">
+                                                <input type="text" class="form-control" placeholder="Module Code" id="module_code" name="module_code" value="<?php echo htmlspecialchars($module_code); ?>" <?php echo $update ? 'disabled' : ''; ?> required>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="university">University:</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="module_name">Module Name:</label></div>
+                                            <div class="col">
+                                                <input type="text" class="form-control" placeholder="Module Name" id="module_name" name="module_name" value="<?php echo htmlspecialchars($module_name); ?>" required>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- ------------------------------------------------------------------------  -->
+                                    <!-- ------------------------------------------------------------------------  -->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="university">University:</label></div>
+                                            <div class="col">
                                                 <select class="form-control select2" id="university" name="university" required>
+                                                    <option value="">Select University</option>
                                                     <?php foreach ($universities as $uni): ?>
-                                                        <option value="<?php echo htmlspecialchars($uni['id']); ?>">
+                                                        <option value="<?php echo htmlspecialchars($uni['id']); ?>" <?php echo $uni['id'] == $university_id ? 'selected' : ''; ?>>
                                                             <?php echo htmlspecialchars($uni['university_name']); ?>
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="prog_code">Program Code:</label>
-                                                <input type="text" class="form-control" id="prog_code" name="prog_code" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="program_name">Program Name:</label>
-                                                <input type="text" class="form-control" id="program_name" name="program_name" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="coordinator_name">Coordinator Name:</label>
-                                                <select class="form-control select2" id="coordinator_name" name="coordinator_name" required>
-                                                    <?php foreach ($coordinators as $coord): ?>
-                                                        <option value="<?php echo htmlspecialchars($coord['coordinator_name']); ?>">
-                                                            <?php echo htmlspecialchars($coord['coordinator_name']); ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="medium">Medium:</label>
-                                                <select class="form-control" id="medium" name="medium" required>
-                                                    <option value="English">English</option>
-                                                    <option value="Tamil">Tamil</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="duration">Duration:</label>
-                                                <input type="text" class="form-control" id="duration" name="duration">
-                                            </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="course_fee_lkr">Course Fee (LKR):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="course_fee_gbp">Course Fee (GBP):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="course_fee_usd">Course Fee (USD):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="course_fee_euro">Course Fee (EURO):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Entry Requirements:</label>
-                                                <?php foreach ($criterias as $criteria): ?>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" name="entry_requirement[]" value="<?php echo htmlspecialchars($criteria['criteria_name']); ?>">
-                                                        <label class="form-check-label"><?php echo htmlspecialchars($criteria['criteria_name']); ?></label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        </div>
+
                                     </div>
 
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="programme">Programme:</label></div>
+                                            <div class="col">
+                                                <select class="form-control" id="programme" name="programme" required>
+                                                    <option value="">Select Programme</option>
+                                                    <!-- Programs will be dynamically loaded here -->
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+                                    <script>
+                                        $(document).ready(function() {
+                                            var selectedProgramme = '<?php echo $programme_id; ?>';
+
+                                            $('#university').on('change', function() {
+                                                var universityID = $(this).val();
+                                                if (universityID) {
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: 'get_programs.php', // Ensure this path is correct
+                                                        data: {
+                                                            university_id: universityID
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            $('#programme').html('<option value="">Select Programme</option>'); // Reset the dropdown
+                                                            $.each(data, function(key, value) {
+                                                                var isSelected = value.program_code == selectedProgramme ? 'selected' : '';
+                                                                $('#programme').append('<option value="' + value.program_code + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                                            });
+                                                        },
+                                                        error: function(xhr, status, error) {
+                                                            console.error("AJAX Error: " + status + error);
+                                                        }
+                                                    });
+                                                } else {
+                                                    $('#programme').html('<option value="">Select Programme</option>');
+                                                }
+                                            });
+
+                                            // Trigger change event to load programs if university is already selected (for edit mode)
+                                            <?php if ($update && !empty($university_id)): ?>
+                                                $('#university').trigger('change');
+                                            <?php endif; ?>
+                                        });
+                                    </script>
+
+                                    <!-- ------------------------------------------------------------------------  -->
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="assessment_components">Assessment Components:</label></div>
+                                            <div class="col">
+                                                <textarea class="form-control" placeholder="Assessment Components" id="assessment_components" name="assessment_components" rows="3" required><?php echo htmlspecialchars($assessment_components); ?></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="pass_mark">Pass Mark:</label></div>
+                                            <div class="col">
+                                                <input type="number" placeholder="Pass Mark" class="form-control" id="pass_mark" name="pass_mark" value="<?php echo htmlspecialchars($pass_mark); ?>" required>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label>Type:</label></div>
+                                            <div class="col">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="type" id="type_compulsory" value="Compulsory" <?php echo $type == 'Compulsory' ? 'checked' : ''; ?>>
+                                                    <label class="form-check-label" for="type_compulsory">
+                                                        Compulsory
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="type" id="type_elective" value="Elective" <?php echo $type == 'Elective' ? 'checked' : ''; ?>>
+                                                    <label class="form-check-label" for="type_elective">
+                                                        Elective
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- ---------------------------------------------  -->
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="lecturers"><input type="checkbox" id="enable_lecturers" name="enable_lecturers" <?php echo !empty($lecturers) ? 'checked' : ''; ?>> Lecturer/s:</label></div>
+                                            <div class="col">
+                                                <textarea class="form-control" placeholder="lecturers" id="lecturers" name="lecturers" rows="3" <?php echo empty($lecturers) ? 'disabled' : ''; ?>><?php echo htmlspecialchars($lecturers); ?></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="institution"><input type="checkbox" id="enable_institution" name="enable_institution" <?php echo !empty($institution) ? 'checked' : ''; ?>> Institution:</label></div>
+                                            <div class="col">
+                                                <input type="text" placeholder="institution" class="form-control" id="institution" name="institution" value="<?php echo htmlspecialchars($institution); ?>" <?php echo empty($institution) ? 'disabled' : ''; ?>>
+                                            </div>
+                                        </div>
+
+                                    </div>
 
                                     <div class="text-right">
-                                        <button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
-                                        <button type="submit" id="update_button" class="btn btn-success" name="edit_program" style="display: none;">Update</button>
-                                        <button type="submit" id="delete_button" class="btn btn-danger" name="delete_program" style="display: none;">Delete</button>
+                                        <?php if ($update): ?>
+                                            <button type="submit" class="btn btn-primary" name="update">Update</button>
+                                        <?php else: ?>
+                                            <button type="submit" class="btn btn-primary" name="save">Save</button>
+                                        <?php endif; ?>
                                     </div>
                                 </form>
+
+                                <!-- this is for the check box when clik  -->
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#enable_lecturers').change(function() {
+                                            $('#lecturers').prop('disabled', !this.checked);
+                                        });
+
+                                        $('#enable_institution').change(function() {
+                                            $('#institution').prop('disabled', !this.checked);
+                                        });
+                                    });
+                                </script>
+
                             </div>
                         </div>
                     </div>
@@ -336,49 +334,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <!-- ----------------------------------------------------------  -->
             <!-- ----------------------------------------------------------  -->
-
-
             <div class="container-fluid">
-
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4" style="font-size: 13px;">
                     <div class="card-header d-flex align-items-center" style="height: 60px;">
                         <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                             <i class="fas fa-list"></i>
                         </span> &nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6 class="mb-0">Current Programms</h6>
+                        <h6 class="mb-0">Current Modules</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Program Name</th>
-                                        <th>University</th>
-                                        <th>Program Code</th>
-                                        <th>Coordinator Name</th>
-                                        <th>Medium</th>
-                                        <th>Duration</th>
+                                        <th>Module Code</th>
+                                        <th>Module Name</th>
+                                        <th>Programme</th>
+                                        <th>Assessment Components</th>
+                                        <th>Pass Mark</th>
+                                        <th>Type</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    // Fetch all programs to display in the table
-                                    $programs_result = mysqli_query($conn, "SELECT * FROM program_table");
-                                    while ($row = mysqli_fetch_assoc($programs_result)) {
+
+                                    while ($row = mysqli_fetch_assoc($result)) {
                                         echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['module_code']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['module_name']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['program_name']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['university_id']) . '</td>'; // Assuming you have a way to get the university name from ID
-                                        echo '<td>' . htmlspecialchars($row['prog_code']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['coordinator_name']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['medium']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['duration']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['assessment_components']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['pass_mark']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['type']) . '</td>';
                                         echo '<td>';
-                                        echo '<button class="btn btn-info edit-button" data-prog-code="' . htmlspecialchars($row['program_code']) . '">Edit</button>';
-                                        echo '<form action="" method="post" style="display:inline;">
-                              <input type="hidden" name="program_code" value="' . htmlspecialchars($row['program_code']) . '">
-                              <button type="submit" name="delete_program" class="btn btn-danger">Delete</button>
-                              </form>';
+                                        echo '<a href="create_module?edit=' . htmlspecialchars($row['id']) . '" class="btn btn-warning btn-sm">Edit</a> &nbsp;';
+                                        echo '<a href="create_module?delete=' . htmlspecialchars($row['id']) . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this module?\')">Delete</a>';
                                         echo '</td>';
                                         echo '</tr>';
                                     }
@@ -388,9 +379,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                 </div>
-
-
             </div>
+
+
+
             <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
@@ -399,14 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 <!-- End of Page Wrapper -->
 
-<script>
-    $(document).ready(function() {
-        $('.edit-button').on('click', function() {
-            var progCode = $(this).data('prog-code');
-            $('#program_select').val(progCode).trigger('change');
-        });
-    });
-</script>
+
 
 
 <!-- Page level plugins -->

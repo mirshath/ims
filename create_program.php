@@ -207,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
 
-                
+
                 <div class="container">
                     <div class="row mb-4">
                         <div class="col-md-4 ml-auto">
@@ -265,11 +265,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </div>
                                             <div class="form-group">
                                                 <label for="prog_code">Program Code:</label>
-                                                <input type="text" class="form-control" id="prog_code" name="prog_code" required>
+                                                <input type="text" class="form-control" id="prog_code" name="prog_code" placeholder="Program Code" required >
                                             </div>
                                             <div class="form-group">
                                                 <label for="program_name">Program Name:</label>
-                                                <input type="text" class="form-control" id="program_name" name="program_name" required>
+                                                <input type="text" class="form-control" id="program_name" name="program_name" placeholder="Program Name" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="coordinator_name">Coordinator Name:</label>
@@ -290,25 +290,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </div>
                                             <div class="form-group">
                                                 <label for="duration">Duration:</label>
-                                                <input type="text" class="form-control" id="duration" name="duration">
+                                                <input type="text" class="form-control" id="duration" name="duration" placeholder="Durations">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="course_fee_lkr">Course Fee (LKR):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr">
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr" placeholder="Course Fee LKR">
                                             </div>
                                             <div class="form-group">
                                                 <label for="course_fee_gbp">Course Fee (GBP):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp">
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp" placeholder="Course Fee GBP">
                                             </div>
                                             <div class="form-group">
                                                 <label for="course_fee_usd">Course Fee (USD):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd">
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd" placeholder="Course Fee USD">
                                             </div>
                                             <div class="form-group">
                                                 <label for="course_fee_euro">Course Fee (EURO):</label>
-                                                <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro">
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro" placeholder="Course Fee EURO">
                                             </div>
                                             <div class="form-group">
                                                 <label>Entry Requirements:</label>
@@ -378,10 +378,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         echo '<td>' . htmlspecialchars($row['medium']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['duration']) . '</td>';
                                         echo '<td>';
-                                        echo '<button class="btn btn-info btn-sm edit-button" data-prog-code="' . htmlspecialchars($row['program_code']) . '">Edit</button>';
+                                        echo '<button class="btn btn-info btn-sm edit-button" data-prog-code="' . htmlspecialchars($row['program_code']) . '"><i class="fas fa-edit"></i></button>';
                                         echo '<form action="" method="post" style="display:inline;">
                               <input type="hidden" name="program_code" value="' . htmlspecialchars($row['program_code']) . '">
-                              <button type="submit" name="delete_program" class="btn btn-danger btn-sm">Delete</button>
+                              <button type="submit" name="delete_program" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                               </form>';
                                         echo '</td>';
                                         echo '</tr>';
