@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $delete_sql = "DELETE FROM program_table WHERE program_code='$program_code'";
 
             if (mysqli_query($conn, $delete_sql)) {
-                echo "<div class='alert alert-success'>Program deleted successfully.</div>";
+                // echo "<div class='alert alert-success'>Program deleted successfully.</div>";
+                echo "<script>alert('Program deleted successfully!');</script>";
             } else {
                 echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
             }
@@ -97,6 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
+
+
 
 <script>
     $(document).ready(function() {
@@ -175,172 +178,230 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
     });
 </script>
+
+
+
+
+
+
 <!-- Page Wrapper -->
 <div id="wrapper">
-
+    <!-- Sidebar -->
     <?php include("nav.php"); ?>
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <?php include("includes/topnav.php"); ?>
-            <!-- End of Topbar -->
-
             <!-- Begin Page Content -->
-            <div class="container">
 
+            <!-- ----------------------------------------------------------  -->
+            <!-- ----------------------------------------------------------  -->
+
+
+            <div class="p-3">
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Program managment</h4>
                 </div>
-                <!-- Add Criteria Form -->
-                <div class="form-group">
-                    <label for="program_select">Select Program to edit:</label>
-                    <select class="form-control select2" id="program_select" name="program_select">
-                        <option value="">-- Select a Program --</option>
-                        <?php
-                        // Fetch program names for the dropdown
-                        $programs_result = mysqli_query($conn, "SELECT program_code, program_name FROM program_table");
-                        while ($row = mysqli_fetch_assoc($programs_result)) {
-                            echo '<option value="' . htmlspecialchars($row['program_code']) . '">' . htmlspecialchars($row['program_name']) . '</option>';
-                        }
-                        ?>
-                    </select>
 
-                </div>
 
-                <h2 class="mt-4">Program </h2>
-                <form action="" method="post">
-                    <div class="row">
-                        <div class="col-md-6">
+                
+                <div class="container">
+                    <div class="row mb-4">
+                        <div class="col-md-4 ml-auto">
+
+                            <!-- Add Criteria Form -->
                             <div class="form-group">
-                                <!-- <label for="program_code">Program ID:</label> -->
-                                <input type="hidden" id="program_code" name="program_code">
-                            </div>
-                            <div class="form-group">
-                                <label for="university">University:</label>
-                                <select class="form-control select2" id="university" name="university" required>
-                                    <?php foreach ($universities as $uni): ?>
-                                        <option value="<?php echo htmlspecialchars($uni['id']); ?>">
-                                            <?php echo htmlspecialchars($uni['university_name']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
+                                <label for="program_select" style="color: red; font-weight: 600;">Select Program to edit:</label>
+                                <select class="form-control select2" id="program_select" name="program_select">
+                                    <option value="">-- Select a Program --</option>
+                                    <?php
+                                    // Fetch program names for the dropdown
+                                    $programs_result = mysqli_query($conn, "SELECT program_code, program_name FROM program_table");
+                                    while ($row = mysqli_fetch_assoc($programs_result)) {
+                                        echo '<option value="' . htmlspecialchars($row['program_code']) . '">' . htmlspecialchars($row['program_name']) . '</option>';
+                                    }
+                                    ?>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="prog_code">Program Code:</label>
-                                <input type="text" class="form-control" id="prog_code" name="prog_code" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="program_name">Program Name:</label>
-                                <input type="text" class="form-control" id="program_name" name="program_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="coordinator_name">Coordinator Name:</label>
-                                <select class="form-control select2" id="coordinator_name" name="coordinator_name" required>
-                                    <?php foreach ($coordinators as $coord): ?>
-                                        <option value="<?php echo htmlspecialchars($coord['coordinator_name']); ?>">
-                                            <?php echo htmlspecialchars($coord['coordinator_name']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="medium">Medium:</label>
-                                <select class="form-control" id="medium" name="medium" required>
-                                    <option value="English">English</option>
-                                    <option value="Tamil">Tamil</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="duration">Duration:</label>
-                                <input type="text" class="form-control" id="duration" name="duration">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="course_fee_lkr">Course Fee (LKR):</label>
-                                <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr">
-                            </div>
-                            <div class="form-group">
-                                <label for="course_fee_gbp">Course Fee (GBP):</label>
-                                <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp">
-                            </div>
-                            <div class="form-group">
-                                <label for="course_fee_usd">Course Fee (USD):</label>
-                                <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd">
-                            </div>
-                            <div class="form-group">
-                                <label for="course_fee_euro">Course Fee (EURO):</label>
-                                <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro">
-                            </div>
-                            <div class="form-group">
-                                <label>Entry Requirements:</label>
-                                <?php foreach ($criterias as $criteria): ?>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="entry_requirement[]" value="<?php echo htmlspecialchars($criteria['criteria_name']); ?>">
-                                        <label class="form-check-label"><?php echo htmlspecialchars($criteria['criteria_name']); ?></label>
-                                    </div>
-                                <?php endforeach; ?>
+
                             </div>
                         </div>
                     </div>
-                    <button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
-                    <button type="submit" id="update_button" class="btn btn-success" name="edit_program" style="display: none;">Update</button>
-                    <button type="submit" id="delete_button" class="btn btn-danger" name="delete_program" style="display: none;">Delete</button>
-                </form>
+                </div>
 
-                <h4 class="mt-5">Current Programs</h4>
 
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <!-- <th>ID</th> -->
-                            <th>Program Name</th>
-                            <th>University</th>
-                            <th>Program Code</th>
-                            <th>Coordinator Name</th>
-                            <th>Medium</th>
-                            <th>Duration</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        // Fetch all programs to display in the table
-                        $programs_result = mysqli_query($conn, "SELECT * FROM program_table");
-                        while ($row = mysqli_fetch_assoc($programs_result)) {
-                            echo '<tr>';
-                            // echo '<td>' . htmlspecialchars($row['program_code']) . '</td>';
-                            echo '<td>' . htmlspecialchars($row['program_name']) . '</td>';
-                            echo '<td>' . htmlspecialchars($row['university_id']) . '</td>'; // Assuming you have a way to get the university name from ID
-                            echo '<td>' . htmlspecialchars($row['prog_code']) . '</td>';
-                            echo '<td>' . htmlspecialchars($row['coordinator_name']) . '</td>';
-                            echo '<td>' . htmlspecialchars($row['medium']) . '</td>';
-                            echo '<td>' . htmlspecialchars($row['duration']) . '</td>';
+                <!-- add form // create forms -->
 
-                            echo '<td>';
-                            echo '<button class="btn btn-info edit-button" data-prog-code="' . htmlspecialchars($row['program_code']) . '">Edit</button>';
-                            echo '<form action="" method="post" style="display:inline;">
-                                    <input type="hidden" name="program_code" value="' . htmlspecialchars($row['program_code']) . '">
-                                    <button type="submit" name="delete_program" class="btn btn-danger">Delete</button>
-                                </form>';
-                            echo '</td>';
-                            echo '</tr>';
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                <div class="row mb-5">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center" style="height: 60px;">
+                                <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add Program</h6>
+                            </div>
+
+                            <div class="card-body">
+                                <form action="" method="post" class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <!-- <label for="program_code">Program ID:</label> -->
+                                                <input type="hidden" id="program_code" name="program_code">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="university">University:</label>
+                                                <select class="form-control select2" id="university" name="university" required>
+                                                    <?php foreach ($universities as $uni): ?>
+                                                        <option value="<?php echo htmlspecialchars($uni['id']); ?>">
+                                                            <?php echo htmlspecialchars($uni['university_name']); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="prog_code">Program Code:</label>
+                                                <input type="text" class="form-control" id="prog_code" name="prog_code" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="program_name">Program Name:</label>
+                                                <input type="text" class="form-control" id="program_name" name="program_name" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="coordinator_name">Coordinator Name:</label>
+                                                <select class="form-control select2" id="coordinator_name" name="coordinator_name" required>
+                                                    <?php foreach ($coordinators as $coord): ?>
+                                                        <option value="<?php echo htmlspecialchars($coord['coordinator_name']); ?>">
+                                                            <?php echo htmlspecialchars($coord['coordinator_name']); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="medium">Medium:</label>
+                                                <select class="form-control" id="medium" name="medium" required>
+                                                    <option value="English">English</option>
+                                                    <option value="Tamil">Tamil</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="duration">Duration:</label>
+                                                <input type="text" class="form-control" id="duration" name="duration">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="course_fee_lkr">Course Fee (LKR):</label>
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_lkr" name="course_fee_lkr">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="course_fee_gbp">Course Fee (GBP):</label>
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_gbp" name="course_fee_gbp">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="course_fee_usd">Course Fee (USD):</label>
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_usd" name="course_fee_usd">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="course_fee_euro">Course Fee (EURO):</label>
+                                                <input type="number" step="0.01" class="form-control" id="course_fee_euro" name="course_fee_euro">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Entry Requirements:</label>
+                                                <?php foreach ($criterias as $criteria): ?>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" name="entry_requirement[]" value="<?php echo htmlspecialchars($criteria['criteria_name']); ?>">
+                                                        <label class="form-check-label"><?php echo htmlspecialchars($criteria['criteria_name']); ?></label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-right">
+                                        <button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
+                                        <button type="submit" id="update_button" class="btn btn-success" name="edit_program" style="display: none;">Update</button>
+                                        <button type="submit" id="delete_button" class="btn btn-danger" name="delete_program" style="display: none;">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- ----------------------------------------------------------  -->
+            <!-- ----------------------------------------------------------  -->
+
+
+            <div class="container-fluid" style="font-size: 13px;">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
+                        <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fas fa-list"></i>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current Programms</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Program Name</th>
+                                        <th>University</th>
+                                        <th>Program Code</th>
+                                        <th>Coordinator Name</th>
+                                        <th>Medium</th>
+                                        <th>Duration</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    // Fetch all programs to display in the table
+                                    $programs_result = mysqli_query($conn, "SELECT * FROM program_table");
+                                    while ($row = mysqli_fetch_assoc($programs_result)) {
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['program_name']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['university_id']) . '</td>'; // Assuming you have a way to get the university name from ID
+                                        echo '<td>' . htmlspecialchars($row['prog_code']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['coordinator_name']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['medium']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['duration']) . '</td>';
+                                        echo '<td>';
+                                        echo '<button class="btn btn-info btn-sm edit-button" data-prog-code="' . htmlspecialchars($row['program_code']) . '">Edit</button>';
+                                        echo '<form action="" method="post" style="display:inline;">
+                              <input type="hidden" name="program_code" value="' . htmlspecialchars($row['program_code']) . '">
+                              <button type="submit" name="delete_program" class="btn btn-danger btn-sm">Delete</button>
+                              </form>';
+                                        echo '</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
+            <!-- /.container-fluid -->
         </div>
+        <!-- End of Main Content -->
     </div>
+    <!-- End of Content Wrapper -->
 </div>
+<!-- End of Page Wrapper -->
 
 <script>
     $(document).ready(function() {
@@ -351,7 +412,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     });
 </script>
 
+
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" href="./vendor/datatables/dataTables.bootstrap4.min.css">
+
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script>
+
 </body>
 
 </html>
-<?php $conn->close(); ?>

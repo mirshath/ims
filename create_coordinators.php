@@ -72,7 +72,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                 </div>
 
                 <!-- Add Coordinator Form -->
-                <form action="" method="post" class="mb-3">
+                <!-- <form action="" method="post" class="mb-3">
                     <div class="form-group">
                         <label for="coordinator_code">Coordinator Code</label>
                         <input type="text" class="form-control" id="coordinator_code" name="coordinator_code" required>
@@ -100,66 +100,166 @@ $total_pages = ceil($total_rows / $results_per_page);
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                     <button type="submit" name="add_coordinator" class="btn btn-primary">Add Coordinator</button>
-                </form>
+                </form> -->
 
-                <!-- Coordinators Table -->
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Coordinator Code</th>
-                            <th>Title</th>
-                            <th>Coordinator Name</th>
-                            <th>BMS Email</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <form action="" method="post" class="form-inline">
-                                    <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_code" value="<?php echo htmlspecialchars($row['coordinator_code']); ?>" required></td>
-                                    <td>
-                                        <select class="form-control mb-2 mr-sm-2" name="title" required>
-                                            <option value="Mr" <?php echo $row['title'] == 'Mr' ? 'selected' : ''; ?>>Mr</option>
-                                            <option value="Mrs" <?php echo $row['title'] == 'Mrs' ? 'selected' : ''; ?>>Mrs</option>
-                                            <option value="Ms" <?php echo $row['title'] == 'Ms' ? 'selected' : ''; ?>>Ms</option>
-                                            <option value="Dr" <?php echo $row['title'] == 'Dr' ? 'selected' : ''; ?>>Dr</option>
-                                            <option value="Prof" <?php echo $row['title'] == 'Prof' ? 'selected' : ''; ?>>Prof</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_name" value="<?php echo htmlspecialchars($row['coordinator_name']); ?>" required></td>
-                                    <td><input type="email" class="form-control mb-2 mr-sm-2" name="bms_email" value="<?php echo htmlspecialchars($row['bms_email']); ?>" required></td>
-                                    <td>
-                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="update_coordinator" class="btn btn-info btn-sm mb-2">Update</button>
-                                        <button type="submit" name="delete_coordinator" class="btn btn-danger btn-sm mb-2">Delete</button>
-                                    </td>
+
+                <!-- -------------------------------------------------------------------------------------  -->
+                <!-- -------------------------------------------------------------------------------------  -->
+
+                <!-- add form // create forms -->
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center" style="height: 60px;">
+                                <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add coordinators</h6>
+                            </div>
+
+                            <div class="card-body">
+                                <form action="" method="post" class="mb-3">
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="coordinator_code">Coordinator Code</label></div>
+                                            <div class="col"> <input type="text" class="form-control" id="coordinator_code" name="coordinator_code" required></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="title">Title</label></div>
+                                            <div class="col">
+                                                <select class="form-control" id="title" name="title" required>
+                                                    <option value="Mr">Mr</option>
+                                                    <option value="Mrs">Mrs</option>
+                                                    <option value="Ms">Ms</option>
+                                                    <option value="Dr">Dr</option>
+                                                    <option value="Prof">Prof</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="coordinator_name">Coordinator Name</label></div>
+                                            <div class="col"> <input type="text" class="form-control" id="coordinator_name" name="coordinator_name" required></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="bms_email">BMS Email</label></div>
+                                            <div class="col"> <input type="email" class="form-control" id="bms_email" name="bms_email" required></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="password">Password</label></div>
+                                            <div class="col"> <input type="password" class="form-control" id="password" name="password" required></div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-right">
+                                        <button type="submit" name="add_coordinator" class="btn btn-primary">Add Coordinator</button>
+                                    </div>
                                 </form>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Pagination Controls -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                        <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <!-- -------------------------------------------------------------------------------------  -->
+                <!-- -------------------------------------------------------------------------------------  -->
+
+
+
+                <div class="card">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
+                        <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fas fa-list"></i>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current Coordinators</h6>
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Leads Table -->
+                        <!-- Coordinators Table -->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Coordinator Code</th>
+                                    <th>Title</th>
+                                    <th>Coordinator Name</th>
+                                    <th>BMS Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <form action="" method="post" class="form-inline">
+                                            <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_code" value="<?php echo htmlspecialchars($row['coordinator_code']); ?>" required></td>
+                                            <td>
+                                                <select class="form-control mb-2 mr-sm-2" name="title" required>
+                                                    <option value="Mr" <?php echo $row['title'] == 'Mr' ? 'selected' : ''; ?>>Mr</option>
+                                                    <option value="Mrs" <?php echo $row['title'] == 'Mrs' ? 'selected' : ''; ?>>Mrs</option>
+                                                    <option value="Ms" <?php echo $row['title'] == 'Ms' ? 'selected' : ''; ?>>Ms</option>
+                                                    <option value="Dr" <?php echo $row['title'] == 'Dr' ? 'selected' : ''; ?>>Dr</option>
+                                                    <option value="Prof" <?php echo $row['title'] == 'Prof' ? 'selected' : ''; ?>>Prof</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_name" value="<?php echo htmlspecialchars($row['coordinator_name']); ?>" required></td>
+                                            <td><input type="email" class="form-control mb-2 mr-sm-2" name="bms_email" value="<?php echo htmlspecialchars($row['bms_email']); ?>" required></td>
+                                            <td>
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <button type="submit" name="update_coordinator" class="btn btn-info btn-sm mb-2">Update</button>
+                                                <button type="submit" name="delete_coordinator" class="btn btn-danger btn-sm mb-2">Delete</button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+
+
+
+                        <!-- Pagination Controls -->
+                        <!-- Pagination Controls -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+                                <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- -------------------------------------------------------------------------------------  -->
+                <!-- -------------------------------------------------------------------------------------  -->
+
+
+
 
             </div>
         </div>
