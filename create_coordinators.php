@@ -144,7 +144,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     <th>Title</th>
                                     <th>Coordinator Name</th>
                                     <th>BMS Email</th>
-                                    <th>Actions</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -173,6 +173,38 @@ $total_pages = ceil($total_rows / $results_per_page);
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
+
+                        <!-- Pagination Links -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous Page Link -->
+                                <li class="page-item <?php if ($page <= 1) {
+                                                            echo 'disabled';
+                                                        } ?>">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- Page Number Links -->
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php if ($i == $page) {
+                                                                echo 'active';
+                                                            } ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+
+                                <!-- Next Page Link -->
+                                <li class="page-item <?php if ($page >= $total_pages) {
+                                                            echo 'disabled';
+                                                        } ?>">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
 
                     </div>
                 </div>

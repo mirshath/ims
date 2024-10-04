@@ -40,7 +40,7 @@ $total_pages = ceil($total_rows / $results_per_page);
 ?>
 
 <!-- Page Wrapper -->
-<div id="wrapper">
+<div id="wrapper" style="background-color: red;">
 
     <?php include("nav.php"); ?>
 
@@ -62,74 +62,123 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <h4 class="h4 mb-0 text-gray-800">Year Management</h4>
                 </div>
 
-                <!-- Add Year Form -->
-                <form action="" method="post" class="mb-3">
-                    <div class="form-group">
-                        <label for="year_name">Year Name</label>
-                        <input type="text" class="form-control" id="year_name" name="year_name" required>
-                    </div>
-                    <button type="submit" name="add_year" class="btn btn-primary">Add Year</button>
-                </form>
+                <!-- Add form -->
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center" style="height: 60px;">
+                                <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add Years</h6>
+                            </div>
 
-                <!-- Year Table -->
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Year Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <form action="" method="post" class="form-inline">
-                                    <td><?php echo $row['id']; ?></td>
-                                    <td>
-                                        <input type="text" class="form-control" name="year_name" value="<?php echo htmlspecialchars($row['year_name']); ?>" required>
-                                    </td>
-                                    <td>
-                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                        <button type="submit" name="update_year" class="btn btn-info btn-sm">Update</button>
-                                        <button type="submit" name="delete_year" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
+                            <div class="card-body">
+                                <form action="" method="post" class="mb-3">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-2 "> <label for="year_name">Year Name</label></div>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" placeholder="years" id="year_name" name="year_name" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <button type="submit" name="add_year" class="btn btn-primary">Add Year</button>
+                                    </div>
                                 </form>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Pagination Controls -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-end">
-                        <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                        <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                            <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="card">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;">
+                        <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fas fa-list"></i>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current Years</h6>
+                    </div>
 
+                    <div class="card-body">
+
+                        <!-- Updated Year Table -->
+                        <table class="table table-striped" id="yearTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Year Name</th>
+                                    <th></th>
+                                    <th class="hidden"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <!-- Form for updating or deleting year -->
+                                        <form action="" method="post" class="form-inline">
+                                            <td class="hidden"><?php echo $row['year_name']; ?></td>
+                                            <td><?php echo $row['id']; ?></td>
+                                            <td>
+                                                <input type="text" class="form-control" name="year_name" value="<?php echo htmlspecialchars($row['year_name']); ?>" required>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <button type="submit" name="update_year" class="btn btn-info btn-sm">Update</button>
+                                                <!-- <button type="submit" name="delete_year" class="btn btn-danger btn-sm">Delete</button> -->
+                                                <button type="submit" name="delete_year" class="btn btn-danger btn-sm" onclick="return confirmDelete();">Delete</button>
+
+                                                <script>
+                                                    function confirmDelete() {
+                                                        return confirm("Are you sure you want to delete this year?");
+                                                    }
+                                                </script>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+
+                        <style>
+                            .hidden {
+                                display: none;
+                                /* Hides the element */
+                            }
+                        </style>
+
+                        <!-- Pagination Controls -->
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script> -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<?php $conn->close(); ?>
+
+<!-- Include DataTables CSS and JS -->
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> -->
+
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<link rel="stylesheet" href="./vendor/datatables/dataTables.bootstrap4.min.css">
+<script>
+    $(document).ready(function() {
+        $('#yearTable').DataTable({
+            "paging": true, // Disable built-in pagination since we are using our custom pagination
+            "searching": true, // Enable searching
+            "ordering": false, // Enable ordering
+            "info": false // Disable info
+        });
+    });
+</script>
 
 </body>
 
 </html>
-<?php $conn->close(); ?>
