@@ -41,14 +41,6 @@ $total_rows = $result_total->fetch_assoc()['total'];
 $total_pages = ceil($total_rows / $results_per_page);
 ?>
 
-<!-- Add DataTables CSS and JS in the header -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-<link rel="stylesheet" href="./vendor/datatables/dataTables.bootstrap4.min.css">
-<!-- Page level custom scripts -->
-<script src="js/demo/datatables-demo.js"></script>
-
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -72,7 +64,10 @@ $total_pages = ceil($total_rows / $results_per_page);
                     <h4 class="h4 mb-0 text-gray-800">Criteria Management</h4>
                 </div>
 
-                <!-- Add Criteria Form -->
+
+
+                <!-- ------------------------------------------------------------------------------  -->
+
                 <div class="row mb-5">
                     <div class="col-md-6">
                         <div class="card">
@@ -106,9 +101,11 @@ $total_pages = ceil($total_rows / $results_per_page);
                                                         <input type="text" class="form-control" id="criteria_name" name="criteria_name" placeholder="Criteria Name" required>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="text-right">
                                         <button type="submit" name="add_criteria" class="btn btn-primary">Add Criterias</button>
                                     </div>
@@ -118,9 +115,14 @@ $total_pages = ceil($total_rows / $results_per_page);
                     </div>
                 </div>
 
-                <!-- Current Criterias Table -->
+
+                <!-- ------------------------------------------------------------------------------  -->
+
+
+
+
                 <div class="card">
-                    <div class="card-header d-flex align-items-center" style="height: 60px;">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
                         <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                             <i class="fas fa-list"></i>
                         </span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -128,26 +130,19 @@ $total_pages = ceil($total_rows / $results_per_page);
                     </div>
 
                     <div class="card-body">
-                        <table id="criteriaTable" class="table table-striped">
+
+                        <!-- Criteria Table -->
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Criteria Code</th>
                                     <th>Criteria Name</th>
-                                    <th></th>
-                                    <th class="hidden"></th>
-                                    <th class="hidden"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php while ($row = $result->fetch_assoc()): ?>
                                     <tr>
                                         <form action="" method="post">
-                                            <td class="hidden">
-                                                <?php echo htmlspecialchars($row['criteria_code']); ?>
-                                            </td>
-                                            <td class="hidden">
-                                                <?php echo htmlspecialchars($row['criteria_name']); ?>
-                                            </td>
                                             <td>
                                                 <input type="text" name="criteria_code" value="<?php echo htmlspecialchars($row['criteria_code']); ?>" class="form-control">
                                             </td>
@@ -157,41 +152,61 @@ $total_pages = ceil($total_rows / $results_per_page);
                                             <td>
                                                 <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                                 <button type="submit" name="update_criteria" class="btn btn-info btn-sm">Update</button>
-                                                <button type="submit" name="delete_criteria" class="btn btn-danger btn-sm"  onclick="return confirmDelete();">Delete</button>
-                                                <script>
-                                                    function confirmDelete() {
-                                                        return confirm("Are you sure you want to delete this Lead?");
-                                                    }
-                                                </script>
+                                                <button type="submit" name="delete_criteria" class="btn btn-danger btn-sm">Delete</button>
                                             </td>
                                         </form>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
-                        <style>
-                            .hidden {
-                                display: none;
-                                /* Hides the element */
-                            }
-                        </style>
+
+
+
+
+                        <!-- Pagination Controls -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+                                <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
 
                     </div>
                 </div>
+
+
+
+
+
+
+
+
+
+                <!-- ------------------------------------------------------------------------------  -->
+                <!-- ------------------------------------------------------------------------------  -->
+
+
+
             </div>
         </div>
     </div>
 </div>
 
-<!-- Initialize DataTables -->
-<script>
-    $(document).ready(function() {
-        $('#criteriaTable').DataTable({
-            "paging": true, // Enable pagination
-            "searching": true, // Enable searching
-            "ordering": false // Enable sorting
-        });
-    });
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
 <?php $conn->close(); ?>

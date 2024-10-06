@@ -184,12 +184,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                             <td><input type="text" class="form-control" name="uni_code" value="<?php echo htmlspecialchars($row['uni_code']); ?>"></td>
                                             <td>
                                                 <button type="submit" name="update_university" class="btn btn-info btn-sm">Update</button>
-                                                <button type="submit" name="delete_university" class="btn btn-danger btn-sm" onclick="return confirmDelete();">Delete</button>
-                                                <script>
-                                                    function confirmDelete() {
-                                                        return confirm("Are you sure you want to delete this Lead?");
-                                                    }
-                                                </script>
+                                                <button type="submit" name="delete_university" class="btn btn-danger btn-sm">Delete</button>
                                             </td>
                                         </form>
                                     </tr>
