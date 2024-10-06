@@ -2,6 +2,11 @@
 include("database/connection.php");
 include("includes/header.php");
 
+// Pagination settings
+$results_per_page = 10; // Number of results per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
+$start = ($page - 1) * $results_per_page;
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_coordinator'])) {
@@ -32,9 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch coordinators
-$sql = "SELECT * FROM coordinator_table";
+// Fetch coordinators for the current page
+$sql = "SELECT * FROM coordinator_table LIMIT $start, $results_per_page";
 $result = $conn->query($sql);
+
+// Fetch total number of coordinators for pagination controls
+$sql_total = "SELECT COUNT(*) as total FROM coordinator_table";
+$result_total = $conn->query($sql_total);
+$total_rows = $result_total->fetch_assoc()['total'];
+$total_pages = ceil($total_rows / $results_per_page);
 ?>
 
 <!-- Page Wrapper -->
@@ -54,7 +65,7 @@ $result = $conn->query($sql);
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h4 class="h4 mb-0 text-gray-800">Coordinator Management</h4>
                 </div>
-                <!-- Add Form -->
+                <!-- add form // create forms -->
                 <div class="row mb-5">
                     <div class="col-md-6">
                         <div class="card">
@@ -62,15 +73,16 @@ $result = $conn->query($sql);
                                 <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                                     <i class="fas fa-plus-circle"></i>
                                 </span> &nbsp;&nbsp;&nbsp;&nbsp;
-                                <h6 class="mb-0 me-2">Add Coordinators</h6>
+                                <h6 class="mb-0 me-2">Add coordinators</h6>
                             </div>
 
                             <div class="card-body">
                                 <form action="" method="post" class="mb-3">
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3"> <label for="coordinator_code">Coordinator Code</label></div>
-                                            <div class="col"> <input type="text" placeholder="Coordinator Code" class="form-control" id="coordinator_code" name="coordinator_code" required></div>
+                                            <div class="col"> <input type="text" class="form-control" id="coordinator_code" name="coordinator_code" required></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -90,23 +102,23 @@ $result = $conn->query($sql);
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3"> <label for="coordinator_name">Coordinator Name</label></div>
-                                            <div class="col"> <input type="text" placeholder="Coordinator Name" class="form-control" id="coordinator_name" name="coordinator_name" required></div>
+                                            <div class="col"> <input type="text" class="form-control" id="coordinator_name" name="coordinator_name" required></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3"> <label for="bms_email">BMS Email</label></div>
-                                            <div class="col"> <input type="email" placeholder="BMS Email" class="form-control" id="bms_email" name="bms_email" required></div>
+                                            <div class="col"> <input type="email" class="form-control" id="bms_email" name="bms_email" required></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3"> <label for="password">Password</label></div>
-                                            <div class="col"> <input type="password" placeholder="Password" class="form-control" id="password" name="password" required></div>
+                                            <div class="col"> <input type="password" class="form-control" id="password" name="password" required></div>
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        <button type="submit" name="add_coordinator"  class="btn btn-primary">Add Coordinator</button>
+                                        <button type="submit" name="add_coordinator" class="btn btn-primary">Add Coordinator</button>
                                     </div>
                                 </form>
                             </div>
@@ -115,7 +127,7 @@ $result = $conn->query($sql);
                 </div>
 
                 <div class="card">
-                    <div class="card-header d-flex align-items-center" style="height: 60px;">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
                         <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                             <i class="fas fa-list"></i>
                         </span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -123,8 +135,9 @@ $result = $conn->query($sql);
                     </div>
 
                     <div class="card-body">
+
                         <!-- Coordinators Table -->
-                        <table class="table table-striped" id="coordinatorTable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Coordinator Code</th>
@@ -132,20 +145,12 @@ $result = $conn->query($sql);
                                     <th>Coordinator Name</th>
                                     <th>BMS Email</th>
                                     <th></th>
-
-                                    <th class="hidden"></th>
-                                    <th class="hidden"></th>
-                                    <th class="hidden"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php while ($row = $result->fetch_assoc()): ?>
                                     <tr>
                                         <form action="" method="post" class="form-inline">
-                                            <td class="hidden"><?php echo htmlspecialchars($row['coordinator_code']); ?></td>
-                                            <td class="hidden"><?php echo htmlspecialchars($row['coordinator_name']); ?></td>
-                                            <td class="hidden"><?php echo htmlspecialchars($row['bms_email']); ?></td>
-
                                             <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_code" value="<?php echo htmlspecialchars($row['coordinator_code']); ?>" required></td>
                                             <td>
                                                 <select class="form-control mb-2 mr-sm-2" name="title" required>
@@ -161,18 +166,46 @@ $result = $conn->query($sql);
                                             <td>
                                                 <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                                 <button type="submit" name="update_coordinator" class="btn btn-info btn-sm mb-2">Update</button>
-                                                <button type="submit" name="delete_coordinator" class="btn btn-danger btn-sm mb-2" onclick="return confirmDelete();">Delete</button>
-                                                <script>
-                                                    function confirmDelete() {
-                                                        return confirm("Are you sure you want to delete this Lead?");
-                                                    }
-                                                </script>
+                                                <button type="submit" name="delete_coordinator" class="btn btn-danger btn-sm mb-2">Delete</button>
                                             </td>
                                         </form>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
+
+                        <!-- Pagination Links -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous Page Link -->
+                                <li class="page-item <?php if ($page <= 1) {
+                                                            echo 'disabled';
+                                                        } ?>">
+                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- Page Number Links -->
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php if ($i == $page) {
+                                                                echo 'active';
+                                                            } ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+
+                                <!-- Next Page Link -->
+                                <li class="page-item <?php if ($page >= $total_pages) {
+                                                            echo 'disabled';
+                                                        } ?>">
+                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
                     </div>
                 </div>
             </div>
@@ -180,28 +213,12 @@ $result = $conn->query($sql);
     </div>
 </div>
 
-
-<!-- Add DataTables CSS and JS in the header -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-<link rel="stylesheet" href="./vendor/datatables/dataTables.bootstrap4.min.css">
-<!-- Page level custom scripts -->
-<script src="js/demo/datatables-demo.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $('#coordinatorTable').DataTable();
-    });
-</script>
-
-<style>
-    .hidden {
-        display: none;
-        /* Hides the element */
-    }
-</style>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
 </body>
 
 </html>
+
+<?php $conn->close(); ?>

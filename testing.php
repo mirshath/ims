@@ -4,41 +4,42 @@ include("includes/header.php");
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['add_university'])) {
-        // Add new university
-        $university_code = $_POST['university_code'];
-        $university_name = $_POST['university_name'];
-        $address = $_POST['address'];
-        $uni_code = $_POST['uni_code'];
-        $sql = "INSERT INTO universities (university_code, university_name, address, uni_code) VALUES ('$university_code', '$university_name', '$address', '$uni_code')";
+    if (isset($_POST['add_coordinator'])) {
+        // Add new coordinator
+        $coordinator_code = $_POST['coordinator_code'];
+        $title = $_POST['title'];
+        $coordinator_name = $_POST['coordinator_name'];
+        $bms_email = $_POST['bms_email'];
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+        $sql = "INSERT INTO coordinator_table (coordinator_code, title, coordinator_name, bms_email, password_hash) VALUES ('$coordinator_code', '$title', '$coordinator_name', '$bms_email', '$password')";
         $conn->query($sql);
-    } elseif (isset($_POST['update_university'])) {
-        // Update university
+    } elseif (isset($_POST['update_coordinator'])) {
+        // Update coordinator
         $id = $_POST['id'];
-        $university_code = $_POST['university_code'];
-        $university_name = $_POST['university_name'];
-        $address = $_POST['address'];
-        $uni_code = $_POST['uni_code'];
-        $sql = "UPDATE universities SET university_code='$university_code', university_name='$university_name', address='$address', uni_code='$uni_code' WHERE id=$id";
+        $coordinator_code = $_POST['coordinator_code'];
+        $title = $_POST['title'];
+        $coordinator_name = $_POST['coordinator_name'];
+        $bms_email = $_POST['bms_email'];
+
+        $sql = "UPDATE coordinator_table SET coordinator_code='$coordinator_code', title='$title', coordinator_name='$coordinator_name', bms_email='$bms_email' WHERE id=$id";
         $conn->query($sql);
-    } elseif (isset($_POST['delete_university'])) {
-        // Delete university
+    } elseif (isset($_POST['delete_coordinator'])) {
+        // Delete coordinator
         $id = $_POST['id'];
-        $sql = "DELETE FROM universities WHERE id=$id";
+        $sql = "DELETE FROM coordinator_table WHERE id=$id";
         $conn->query($sql);
     }
 }
 
-// Fetch universities for display in the DataTable
-$sql = "SELECT * FROM universities";
+// Fetch coordinators
+$sql = "SELECT * FROM coordinator_table";
 $result = $conn->query($sql);
-
 ?>
 
 <!-- Page Wrapper -->
 <div id="wrapper">
     <?php include("nav.php"); ?>
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
@@ -46,55 +47,66 @@ $result = $conn->query($sql);
             <!-- Topbar -->
             <?php include("includes/topnav.php"); ?>
             <!-- End of Topbar -->
-
             <!-- Begin Page Content -->
             <div class="container">
+
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="h4 mb-0 text-gray-800">University Management</h4>
+                    <h4 class="h4 mb-0 text-gray-800">Coordinator Management</h4>
                 </div>
-
-                <!-- Add University Form -->
+                <!-- Add Form -->
                 <div class="row mb-5">
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header d-flex align-items-center" style="height: 60px;">
                                 <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                                     <i class="fas fa-plus-circle"></i>
-                                </span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <h6 class="mb-0 me-2">Add University</h6>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add Coordinators</h6>
                             </div>
 
                             <div class="card-body">
                                 <form action="" method="post" class="mb-3">
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-md-3"><label for="university_code">University Code</label></div>
-                                            <div class="col"><input type="text" class="form-control" id="university_code" name="university_code" required></div>
+                                            <div class="col-md-3"> <label for="coordinator_code">Coordinator Code</label></div>
+                                            <div class="col"> <input type="text" placeholder="Coordinator Code" class="form-control" id="coordinator_code" name="coordinator_code" required></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-md-3"><label for="university_name">University Name</label></div>
-                                            <div class="col"><input type="text" class="form-control" id="university_name" name="university_name" required></div>
+                                            <div class="col-md-3"> <label for="title">Title</label></div>
+                                            <div class="col">
+                                                <select class="form-control" id="title" name="title" required>
+                                                    <option value="Mr">Mr</option>
+                                                    <option value="Mrs">Mrs</option>
+                                                    <option value="Ms">Ms</option>
+                                                    <option value="Dr">Dr</option>
+                                                    <option value="Prof">Prof</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-md-3"><label for="address">Address</label></div>
-                                            <div class="col"><textarea class="form-control" id="address" name="address" rows="3"></textarea></div>
+                                            <div class="col-md-3"> <label for="coordinator_name">Coordinator Name</label></div>
+                                            <div class="col"> <input type="text" placeholder="Coordinator Name" class="form-control" id="coordinator_name" name="coordinator_name" required></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-md-3"><label for="uni_code">Uni Code</label></div>
-                                            <div class="col"><input type="text" class="form-control" id="uni_code" name="uni_code"></div>
+                                            <div class="col-md-3"> <label for="bms_email">BMS Email</label></div>
+                                            <div class="col"> <input type="email" placeholder="BMS Email" class="form-control" id="bms_email" name="bms_email" required></div>
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3"> <label for="password">Password</label></div>
+                                            <div class="col"> <input type="password" placeholder="Password" class="form-control" id="password" name="password" required></div>
+                                        </div>
+                                    </div>
                                     <div class="text-right">
-                                        <button type="submit" name="add_university" class="btn btn-primary">Add University</button>
+                                        <button type="submit" name="add_coordinator"  class="btn btn-primary">Add Coordinator</button>
                                     </div>
                                 </form>
                             </div>
@@ -102,26 +114,25 @@ $result = $conn->query($sql);
                     </div>
                 </div>
 
-                <!-- Universities List -->
                 <div class="card">
                     <div class="card-header d-flex align-items-center" style="height: 60px;">
                         <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                             <i class="fas fa-list"></i>
-                        </span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <h6 class="mb-0">Current Universities</h6>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current Coordinators</h6>
                     </div>
 
                     <div class="card-body">
-                        <!-- DataTables Table -->
-                        <table id="universitiesTable" class="table table-striped">
+                        <!-- Coordinators Table -->
+                        <table class="table table-striped" id="coordinatorTable">
                             <thead>
                                 <tr>
-                                    <th>University Code</th>
-                                    <th>University Name</th>
-                                    <th>Address</th>
-                                    <th>Uni Code</th>
+                                    <th>Coordinator Code</th>
+                                    <th>Title</th>
+                                    <th>Coordinator Name</th>
+                                    <th>BMS Email</th>
                                     <th></th>
+
                                     <th class="hidden"></th>
                                     <th class="hidden"></th>
                                     <th class="hidden"></th>
@@ -130,26 +141,27 @@ $result = $conn->query($sql);
                             <tbody>
                                 <?php while ($row = $result->fetch_assoc()): ?>
                                     <tr>
-                                        <form action="" method="post">
-                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                            <td class="hidden"><?php echo htmlspecialchars($row['university_code']); ?></td>
-                                            <td class="hidden"><?php echo htmlspecialchars($row['university_name']); ?></td>
-                                            <td class="hidden"><?php echo htmlspecialchars($row['uni_code']); ?></td>
+                                        <form action="" method="post" class="form-inline">
+                                            <td class="hidden"><?php echo htmlspecialchars($row['coordinator_code']); ?></td>
+                                            <td class="hidden"><?php echo htmlspecialchars($row['coordinator_name']); ?></td>
+                                            <td class="hidden"><?php echo htmlspecialchars($row['bms_email']); ?></td>
+
+                                            <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_code" value="<?php echo htmlspecialchars($row['coordinator_code']); ?>" required></td>
                                             <td>
-                                                <input type="text" class="form-control" name="university_code" value="<?php echo htmlspecialchars($row['university_code']); ?>" required>
+                                                <select class="form-control mb-2 mr-sm-2" name="title" required>
+                                                    <option value="Mr" <?php echo $row['title'] == 'Mr' ? 'selected' : ''; ?>>Mr</option>
+                                                    <option value="Mrs" <?php echo $row['title'] == 'Mrs' ? 'selected' : ''; ?>>Mrs</option>
+                                                    <option value="Ms" <?php echo $row['title'] == 'Ms' ? 'selected' : ''; ?>>Ms</option>
+                                                    <option value="Dr" <?php echo $row['title'] == 'Dr' ? 'selected' : ''; ?>>Dr</option>
+                                                    <option value="Prof" <?php echo $row['title'] == 'Prof' ? 'selected' : ''; ?>>Prof</option>
+                                                </select>
                                             </td>
+                                            <td><input type="text" class="form-control mb-2 mr-sm-2" name="coordinator_name" value="<?php echo htmlspecialchars($row['coordinator_name']); ?>" required></td>
+                                            <td><input type="email" class="form-control mb-2 mr-sm-2" name="bms_email" value="<?php echo htmlspecialchars($row['bms_email']); ?>" required></td>
                                             <td>
-                                                <input type="text" class="form-control" name="university_name" value="<?php echo htmlspecialchars($row['university_name']); ?>" required>
-                                            </td>
-                                            <td>
-                                                <textarea class="form-control" name="address" rows="3"><?php echo htmlspecialchars($row['address']); ?></textarea>
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control" name="uni_code" value="<?php echo htmlspecialchars($row['uni_code']); ?>">
-                                            </td>
-                                            <td>
-                                                <button type="submit" name="update_university" class="btn btn-info btn-sm">Update</button>
-                                                <button type="submit" name="delete_university" class="btn btn-danger btn-sm"  onclick="return confirmDelete();">Delete</button>
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <button type="submit" name="update_coordinator" class="btn btn-info btn-sm mb-2">Update</button>
+                                                <button type="submit" name="delete_coordinator" class="btn btn-danger btn-sm mb-2" onclick="return confirmDelete();">Delete</button>
                                                 <script>
                                                     function confirmDelete() {
                                                         return confirm("Are you sure you want to delete this Lead?");
@@ -168,7 +180,11 @@ $result = $conn->query($sql);
     </div>
 </div>
 
-<!-- jQuery and DataTables scripts -->
+<!-- jQuery -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+<!-- Bootstrap Bundle with Popper -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script> -->
+<!-- DataTables -->
 <!-- Add DataTables CSS and JS in the header -->
 <script src="vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
@@ -179,13 +195,7 @@ $result = $conn->query($sql);
 
 <script>
     $(document).ready(function() {
-        $('#universitiesTable').DataTable({
-            "paging": true,
-            "searching": true,
-            "ordering": false,
-            "info": true,
-            "lengthChange": true, // Allows the user to change the number of records per page
-        });
+        $('#coordinatorTable').DataTable();
     });
 </script>
 
@@ -199,5 +209,3 @@ $result = $conn->query($sql);
 </body>
 
 </html>
-
-<?php $conn->close(); ?>
