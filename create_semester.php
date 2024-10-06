@@ -93,9 +93,13 @@ $total_pages = ceil($total_rows / $results_per_page);
                 </div>
 
 
+                <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+                <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+                <link rel="stylesheet" href="./vendor/datatables/dataTables.bootstrap4.min.css">
 
                 <div class="card">
-                    <div class="card-header d-flex align-items-center" style="height: 60px;"> <!-- Added d-flex and align-items-center -->
+                    <div class="card-header d-flex align-items-center" style="height: 60px;">
                         <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                             <i class="fas fa-list"></i>
                         </span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -104,14 +108,21 @@ $total_pages = ceil($total_rows / $results_per_page);
 
                     <div class="card-body">
 
-                        <!-- Leads Table -->
+                        <style>
+                            .hidden {
+                                display: none;
+                                /* Hides the element */
+                            }
+                        </style>
+
                         <!-- Semesters Table -->
-                        <table class="table table-striped">
+                        <table id="semestersTable" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Semester Name</th>
-                                    <th>Actions</th>
+                                    <th></th>
+                                    <th class="hidden"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -119,6 +130,7 @@ $total_pages = ceil($total_rows / $results_per_page);
                                     <tr>
                                         <form action="" method="post" class="d-inline">
                                             <td><?php echo $row['id']; ?></td>
+                                            <td class="hidden"><?php echo $row['semester_name']; ?></td>
                                             <td>
                                                 <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                                 <input type="text" class="form-control form-control-sm" name="semester_name" value="<?php echo htmlspecialchars($row['semester_name']); ?>" required>
@@ -135,30 +147,19 @@ $total_pages = ceil($total_rows / $results_per_page);
 
 
 
-
-                        <!-- Pagination Controls -->
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-end">
-                                <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                    </li>
-                                <?php endfor; ?>
-                                <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-
                     </div>
                 </div>
+
+                <!-- Initialize DataTables -->
+                <script>
+                    $(document).ready(function() {
+                        $('#semestersTable').DataTable({
+                            "paging": true, // Enable pagination
+                            "searching": true, // Enable searching
+                            "ordering": true // Enable sorting
+                        });
+                    });
+                </script>
 
             </div>
         </div>

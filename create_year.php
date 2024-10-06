@@ -159,11 +159,6 @@ $total_pages = ceil($total_rows / $results_per_page);
 
 <?php $conn->close(); ?>
 
-<!-- Include DataTables CSS and JS -->
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> -->
-
 <script src="vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
@@ -178,7 +173,5 @@ $total_pages = ceil($total_rows / $results_per_page);
         });
     });
 </script>
-
 </body>
-
 </html>
