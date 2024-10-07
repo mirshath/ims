@@ -120,7 +120,6 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-exchange-alt"></i>
-
             <span>Transections</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
@@ -145,9 +144,6 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
             aria-expanded="true" aria-controls="collapseThree">
             <i class="fas fa-fw fa-edit"></i>
-
-
-
             <span>Edit</span>
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
@@ -162,6 +158,72 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
 
 
 
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+
+
+
+    <!-- re print  -->
+    <!-- edit  -->
+    <li class="nav-item" id="navHover">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
+            aria-expanded="true" aria-controls="collapseFour">
+            <i class="fas fa-fw fa-print"></i>
+            <span>Re Print</span>
+        </a>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Components</h6>
+                <a class="collapse-item" href=""></a>
+
+            </div>
+        </div>
+    </li>
+
+
+
+
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+
+
+    <!-- cancellations  -->
+
+    <li class="nav-item" id="navHover">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
+            aria-expanded="true" aria-controls="collapseFive">
+            <i class="fas fa-fw fa-times"></i>
+            <span>Cancellations</span>
+        </a>
+        <div id="collapseFive" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Components</h6>
+                <a class="collapse-item" href=""></a>
+
+            </div>
+        </div>
+    </li>
+
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+
+    <li class="nav-item" id="navHover">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix"
+            aria-expanded="true" aria-controls="collapseSix">
+            <i class="fas fa-fw fa-file-alt"></i>
+            <span>Reports</span>
+        </a>
+        <div id="collapseSix" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Components</h6>
+                <a class="collapse-item" href=""></a>
+
+            </div>
+        </div>
+    </li>
     <!-- ---------------------------------------------------------------------------------------------------------------------  -->
     <!-- ---------------------------------------------------------------------------------------------------------------------  -->
     <!-- ---------------------------------------------------------------------------------------------------------------------  -->

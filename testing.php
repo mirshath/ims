@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-4"> <label for="student">Student</label></div>
-                                                    <div class="col">
+                                                    <div class="col-md-8">
                                                         <select id="student" name="student_code" class="form-control select2" required></select>
                                                     </div>
                                                 </div>
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-4"> <label for="university">University</label></div>
-                                                    <div class="col">
+                                                    <div class="col-md-8">
                                                         <select id="university" name="university_id" class="form-control select2" required></select>
                                                     </div>
                                                 </div>
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-4"> <label for="programme">Programme</label></div>
-                                                    <div class="col">
+                                                    <div class="col-md-8">
                                                         <select id="programme" name="programme_code" class="form-control select2" required></select>
                                                     </div>
                                                 </div>
@@ -112,20 +112,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-4"> <label for="batch">Batch</label></div>
-                                                    <div class="col"><select required id="batch" name="batch_id" class="form-control select2" required></select></div>
+                                                    <div class="col-md-8"><select required id="batch" name="batch_id" class="form-control select2" required></select></div>
                                                 </div>
                                             </div>
+
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-4"><label for="registration_id">Student Registration ID</label></div>
-                                                    <div class="col"><input type="text" placeholder="Student Registration ID" id="registration_id" name="student_registration_id" class="form-control" required></div>
+                                                    <div class="col-md-8"><input type="text" placeholder="Student Registration ID" id="registration_id" name="student_registration_id" class="form-control" required></div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- right column   -->
                                         <div class="col-md-6">
-
                                             <!-- Modules display area -->
                                             <div id="module-list" class="form-group mt-4">
                                                 <h5>Modules</h5>
@@ -145,13 +145,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
                                                 </div>
                                             </div>
-
                                         </div>
+
                                     </div>
 
                                     <div class="text-right">
