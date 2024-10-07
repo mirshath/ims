@@ -102,6 +102,11 @@ if (isset($_GET['delete'])) {
 
 ?>
 
+
+
+
+
+
 <!-- Page Wrapper -->
 <div id="wrapper">
     <?php include("nav.php"); ?>
@@ -113,263 +118,351 @@ if (isset($_GET['delete'])) {
             <?php include("includes/topnav.php"); ?>
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container">
 
-                <div class="container">
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h4 class="h4 mb-0 text-gray-800">Lead Management</h4>
-                    </div>
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="h4 mb-0 text-gray-800">Lead Management</h4>
+                </div>
+                <!-- Add Form -->
+                <div class="row mb-5">
+                    <div class="col-md-10">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center" style="height: 60px;">
+                                <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h6 class="mb-0 me-2">Add Leads</h6>
+                            </div>
 
-                    <div class="container">
+                            <div class="card-body">
+                                <form action="addLeads" method="post" class="mb-3">
+                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
 
-                        <!-- Add Criteria Form -->
-                        <form action="addLeads" method="POST" class="mt-4">
-                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
-    
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="date">Date:</label>
-                                        <input type="date" name="date" class="form-control" value="<?php echo htmlspecialchars($date); ?>" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="type">Type:</label>
-                                        <select class="form-control" id="type" name="type" required>
-                                            <option value="" disabled>Select Type</option>
-                                            <?php
-                                            // Populate the dropdown with lead types
-                                            if ($result_lead->num_rows > 0) {
-                                                while ($row = $result_lead->fetch_assoc()) {
-                                                    $selected = ($row['lead_type'] === $type) ? 'selected' : '';
-                                                    echo '<option value="' . htmlspecialchars($row['lead_type']) . '" ' . $selected . '>' . htmlspecialchars($row['lead_type']) . '</option>';
-                                                }
-                                            } else {
-                                                echo '<option value="" disabled>No types available</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <!-- University Dropdown -->
-                                    <div class="form-group">
-                                        <label for="university">University:</label>
-                                        <select name="university" id="university" class="form-control" required>
-                                            <option value="" disabled selected>Select University</option>
-                                            <?php
-                                            if ($result_universities->num_rows > 0) {
-                                                while ($row = $result_universities->fetch_assoc()) {
-                                                    $selected = ($row['id'] == $university) ? 'selected' : '';
-                                                    echo '<option value="' . htmlspecialchars($row['id']) . '" ' . $selected . '>' . htmlspecialchars($row['university_name']) . '</option>';
-                                                }
-                                            } else {
-                                                echo '<option value="" disabled>No universities available</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <!-- Programme Dropdown -->
-                                    <div class="form-group">
-                                        <label for="programme">Programme:</label>
-                                        <select name="programme" id="programme" class="form-control" required>
-                                            <option value="" disabled selected>Select Programme</option>
-                                            <!-- Options will be populated dynamically via AJAX -->
-                                        </select>
-                                    </div>
-                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                    <script>
-                                        $(document).ready(function() {
-                                            var selectedProgramme = '<?php echo $programme; ?>';
-    
-                                            $('#university').on('change', function() {
-                                                var universityID = $(this).val();
-                                                if (universityID) {
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: 'get_programs.php',
-                                                        data: {
-                                                            university_id: universityID
-                                                        },
-                                                        dataType: 'json',
-                                                        success: function(data) {
-                                                            $('#programme').html('<option value="">Select Programme</option>');
-                                                            $.each(data, function(key, value) {
-                                                                var isSelected = value.program_name == selectedProgramme ? 'selected' : '';
-                                                                $('#programme').append('<option value="' + value.program_name + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="date">Date:</label></div>
+                                                    <div class="col">
+                                                        <input type="date" name="date" class="form-control" value="<?php echo htmlspecialchars($date); ?>" required>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="type">Type:</label></div>
+                                                    <div class="col">
+                                                        <select class="form-control" id="type" name="type" required>
+                                                            <option value="" disabled>Select Type</option>
+                                                            <?php
+                                                            // Populate the dropdown with lead types
+                                                            if ($result_lead->num_rows > 0) {
+                                                                while ($row = $result_lead->fetch_assoc()) {
+                                                                    $selected = ($row['lead_type'] === $type) ? 'selected' : '';
+                                                                    echo '<option value="' . htmlspecialchars($row['lead_type']) . '" ' . $selected . '>' . htmlspecialchars($row['lead_type']) . '</option>';
+                                                                }
+                                                            } else {
+                                                                echo '<option value="" disabled>No types available</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!-- University Dropdown -->
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="university">University:</label></div>
+                                                    <div class="col">
+                                                        <select name="university" id="university" class="form-control" required>
+                                                            <option value="" disabled selected>Select University</option>
+                                                            <?php
+                                                            if ($result_universities->num_rows > 0) {
+                                                                while ($row = $result_universities->fetch_assoc()) {
+                                                                    $selected = ($row['id'] == $university) ? 'selected' : '';
+                                                                    echo '<option value="' . htmlspecialchars($row['id']) . '" ' . $selected . '>' . htmlspecialchars($row['university_name']) . '</option>';
+                                                                }
+                                                            } else {
+                                                                echo '<option value="" disabled>No universities available</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!-- Programme Dropdown -->
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="programme">Programme:</label></div>
+                                                    <div class="col">
+                                                        <select name="programme" id="programme" class="form-control" required>
+                                                            <option value="" disabled selected>Select Programme</option>
+                                                            <!-- Options will be populated dynamically via AJAX -->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                            <script>
+                                                $(document).ready(function() {
+                                                    var selectedProgramme = '<?php echo $programme; ?>';
+
+                                                    $('#university').on('change', function() {
+                                                        var universityID = $(this).val();
+                                                        if (universityID) {
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: 'get_programs.php',
+                                                                data: {
+                                                                    university_id: universityID
+                                                                },
+                                                                dataType: 'json',
+                                                                success: function(data) {
+                                                                    $('#programme').html('<option value="">Select Programme</option>');
+                                                                    $.each(data, function(key, value) {
+                                                                        var isSelected = value.program_name == selectedProgramme ? 'selected' : '';
+                                                                        $('#programme').append('<option value="' + value.program_name + '" ' + isSelected + '>' + value.program_name + '</option>');
+                                                                    });
+                                                                }
                                                             });
+                                                        } else {
+                                                            $('#programme').html('<option value="">Select Programme</option>');
                                                         }
                                                     });
-                                                } else {
-                                                    $('#programme').html('<option value="">Select Programme</option>');
-                                                }
-                                            });
-                                            // Trigger change event to load programs if university is already selected (for edit mode)
-                                            <?php if ($update && !empty($university)): ?>
-                                                $('#university').trigger('change');
-                                            <?php endif; ?>
-                                        });
-                                    </script>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="intake">Intake Date:</label>
-                                        <input type="date" name="intake" class="form-control" value="<?php echo htmlspecialchars($intake); ?>" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="first_name">First Name:</label>
-                                        <input type="text" name="first_name" class="form-control" value="<?php echo htmlspecialchars($first_name); ?>" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="last_name">Last Name:</label>
-                                        <input type="text" name="last_name" class="form-control" value="<?php echo htmlspecialchars($last_name); ?>" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="contact">Contact:</label>
-                                        <input type="text" name="contact" class="form-control" value="<?php echo htmlspecialchars($contact); ?>" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="email">Email:</label>
-                                        <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($email); ?>" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="details">Details:</label>
-                                        <textarea name="details" class="form-control"><?php echo htmlspecialchars($details); ?></textarea>
-                                    </div>
-                                </div>
-    
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="form-control" id="status" name="status" required>
-                                            <?php
-                                            // Generate options for the status dropdown
-                                            foreach ($status_options as $status_option) {
-                                                // Check if this option is the one currently stored in the database
-                                                $selected = ($status_option['status_name'] == $status) ? 'selected' : '';
-                                                echo "<option value=\"" . htmlspecialchars($status_option['status_name']) . "\" $selected>" . htmlspecialchars($status_option['status_name']) . "</option>";
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-    
+                                                    // Trigger change event to load programs if university is already selected (for edit mode)
+                                                    <?php if ($update && !empty($university)): ?>
+                                                        $('#university').trigger('change');
+                                                    <?php endif; ?>
+                                                });
+                                            </script>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="intake">Intake Date:</label></div>
+                                                    <div class="col">
+                                                        <input type="date" placeholder="Intake Date" name="intake" class="form-control" value="<?php echo htmlspecialchars($intake); ?>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="first_name">First Name:</label></div>
+                                                    <div class="col">
+                                                        <input type="text" placeholder="First Name" name="first_name" class="form-control" value="<?php echo htmlspecialchars($first_name); ?>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="last_name">Last Name:</label></div>
+                                                    <div class="col">
+                                                        <input type="text" placeholder="Last Name" name="last_name" class="form-control" value="<?php echo htmlspecialchars($last_name); ?>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="contact">Contact:</label></div>
+                                                    <div class="col">
+                                                        <input type="text" placeholder="Contact" name="contact" class="form-control" value="<?php echo htmlspecialchars($contact); ?>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="email">Email:</label></div>
+                                                    <div class="col">
+                                                        <input type="email" placeholder="Email" name="email" class="form-control" value="<?php echo htmlspecialchars($email); ?>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3"> <label for="details">Details:</label></div>
+                                                    <div class="col">
+                                                        <textarea name="details" placeholder="Details" class="form-control"><?php echo htmlspecialchars($details); ?></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="status">Status</label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <select class="form-control" id="status" name="status" required>
+                                                            <?php
+                                                            // Generate options for the status dropdown
+                                                            foreach ($status_options as $status_option) {
+                                                                // Check if this option is the one currently stored in the database
+                                                                $selected = ($status_option['status_name'] == $status) ? 'selected' : '';
+                                                                echo "<option value=\"" . htmlspecialchars($status_option['status_name']) . "\" $selected>" . htmlspecialchars($status_option['status_name']) . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="text-right">
+                                            <button type="submit" name="save" class="btn btn-primary"><?php echo $update ? 'Update' : 'Save'; ?> Lead</button>
+
+                                        </div>
+                                </form>
                             </div>
-                            <!-- Submit Button -->
-                            <button type="submit" name="save" class="btn btn-primary"><?php echo $update ? 'Update' : 'Save'; ?> Lead</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Criteria Table -->
-                <div class="mt-5">
-                    <h5>Leads List</h5>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Programme</th>
-                                <th>Intake</th>
-                                <th>Name</th>
-                                <th>Contact</th>
-                                <th>Email</th>
-                                <th>Details</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody style="font-size: 12px;">
-                            <?php
-                            // Fetch and display leads from the database
-                            $sql_leads = "SELECT * FROM leads";
-                            $result_leads = $conn->query($sql_leads);
-                            while ($row = $result_leads->fetch_assoc()) {
-                            ?>
+
+                <!-- ---------------------------------------  -->
+                <!-- ---------------------------------------  -->
+                <!-- ---------------------------------------  -->
+
+
+
+                <div class="card mt-5">
+                    <div class="card-header d-flex align-items-center" style="height: 60px;">
+                        <span class="bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fas fa-list"></i>
+                        </span> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <h6 class="mb-0">Current Leads</h6>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Coordinators Table -->
+                        <table class="table table-bordered" id="leadsTable">
+                            <thead>
                                 <tr>
-                                    <td><?= htmlspecialchars($row['date']) ?></td>
-                                    <td><?= htmlspecialchars($row['type']) ?></td>
-                                    <td><?= htmlspecialchars($row['programme']) ?></td>
-                                    <td><?= htmlspecialchars($row['intake']) ?></td>
-                                    <td><?= htmlspecialchars($row['first_name']) ?> <?= htmlspecialchars($row['last_name']) ?></td>
-                                    <td><?= htmlspecialchars($row['contact']) ?></td>
-                                    <td><?= htmlspecialchars($row['email']) ?></td>
-                                    <td><?= htmlspecialchars($row['details']) ?></td>
-                                    <td>
-                                        <form id="updateStatusForm" data-lead-id="<?= htmlspecialchars($row['id']) ?>" style="display:inline;">
-                                            <select name="status" class="form-control form-control-sm" id="statusSelect">
-                                                <?php
-                                                foreach ($status_options as $status) {
-                                                    $selected = ($status['status_name'] == $row['status']) ? 'selected' : '';
-                                                    echo "<option value=\"" . htmlspecialchars($status['status_name']) . "\" $selected>" . htmlspecialchars($status['status_name']) . "</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                            <button type="button" class="btn btn-sm btn-primary w-100 updateStatusButton mt-2">Update</button>
-                                        </form>
-                                    </td>
-                                    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-                                    <script>
-                                        $(document).ready(function() {
-                                            $('.updateStatusButton').on('click', function() {
-                                                // Get the form associated with the clicked button
-                                                var form = $(this).closest('form');
-                                                var leadId = form.data('lead-id');
-                                                var status = form.find('#statusSelect').val();
-
-                                                $.ajax({
-                                                    url: 'updateLeadStatus',
-                                                    type: 'POST',
-                                                    data: {
-                                                        lead_id: leadId,
-                                                        status: status
-                                                    },
-                                                    success: function(response) {
-
-                                                        // alert('Status updated successfully!');
-
-                                                    },
-                                                    error: function(xhr, status, error) {
-
-                                                        alert('An error occurred: ' + error);
-                                                    }
-                                                });
-                                            });
-                                        });
-                                    </script>
-
-                                    <td>
-                                        <a href="addLeads?edit=<?= htmlspecialchars($row['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                                        <a href="addLeads?delete=<?= htmlspecialchars($row['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this lead?')">Delete</a>
-                                    </td>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Programme</th>
+                                    <th>Intake</th>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
-                            <?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody style="font-size: 12px;">
+                                <?php
+                                // Fetch and display leads from the database
+                                $sql_leads = "SELECT * FROM leads";
+                                $result_leads = $conn->query($sql_leads);
+                                while ($row = $result_leads->fetch_assoc()) {
+                                ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($row['date']) ?></td>
+                                        <td><?= htmlspecialchars($row['type']) ?></td>
+                                        <td><?= htmlspecialchars($row['programme']) ?></td>
+                                        <td><?= htmlspecialchars($row['intake']) ?></td>
+                                        <td><?= htmlspecialchars($row['first_name']) ?> <?= htmlspecialchars($row['last_name']) ?></td>
+                                        <td><?= htmlspecialchars($row['contact']) ?></td>
+                                        <td><?= htmlspecialchars($row['email']) ?></td>
+                                        <td><?= htmlspecialchars($row['details']) ?></td>
+                                        <td>
+                                            <form id="updateStatusForm" data-lead-id="<?= htmlspecialchars($row['id']) ?>" style="display:inline;">
+                                                <select name="status" class="form-control form-control-sm" id="statusSelect">
+                                                    <?php
+                                                    foreach ($status_options as $status) {
+                                                        $selected = ($status['status_name'] == $row['status']) ? 'selected' : '';
+                                                        echo "<option value=\"" . htmlspecialchars($status['status_name']) . "\" $selected>" . htmlspecialchars($status['status_name']) . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                                <button type="button" class="btn btn-sm btn-primary w-100 updateStatusButton mt-2">Update</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <a href="addLeads?edit=<?= htmlspecialchars($row['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="addLeads?delete=<?= htmlspecialchars($row['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this lead?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <!-- jQuery (necessary for DataTables) -->
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <!-- DataTables JS -->
+                <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        // Initialize DataTables
+                        $('#leadsTable').DataTable();
+
+                        $('.updateStatusButton').on('click', function() {
+                            // Get the form associated with the clicked button
+                            var form = $(this).closest('form');
+                            var leadId = form.data('lead-id');
+                            var status = form.find('#statusSelect').val();
+
+                            $.ajax({
+                                url: 'updateLeadStatus', // Make sure this points to your update endpoint
+                                type: 'POST',
+                                data: {
+                                    lead_id: leadId,
+                                    status: status
+                                },
+                                success: function(response) {
+                                    alert('Status updated successfully!'); // You can customize this
+                                },
+                                error: function(xhr, status, error) {
+                                    alert('An error occurred: ' + error);
+                                }
+                            });
+                        });
+                    });
+                </script>
+
+
             </div>
         </div>
     </div>
 </div>
 
-</div>
+<!-- Add DataTables CSS and JS in the header -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<link rel="stylesheet" href="./vendor/datatables/dataTables.bootstrap4.min.css">
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script>
+
+
 </body>
 
 </html>
-<?php $conn->close(); ?>

@@ -140,6 +140,33 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
     <!-- ---------------------------------------------------------------------------------------------------------------------  -->
 
 
+    <!-- edit  -->
+    <li class="nav-item" id="navHover">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+            aria-expanded="true" aria-controls="collapseThree">
+            <i class="fas fa-fw fa-edit"></i>
+
+
+
+            <span>Edit</span>
+        </a>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Components</h6>
+                <a class="collapse-item" href="">Edit Allocate Program</a>
+
+            </div>
+        </div>
+    </li>
+
+
+
+
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+    <!-- ---------------------------------------------------------------------------------------------------------------------  -->
+
+
     <li class="nav-item" id="navHover">
         <a class="nav-link" href="tables">
             <i class="fas fa-fw fa-table"></i>
