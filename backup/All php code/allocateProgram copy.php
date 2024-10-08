@@ -24,18 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '<script>alert("Duplicate Student Registration ID found! Please use a unique ID.");</script>';
     } else {
         // Insert data into `allocate_programme` table
-        // $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id, elective_subs) 
-        //         VALUES (?, ?, ?, ?, ?, ?)";
-
-        // $stmt = $conn->prepare($sql);
-        // $stmt->bind_param("iiiiss", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id, $elective_subs);
-
-        $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id, elective_subs, compulsory_sub) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `allocate_programme` (student_code, university_id, programme_code, batch_id, student_registration_id, elective_subs) 
+                VALUES (?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiisss", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id, $elective_subs, $compulsory_subs);
-
+        $stmt->bind_param("iiiiss", $student_code, $university_id, $programme_code, $batch_id, $student_registration_id, $elective_subs);
 
         if ($stmt->execute()) {
             echo '<script>window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
@@ -130,8 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <!-- right column   -->
                                         <div class="col-md-6">
                                             <!-- Modules display area -->
-
-
                                             <div id="module-list" class="form-group mt-4">
                                                 <h5>Modules</h5>
                                                 <hr>
@@ -140,13 +131,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                         <div class="col-md-6">
                                                             <h6>Compulsory Modules</h6>
                                                             <div id="compulsory-modules-container">
-
+                                                                <!-- Compulsory modules will be dynamically loaded here -->
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <h6>Elective Modules</h6>
                                                             <div id="elective-modules-container">
-
+                                                                <!-- Elective modules will be dynamically loaded here -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -370,7 +361,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     });
 
                     // Handle form submission
-                    // Handle form submission
                     $('#allocate-form').submit(function(e) {
                         e.preventDefault();
 
@@ -390,7 +380,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         // Submit the form
                         this.submit();
                     });
-
 
                 });
 
@@ -417,7 +406,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         });
 
                         // Fetch modules for the selected programme
-                        // Fetch modules for the selected programme
                         $.ajax({
                             url: 'allocateProgram_files/get_modules.php',
                             type: 'GET',
@@ -428,51 +416,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             success: function(data) {
                                 // Clear both sections
                                 $('#modules-container').empty();
+                                //             $('#modules-container').append(`
+                                //     <h6>Compulsory Modules</h6>
+                                //     <div id="compulsory-modules-container"></div>
+                                //     <h6>Elective Modules</h6>
+                                //     <div id="elective-modules-container"></div>
+                                // `);
+
                                 $('#modules-container').append(`
-            <div class="row">
-                <!-- Compulsory Modules Column -->
-                <div class="col-md-6">
-                    <h6>Compulsory Modules</h6>
-                    <div id="compulsory-modules-container"></div>
-                </div>
+                                    <div class="row">
+                                        <!-- Compulsory Modules Column -->
+                                        <div class="col-md-6">
+                                            <h6>Compulsory Modules</h6>
+                                            <div id="compulsory-modules-container"></div>
+                                        </div>
 
-                <!-- Elective Modules Column -->
-                <div class="col-md-6">
-                    <h6>Elective Modules</h6>
-                    <div id="elective-modules-container"></div>
-                </div>
-            </div>
-        `);
+                                        <!-- Elective Modules Column -->
+                                        <div class="col-md-6">
+                                            <h6>Elective Modules</h6>
+                                            <div id="elective-modules-container"></div>
+                                        </div>
+                                    </div>
+                                `);
 
-                                // Arrays to hold module IDs (if needed for further logic)
+
                                 let compulsoryModules = [];
                                 let electiveModules = [];
 
                                 if (data.length > 0) {
                                     $.each(data, function(key, value) {
-                                        const moduleType = value.type; // 'Compulsory' or 'Elective'
+                                        const moduleType = value.type;
                                         const moduleId = value.id;
                                         const moduleName = value.module_name;
 
                                         // Create the module checkbox HTML
-                                        let moduleHTML;
-
+                                        const moduleHTML = `
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="module${moduleId}" name="elective_modules[]" value="${moduleName}">
+                                        <label class="form-check-label" for="module${moduleId}">
+                                            ${moduleName}
+                                        </label>
+                                    </div>
+                                `;
+                                        // Append to the corresponding container based on the module type
                                         if (moduleType === 'Compulsory') {
-                                            moduleHTML = `
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="compulsoryModule${moduleId}" name="compulsory_modules[]" value="${moduleName}">
-                            <label class="form-check-label" for="compulsoryModule${moduleId}">${moduleName}</label>
-                        </div>
-                    `;
                                             compulsoryModules.push(moduleId);
                                             $('#compulsory-modules-container').append(moduleHTML);
                                         } else if (moduleType === 'Elective') {
-                                            moduleHTML = `
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="electiveModule${moduleId}" name="elective_modules[]" value="${moduleName}">
-                            <label class="form-check-label" for="electiveModule${moduleId}">${moduleName}</label>
-                        </div>
-                    `;
                                             electiveModules.push(moduleId);
                                             $('#elective-modules-container').append(moduleHTML);
                                         }
@@ -486,11 +476,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 }
                             },
                             error: function(xhr, status, error) {
-                                $('#modules-container').empty().append('<p>Error fetching modules.</p>');
+                                // $('#modules-container').empty().append('<p>Error fetching modules .</p>');
+                                $('#modules-container').empty().append('<p></p>');
                                 console.error('Error:', error);
                             }
                         });
-
                     }
                 });
             </script>

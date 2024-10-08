@@ -54,7 +54,7 @@
 
             <div class="mb-3">
                 <label for="registration_code" class="form-label">Registration Code:</label>
-                <input type="text" id="registration_code" name="registration_code" class="form-control">
+                <input type="text" id="registration_code" name="registration_code" class="form-control" >
             </div>
 
             <!-- Elective Subjects (with checkboxes) -->
@@ -68,12 +68,6 @@
                 <label for="compulsory_subjects" class="form-label">Compulsory Subjects:</label>
                 <input type="text" id="compulsory_subjects" name="compulsory_subjects" class="form-control" disabled>
             </div> -->
-            <!-- Compulsory Subjects (with checkboxes) -->
-            <div class="mb-3">
-                <label for="compulsory_subjects" class="form-label">Compulsory Subjects:</label>
-                <div id="compulsory_subjects" class="form-control" style="height: auto;"></div> <!-- Holds the checkboxes -->
-            </div>
-
         </form>
     </div>
 
@@ -82,17 +76,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#student').change(function() {
+        $(document).ready(function () {
+            $('#student').change(function () {
                 var student_code = $(this).val();
                 if (student_code !== '') {
                     $.ajax({
                         url: 'fetch_allocation_details.php',
                         type: 'POST',
-                        data: {
-                            student_code: student_code
-                        },
-                        success: function(response) {
+                        data: { student_code: student_code },
+                        success: function (response) {
                             var data = JSON.parse(response);
                             $('#student_name').val(data.student_name);
                             $('#university').val(data.university);
@@ -100,31 +92,18 @@
                             $('#batch').val(data.batch);
                             $('#registration_code').val(data.registration_code);
 
-                            // Clear previous subjects
+                            // Clear previous elective subjects checkboxes
                             $('#elective_subjects').empty();
-                            $('#compulsory_subjects').empty();
 
-                            // Generate checkboxes for elective subjects only if they exist
-                            var electiveSubjects = data.elective_subjects.split(',').map(subject => subject.trim()).filter(Boolean); // Trim and filter empty strings
-                            if (electiveSubjects.length > 0) {
-                                electiveSubjects.forEach(function(subject) {
-                                    var checkbox = '<div class="form-check"><input class="form-check-input" type="checkbox" name="elective_subjects[]" value="' + subject + '" checked><label class="form-check-label">' + subject + '</label></div>';
-                                    $('#elective_subjects').append(checkbox);
-                                });
-                            } else {
-                                // Optionally display a message when there are no elective subjects
-                                $('#elective_subjects').append('<div>No elective subjects available.</div>');
-                            }
-
-                            // Generate checkboxes for compulsory subjects
-                            var compulsorySubjects = data.compulsory_subjects.split(',').map(subject => subject.trim()).filter(Boolean); // Trim and filter empty strings
-                            compulsorySubjects.forEach(function(subject) {
-                                var checkbox = '<div class="form-check"><input class="form-check-input" type="checkbox" name="compulsory_subjects[]" value="' + subject + '" checked><label class="form-check-label">' + subject + '</label></div>';
-                                $('#compulsory_subjects').append(checkbox);
+                            // Generate checkboxes for elective subjects
+                            var electiveSubjects = data.elective_subjects.split(','); // Assuming elective subjects are comma-separated
+                            electiveSubjects.forEach(function (subject) {
+                                var checkbox = '<div class="form-check"><input class="form-check-input" type="checkbox" name="elective_subjects[]" value="' + subject.trim() + '" checked><label class="form-check-label">' + subject.trim() + '</label></div>';
+                                $('#elective_subjects').append(checkbox);
                             });
+
+                            $('#compulsory_subjects').val(data.compulsory_subjects);
                         }
-
-
                     });
                 }
             });

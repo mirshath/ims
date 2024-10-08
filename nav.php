@@ -1,9 +1,5 @@
 <?php
-
-
 $current_url = basename($_SERVER['REQUEST_URI'], ".php");
-
-
 ?>
 
 
@@ -12,7 +8,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
         color: white !important;
         background: rgb(203, 0, 0);
         background: radial-gradient(circle, rgba(203, 0, 0, 1) 0%, rgba(110, 4, 4, 1) 92%);
-        border-radius: 5px;
+        /* border-radius: 5px; */
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -23,7 +19,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
         color: white !important;
         background: rgb(203, 0, 0);
         background: radial-gradient(circle, rgba(203, 0, 0, 1) 0%, rgba(110, 4, 4, 1) 92%);
-        border-radius: 5px;
+        /* border-radius: 5px; */
         transition: background-color 0.3s ease;
         font-weight: 600;
         text-transform: uppercase;
@@ -149,7 +145,7 @@ $current_url = basename($_SERVER['REQUEST_URI'], ".php");
         <div id="collapseThree" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Components</h6>
-                <a class="collapse-item" href="">Edit Allocate Program</a>
+                <a class="collapse-item" href="editAllocateProgram">Edit Allocate Program</a>
 
             </div>
         </div>
